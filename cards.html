@@ -12,6 +12,7 @@
       var names    = { '11': 'Jack', '12': 'Queen', '13': 'King', '1': 'Ace' }
       var cardheight = 244;
       var cardwidth  = 167;
+      var cardsnap   = 30;
       var cardsprite = {
         'club1': { 'x': 0, 'y': 0, 'width': cardwidth, 'height': cardheight },
         'club2': { 'x': cardwidth, 'y': 0, 'width': cardwidth, 'height': cardheight },
@@ -128,11 +129,25 @@
 
       }
 
-      var isNearSnapArea = function(image) {
+      var isNearSnapArea = function(image, snapArea) {
         if (image.attrs.x > snapArea.x - 30 && image.attrs.x < snapArea.x + 30 && image.attrs.y > snapArea.y - 30 && image.attrs.y < snapArea.y + 30) {
           return true;
         } else {
           return false;
+        }
+      }
+      var isNearCardSnapArea = function(image, layer, callback) {
+        console.log(layer.children);
+        // What the new card will snap to if it is near it
+        var snapTo = { 'x': image.attrs.x, 'y': image.attrs.y };
+        for (var x = 0; x < layer.children.length; x++) {
+          var card   = { 'x': layer.children[x].attrs.x, 'y': layer.children[x].attrs.y, '_id': layer.children[x]._id, 'type': layer.children[x].type }
+          if(isNearSnapArea(image, card) && card.type === 'card' && image._id !== card._id) {
+            snapTo.x = card.x;
+            snapTo.y = card.y + 30;
+            callback(snapTo);
+            return;
+          }
         }
       }
 
@@ -171,6 +186,7 @@
                 image: imageObj,
                 draggable: true
               });
+              image.type = "card";
               layer.add(image);
               stage.add(layer);
               image.on("mouseover", function() {
@@ -184,11 +200,16 @@
               });
               image.on('dragend', function() {
                 // If this is near the right side, snap the card to it.
-                if(isNearSnapArea(image)) {
+                if(isNearSnapArea(image, snapArea)) {
                   image.attrs.x = snapArea.x;
                   image.attrs.y = snapArea.y;
                   layer.draw();
                 }
+                isNearCardSnapArea(image, layer, function(snapTo) { 
+                  image.attrs.x = snapTo.x;
+                  image.attrs.y = snapTo.y;
+                  layer.draw();
+                }); 
               });
             }
             imageObj.src = 'card_sprite.png';
