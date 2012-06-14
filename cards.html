@@ -4,6 +4,29 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
     <script src="http://www.html5canvastutorials.com/libraries/kinetic-v3.10.0.js"></script>
     <script>
+      /**
+       * Prevents click-based selectiion of text in all matched elements.
+       */
+      jQuery.fn.disableTextSelection = function()
+      {
+        return this.each(function()
+            {
+            if (typeof this.onselectstart != "undefined") // IE
+            {
+            this.onselectstart = function() { return false; };
+            }
+            else if (typeof this.style.MozUserSelect != "undefined") // Firefox
+            {
+            this.style.MozUserSelect = "none";
+            }
+            else // All others
+            {
+            this.onmousedown = function() { return false; };
+            }
+            });
+      };
+    </script>
+    <script>
       var maxValue = 13;
       var minValue = 1;
       var snapArea = { 'x': 400, 'y': 300 }
@@ -153,6 +176,7 @@
 
 
       $(document).ready(function() {
+        $('#container').disableTextSelection();
         var newDeck = new deck();
         var stage = new Kinetic.Stage({
           container: "container",
