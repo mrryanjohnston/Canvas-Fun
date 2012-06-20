@@ -2,7 +2,7 @@
 
   <head>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
-    <script src="http://www.html5canvastutorials.com/libraries/kinetic-v3.9.3.js"></script>
+    <script src="http://www.html5canvastutorials.com/libraries/kinetic-v3.10.1.js"></script>
     <script>
       /**
        * Prevents click-based selectiion of text in all matched elements.
@@ -41,8 +41,6 @@
       var spriteurl  = 'card_sprite.png';
       var cardsprite = {}
       var initSprites = function(cardheight, cardwidth) {
-        console.log(cardheight);
-        console.log(cardwidth);
         cardsprite = {
           'club1': { 'x': 0, 'y': 0, 'width': cardwidth, 'height': cardheight },
           'club2': { 'x': cardwidth, 'y': 0, 'width': cardwidth, 'height': cardheight },
@@ -332,14 +330,42 @@
         table.on('mouseup', function(mouse) {
           this.off('mousemove.tableselect');
           var tableselect = this.get('.tableselect');
-          if(typeof(tableselect) !== 'undefined' && tableselect.length > 0) {
+          if(tableselect.length > 0) {
+            var group = new Kinetic.Group({
+              name: 'selectgroup',
+              draggable: true
+            });
+            var selectCoverage = { 'x': [tableselect[0].getX(), tableselect[0].getX()+tableselect[0].getWidth()], 'y': [tableselect[0].getY(), tableselect[0].getY()+tableselect[0].getHeight()] }
+            // MADNESS https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/sort
+            function compareNumbers(a, b)  {  
+              return a - b;  
+            }
+            selectCoverage.x.sort(compareNumbers);
+            selectCoverage.y.sort(compareNumbers);
+            console.log(selectCoverage);
+            for (var x = 0; x < layer.children.length; x++) {
+              if(layer.children[x].type === "card") {
+                var cardX = layer.children[x].getX();
+                var cardY = layer.children[x].getY();
+                if(cardX > selectCoverage.x[0] && cardX < selectCoverage.x[1] && cardY > selectCoverage.y[0] && cardY < selectCoverage.y[1]) {
+                  layer.children[x].setStroke('red');
+                  layer.children[x].setStrokeWidth(5);
+                  group.add(layer.children[x]);
+                }
+              }
+            }
+            if(group.children.length > 0) {
+              layer.add(group);
+              layer.draw();
+            }
             this.remove(tableselect[0]);
             this.draw();
           }
         });
         table.on('mousedown', function(mouse) {
+          this.off('mousemove.tableselect');
           var tableselect = this.get('.tableselect');
-          if(typeof(tableselect) !== 'undefined' && tableselect.length > 0) {
+          if(tableselect.length > 0) {
             this.remove(tableselect[0]);
           }
           var tableselect = new Kinetic.Rect({
@@ -354,8 +380,6 @@
           });
           this.add(tableselect);
           this.on('mousemove.tableselect', function(move) {
-            console.log('mousemove');
-            console.log(move);
             var position = tableselect.getPosition();
             tableselect.setSize(move.layerX-position.x, move.layerY-position.y);
             this.draw();
