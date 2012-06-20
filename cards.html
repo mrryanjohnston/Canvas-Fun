@@ -221,56 +221,59 @@
           newDeck.deal(function(card) {
             var imageObj = new Image();
             imageObj.onload = function() {
-              var image = new Kinetic.Image({
-                x: stage.getWidth() / 2 - 53,
-                y: stage.getHeight() / 2 - 59,
-                crop: cardsprite[card.suite + card.value],
-                width: canvascardwidth,
-                height: canvascardheight,
-                image: imageObj,
-                draggable: true,
-                offset: [canvascardwidth/2, canvascardheight/2]
-              });
-              image.type    = "card";
-              image.tapped  = false;
-              image.value   = card.value;
-              image.suite   = card.suite;
-              image.tap     = function() {
-                if(!image.tapped) {
-                  image.rotateDeg(90);
-                } else {
-                  image.rotateDeg(-90);
+              if (!this.initialized) {
+                var image = new Kinetic.Image({
+                  x: stage.getWidth() / 2 - 53,
+                  y: stage.getHeight() / 2 - 59,
+                  crop: cardsprite[card.suite + card.value],
+                  width: canvascardwidth,
+                  height: canvascardheight,
+                  image: imageObj,
+                  draggable: true,
+                  offset: [canvascardwidth/2, canvascardheight/2],
+                });
+                image.type    = "card";
+                image.tapped  = false;
+                image.value   = card.value;
+                image.suite   = card.suite;
+                this.initialized = true;
+                image.tap     = function() {
+                  if(!image.tapped) {
+                    image.rotateDeg(90);
+                    } else {
+                    image.rotateDeg(-90);
+                  }
+                  image.tapped = !(image.tapped);
                 }
-                image.tapped = !(image.tapped);
+                layer.add(image);
+                stage.add(layer);
+                image.on("mouseover", function() {
+                  document.body.style.cursor = "pointer";
+                });
+                image.on("mouseout", function() {
+                  document.body.style.cursor = "default";
+                });
+                image.on('dragstart', function() {
+                  image.moveToTop();
+                });
+                image.on('dblclick', function() {
+                  image.tap();
+                  layer.draw();
+                });
+                image.on('dragend', function() {
+                  // If this is near the right side, snap the card to it.
+                  if(isNearSnapArea(image, snapArea)) {
+                    image.attrs.x = snapArea.x;
+                    image.attrs.y = snapArea.y;
+                    layer.draw();
+                  }
+                  isNearCardSnapArea(image, layer, function(snapTo) { 
+                    image.attrs.x = snapTo.x;
+                    image.attrs.y = snapTo.y;
+                    layer.draw();
+                  }); 
+                });
               }
-              layer.add(image);
-              stage.add(layer);
-              image.on("mouseover", function() {
-                document.body.style.cursor = "pointer";
-              });
-              image.on("mouseout", function() {
-                document.body.style.cursor = "default";
-              });
-              image.on('dragstart', function() {
-                image.moveToTop();
-              });
-              image.on('dblclick', function() {
-                image.tap();
-                layer.draw();
-              });
-              image.on('dragend', function() {
-                // If this is near the right side, snap the card to it.
-                if(isNearSnapArea(image, snapArea)) {
-                  image.attrs.x = snapArea.x;
-                  image.attrs.y = snapArea.y;
-                  layer.draw();
-                }
-                isNearCardSnapArea(image, layer, function(snapTo) { 
-                  image.attrs.x = snapTo.x;
-                  image.attrs.y = snapTo.y;
-                  layer.draw();
-                }); 
-              });
             }
             imageObj.src = spriteurl;
             var notificationText = "<p>Dealt one card. It was a " + card.name + " with a value of " + card.value + ", suite of " + card.suite + ", and color of " + card.color + ".</p> ";
@@ -317,14 +320,14 @@
           var numberOfChildren = layer.children.length;
           for (var x = 0; x < numberOfChildren; x++) {
             if(layer.children[x].type === "card") {
-              var oldCard = layer.children[x];
-              //var imageObj = oldCard.getImage();
-              //imageObj.src = spriteurl
-              layer.children[x].attrs.image.src = spriteurl
-              //oldCard.setImage(imageObj);
+              //var oldCard = layer.children[x];
+              var imageObj = layer.children[x].getImage();
+              imageObj.src = spriteurl
+              // layer.children[x].attrs.image.src = spriteurl
+              layer.children[x].setImage(imageObj);
             }
           }
-          //layer.draw();
+          layer.draw();
         });
         table.on('mouseup', function(mouse) {
           this.off('mousemove.tableselect');
