@@ -2,16 +2,16 @@
 * Prevents click-based selection of text in all matched elements.
 */
 
-jQuery.fn.disableTextSelection = function(){
-    return this.each(function(){   
-        if (typeof this.onselectstart != "undefined"){ //IE
+jQuery.fn.disableTextSelection = function() {
+    return this.each(function() {
+        if (typeof this.onselectstart != "undefined") { //IE
             this.onselectstart = function() { return false; };
-        }else if (typeof this.style.MozUserSelect != "undefined"){ //Firefox
+        }else if (typeof this.style.MozUserSelect != "undefined") { //Firefox
             this.style.MozUserSelect = "none";
         }else{ // All others
             this.onmousedown = function() { return false; };
-        }   
-    }); 
+        }
+    });
 };
 
 $(document).ready(function() {
@@ -56,66 +56,66 @@ $(document).ready(function() {
 
     $('#dealbutton').click(function() {
         newDeck.deal(function(card) {
-        var imageObj = new Image();
-        imageObj.onload = function() {
-            if (!this.initialized) {
-                var image = new Kinetic.Image({
-                    x: stage.getWidth() / 2 - 53,
-                    y: stage.getHeight() / 2 - 59,
-                    crop: cardsprite[card.suit + card.value],
-                    width: canvascardwidth,
-                    height: canvascardheight,
-                    image: imageObj,
-                    draggable: true,
-                    offset: [canvascardwidth/2, canvascardheight/2],
-                });
-                image.type    = "card";
-                image.tapped  = false;
-                image.value   = card.value;
-                image.suit    = card.suit;
-                this.initialized = true;
-                image.tap     = function() {
-                    if(!image.tapped) {
-                        image.rotateDeg(90);
-                    } else {
-                        image.rotateDeg(-90);
+            var imageObj = new Image();
+            imageObj.onload = function() {
+                if (!this.initialized) {
+                    var image = new Kinetic.Image({
+                        x: stage.getWidth() / 2 - 53,
+                        y: stage.getHeight() / 2 - 59,
+                        crop: cardsprite[card.suit + card.value],
+                        width: canvascardwidth,
+                        height: canvascardheight,
+                        image: imageObj,
+                        draggable: true,
+                        offset: [canvascardwidth/2, canvascardheight/2],
+                    });
+                    image.type    = "card";
+                    image.tapped  = false;
+                    image.value   = card.value;
+                    image.suit    = card.suit;
+                    this.initialized = true;
+                    image.tap     = function() {
+                        if(!image.tapped) {
+                            image.rotateDeg(90);
+                        } else {
+                            image.rotateDeg(-90);
+                        }
+                        image.tapped = !(image.tapped);
                     }
-                    image.tapped = !(image.tapped);
+                    layer.add(image);
+                    stage.add(layer);
+                    image.on("mouseover", function() {
+                        document.body.style.cursor = "pointer";
+                    });
+                    image.on("mouseout", function() {
+                        document.body.style.cursor = "default";
+                    });
+                    image.on('dragstart', function() {
+                        image.moveToTop();
+                    });
+                    image.on('dblclick', function() {
+                        image.tap();
+                        layer.draw();
+                    });
+                    image.on('dragend', function() {
+                        // If this is near the right side, snap the card to it.
+                        if(isNearSnapArea(image, snapArea)) {
+                            image.attrs.x = snapArea.x;
+                            image.attrs.y = snapArea.y;
+                            layer.draw();
+                        }
+                        isNearCardSnapArea(image, layer, function(snapTo) {
+                            image.attrs.x = snapTo.x;
+                            image.attrs.y = snapTo.y;
+                            layer.draw();
+                        });
+                    });
                 }
-                layer.add(image);
-                stage.add(layer);
-                image.on("mouseover", function() {
-                    document.body.style.cursor = "pointer";
-                });
-                image.on("mouseout", function() {
-                    document.body.style.cursor = "default";
-                });
-                image.on('dragstart', function() {
-                    image.moveToTop();
-                });
-                image.on('dblclick', function() {
-                    image.tap();
-                    layer.draw();
-                });
-                image.on('dragend', function() {
-                    // If this is near the right side, snap the card to it.
-                    if(isNearSnapArea(image, snapArea)) {
-                        image.attrs.x = snapArea.x;
-                        image.attrs.y = snapArea.y;
-                        layer.draw();
-                    }
-                    isNearCardSnapArea(image, layer, function(snapTo) { 
-                        image.attrs.x = snapTo.x;
-                        image.attrs.y = snapTo.y;
-                        layer.draw();
-                    }); 
-                });
             }
-        }
-        imageObj.src = spriteurl;
-        var notificationText = "<p>Dealt one card. It was a " + card.name + " with a value of " + card.value + ", suit of " + card.suit + ", and color of " + card.color + ".</p> ";
-        $(notificationText).hide().prependTo('#actionarea').slideToggle("slow");
-        $('#deckCount1').html(newDeck.numberInDeck);
+            imageObj.src = spriteurl;
+            var notificationText = "<p>Dealt one card. It was a " + card.name + " with a value of " + card.value + ", suit of " + card.suit + ", and color of " + card.color + ".</p> ";
+            $(notificationText).hide().prependTo('#actionarea').slideToggle("slow");
+            $('#deckCount1').html(newDeck.numberInDeck);
         });
     });
 
@@ -151,7 +151,7 @@ $(document).ready(function() {
         var roundNum = parseInt($('span#roundCount').html())+1;
         $('span#roundCount').html(roundNum);
     });
-        
+
     $('#roundDown').click(function() {
         var roundNum = parseInt($('span#roundCount').html())-1;
         $('span#roundCount').html(roundNum);
@@ -192,8 +192,8 @@ $(document).ready(function() {
             });
             var selectCoverage = { 'x': [tableselect[0].getX(), tableselect[0].getX()+tableselect[0].getWidth()], 'y': [tableselect[0].getY(), tableselect[0].getY()+tableselect[0].getHeight()] }
             // MADNESS https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/sort
-            function compareNumbers(a, b)  {  
-              return a - b;  
+            function compareNumbers(a, b)  {
+              return a - b;
             }
             selectCoverage.x.sort(compareNumbers);
             selectCoverage.y.sort(compareNumbers);
