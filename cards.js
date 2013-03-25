@@ -1,13 +1,5 @@
-<html>
-
-  <head>
-    <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
-    <script src="http://www.html5canvastutorials.com/libraries/kinetic-v3.10.1.js"></script>-->
-    <script src="jquery.min.js" type="text/javascript"></script>
-    <script src="kinetic-v3.10.1.js"></script>
-    <script>
       /**
-       * Prevents click-based selectiion of text in all matched elements.
+       * Prevents click-based selection of text in all matched elements.
        */
       jQuery.fn.disableTextSelection = function()
       {
@@ -27,13 +19,12 @@
             }
             });
       };
-    </script>
-    <script>
+
       var maxValue = 13;
       var minValue = 1;
       var snapArea = { 'x': 400, 'y': 300 }
       var colors   = ['red', 'black'];
-      var suites   = ['club', 'spade', 'heart', 'diamond'];
+      var suits   = ['club', 'spade', 'heart', 'diamond'];
       var names    = { '11': 'Jack', '12': 'Queen', '13': 'King', '1': 'Ace' }
       var cardheight = 244;
       var cardwidth  = 167;
@@ -100,26 +91,24 @@
       }
       initSprites(cardheight, cardwidth);
 
-      var card = function(value, color, suite) {
+      var card = function(value, color, suit) {
         this.value = value || null;
         this.color = color || null;
-        this.suite = suite || null;
-        if (this.value === null || this.color === null || this.suite === null) {
-          //Will return 0 thru 3
-          this.suite = suites[Math.floor(Math.random() * (suites.length))];
-          //Color depends on the suite.
-          if (this.suite === 'club' || this.suite === 'spade') {
+        this.suit = suit || null;
+        if (this.value === null || this.color === null || this.suit === null) {
+          this.suit = suits[Math.floor(Math.random() * (suits.length))];
+          //Color depends on the suit.
+          if (this.suit === 'club' || this.suit === 'spade') {
             this.color = colors[1];
           } else {
             this.color = colors[0];
           }
-          //Will return 1-13
           this.value = Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
         }
         if (this.value > 10 || this.value === 1) {
-          this.name = names[this.value] + ' of ' + this.suite + 's';
+          this.name = names[this.value] + ' of ' + this.suit + 's';
         } else {
-          this.name = this.value + ' of ' + this.suite + 's';
+          this.name = this.value + ' of ' + this.suit + 's';
         }
       }
 
@@ -131,19 +120,17 @@
 
         //Initializes the deck.
         for (var x=0; x<this.maxInDeck; x++) {
-          // Create a new card.
           var newCard = new card();
-          // If this suite is not in the deck
-          if (!(newCard.suite in this.inDeck)) {
+          if (!(newCard.suit in this.inDeck)) {
             // Add the card to the deck. Also put it in the inDeck index so we can better determine
             // what cards are in the deck.
-            this.inDeck[newCard.suite] = [newCard.value];
+            this.inDeck[newCard.suit] = [newCard.value];
             this.cards.push(newCard);
             this.numberInDeck ++;
           } else {
-            // If this suite was in the deck already, if the value isn't in, add it.
-            if (this.inDeck[newCard.suite].indexOf(newCard.value) === -1) {
-              this.inDeck[newCard.suite][newCard.value] = newCard.value;
+            // If this suit was in the deck already, if the value isn't in, add it.
+            if (this.inDeck[newCard.suit].indexOf(newCard.value) === -1) {
+              this.inDeck[newCard.suit][newCard.value] = newCard.value;
               this.cards.push(newCard);
               this.numberInDeck ++;
             } else {
@@ -155,7 +142,7 @@
         this.deal = function(callback) {
           var card = this.cards.pop();
           this.numberInDeck--;
-          delete this.inDeck[card.suite][card.value];
+          delete this.inDeck[card.suit][card.value];
           callback(card);
         }
 
@@ -225,7 +212,7 @@
                 var image = new Kinetic.Image({
                   x: stage.getWidth() / 2 - 53,
                   y: stage.getHeight() / 2 - 59,
-                  crop: cardsprite[card.suite + card.value],
+                  crop: cardsprite[card.suit + card.value],
                   width: canvascardwidth,
                   height: canvascardheight,
                   image: imageObj,
@@ -235,7 +222,7 @@
                 image.type    = "card";
                 image.tapped  = false;
                 image.value   = card.value;
-                image.suite   = card.suite;
+                image.suit   = card.suit;
                 this.initialized = true;
                 image.tap     = function() {
                   if(!image.tapped) {
@@ -276,7 +263,7 @@
               }
             }
             imageObj.src = spriteurl;
-            var notificationText = "<p>Dealt one card. It was a " + card.name + " with a value of " + card.value + ", suite of " + card.suite + ", and color of " + card.color + ".</p> ";
+            var notificationText = "<p>Dealt one card. It was a " + card.name + " with a value of " + card.value + ", suit of " + card.suit + ", and color of " + card.color + ".</p> ";
             $(notificationText).hide().prependTo('#actionarea').slideToggle("slow");
             $('#deckCount1').html(newDeck.numberInDeck);
           });
@@ -289,7 +276,7 @@
           for (var x = 0; x < layer.children.length; x++) {
             if(layer.children[x].type === "card") {
               //layer.children[x].setImage(imageObj);
-              layer.children[x].setCrop(cardsprite[layer.children[x].suite + layer.children[x].value]);
+              layer.children[x].setCrop(cardsprite[layer.children[x].suit + layer.children[x].value]);
             }
           }
           layer.draw();
@@ -397,27 +384,3 @@
           });
         });
       });
-    </script>
-    <style type="text/css">
-      body {
-        margin: 0px;
-        padding: 0px;
-      }
-      canvas {
-        border: 1px solid #9C9898;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Some deck tests</h1>
-    <div id="container"></div>
-    <p>This is round <span id="roundCount">0</span>. <input type="button" value="Up" id="roundUp" /> <input type="button" value="Down" id="roundDown" /></p>
-    <p>Roll a die of <input type="text" name="dieSides" value="6" id="dieSides"/> sides. <input type="button" value="Roll!" id="rollDie" /> Rolled a <span id="dieValue">?</span>.
-    <p>Deck has <span id="deckCount1">number of</span> cards in it.</p>
-    <p><input id="dealbutton" type="button" value="Deal 1 Card"/></p>
-    <p><input id="spriteurl" type="text" value="card_sprite.png"/><input id="spritebutton" type="button" value="Get new Sprites"/></p>
-    <p>Cut card from sprite. Height: <input id="cardonspriteheight" type="text" value="244"/> Width: <input id="cardonspritewidth" type="text" value="167"/> <input id="cardspriteheightwidth" type="button" value="Change cut height width"/></p>
-    <p>Card on canvas dimensions. Height: <input id="cardheight" type="text" value="100"/> Width: <input id="cardwidth" type="text" value="75"/> <input id="cardheightwidth" type="button" value="Change card height width"/></p>
-    <div id="actionarea"></div>
-  </body>
-</html>
