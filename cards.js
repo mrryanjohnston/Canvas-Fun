@@ -1,386 +1,147 @@
-      /**
-       * Prevents click-based selection of text in all matched elements.
-       */
-      jQuery.fn.disableTextSelection = function()
-      {
-        return this.each(function()
-            {
-            if (typeof this.onselectstart != "undefined") // IE
-            {
-            this.onselectstart = function() { return false; };
-            }
-            else if (typeof this.style.MozUserSelect != "undefined") // Firefox
-            {
-            this.style.MozUserSelect = "none";
-            }
-            else // All others
-            {
-            this.onmousedown = function() { return false; };
-            }
-            });
-      };
+/**
+* Card Shit
+*/
 
-      var maxValue = 13;
-      var minValue = 1;
-      var snapArea = { 'x': 400, 'y': 300 }
-      var colors   = ['red', 'black'];
-      var suits   = ['club', 'spade', 'heart', 'diamond'];
-      var names    = { '11': 'Jack', '12': 'Queen', '13': 'King', '1': 'Ace' }
-      var cardheight = 244;
-      var cardwidth  = 167;
-      var canvascardheight = 100;
-      var canvascardwidth  = 75;
-      var cardsnap   = 30;
-      var spriteurl  = 'card_sprite.png';
-      var cardsprite = {}
-      var initSprites = function(cardheight, cardwidth) {
-        cardsprite = {
-          'club1': { 'x': 0, 'y': 0, 'width': cardwidth, 'height': cardheight },
-          'club2': { 'x': cardwidth, 'y': 0, 'width': cardwidth, 'height': cardheight },
-          'club3': { 'x': 2*cardwidth, 'y': 0, 'width': cardwidth, 'height': cardheight },
-          'club4': { 'x': 3*cardwidth, 'y': 0, 'width': cardwidth, 'height': cardheight },
-          'club5': { 'x': 4*cardwidth, 'y': 0, 'width': cardwidth, 'height': cardheight },
-          'club6': { 'x': 5*cardwidth, 'y': 0, 'width': cardwidth, 'height': cardheight },
-          'club7': { 'x': 6*cardwidth, 'y': 0, 'width': cardwidth, 'height': cardheight },
-          'club8': { 'x': 7*cardwidth, 'y': 0, 'width': cardwidth, 'height': cardheight },
-          'club9': { 'x': 8*cardwidth, 'y': 0, 'width': cardwidth, 'height': cardheight },
-          'club10': { 'x': 9*cardwidth, 'y': 0, 'width': cardwidth, 'height': cardheight },
-          'club11': { 'x': 10*cardwidth, 'y': 0, 'width': cardwidth, 'height': cardheight },
-          'club12': { 'x': 11*cardwidth, 'y': 0, 'width': cardwidth, 'height': cardheight },
-          'club13': { 'x': 12*cardwidth, 'y': 0, 'width': cardwidth, 'height': cardheight },
-          'diamond1': { 'x': 0, 'y': cardheight, 'width': cardwidth, 'height': cardheight },
-          'diamond2': { 'x': cardwidth, 'y': cardheight, 'width': cardwidth, 'height': cardheight },
-          'diamond3': { 'x': 2*cardwidth, 'y': cardheight, 'width': cardwidth, 'height': cardheight },
-          'diamond4': { 'x': 3*cardwidth, 'y': cardheight, 'width': cardwidth, 'height': cardheight },
-          'diamond5': { 'x': 4*cardwidth, 'y': cardheight, 'width': cardwidth, 'height': cardheight },
-          'diamond6': { 'x': 5*cardwidth, 'y': cardheight, 'width': cardwidth, 'height': cardheight },
-          'diamond7': { 'x': 6*cardwidth, 'y': cardheight, 'width': cardwidth, 'height': cardheight },
-          'diamond8': { 'x': 7*cardwidth, 'y': cardheight, 'width': cardwidth, 'height': cardheight },
-          'diamond9': { 'x': 8*cardwidth, 'y': cardheight, 'width': cardwidth, 'height': cardheight },
-          'diamond10': { 'x': 9*cardwidth, 'y': cardheight, 'width': cardwidth, 'height': cardheight },
-          'diamond11': { 'x': 10*cardwidth, 'y': cardheight, 'width': cardwidth, 'height': cardheight },
-          'diamond12': { 'x': 11*cardwidth, 'y': cardheight, 'width': cardwidth, 'height': cardheight },
-          'diamond13': { 'x': 12*cardwidth, 'y': cardheight, 'width': cardwidth, 'height': cardheight },
-          'heart1': { 'x': 0, 'y': 2*cardheight, 'width': cardwidth, 'height': cardheight },
-          'heart2': { 'x': cardwidth, 'y': 2*cardheight, 'width': cardwidth, 'height': cardheight },
-          'heart3': { 'x': 2*cardwidth, 'y': 2*cardheight, 'width': cardwidth, 'height': cardheight },
-          'heart4': { 'x': 3*cardwidth, 'y': 2*cardheight, 'width': cardwidth, 'height': cardheight },
-          'heart5': { 'x': 4*cardwidth, 'y': 2*cardheight, 'width': cardwidth, 'height': cardheight },
-          'heart6': { 'x': 5*cardwidth, 'y': 2*cardheight, 'width': cardwidth, 'height': cardheight },
-          'heart7': { 'x': 6*cardwidth, 'y': 2*cardheight, 'width': cardwidth, 'height': cardheight },
-          'heart8': { 'x': 7*cardwidth, 'y': 2*cardheight, 'width': cardwidth, 'height': cardheight },
-          'heart9': { 'x': 8*cardwidth, 'y': 2*cardheight, 'width': cardwidth, 'height': cardheight },
-          'heart10': { 'x': 9*cardwidth, 'y': 2*cardheight, 'width': cardwidth, 'height': cardheight },
-          'heart11': { 'x': 10*cardwidth, 'y': 2*cardheight, 'width': cardwidth, 'height': cardheight },
-          'heart12': { 'x': 11*cardwidth, 'y': 2*cardheight, 'width': cardwidth, 'height': cardheight },
-          'heart13': { 'x': 12*cardwidth, 'y': 2*cardheight, 'width': cardwidth, 'height': cardheight },
-          'spade1': { 'x': 0, 'y': 3*cardheight, 'width': cardwidth, 'height': cardheight },
-          'spade2': { 'x': cardwidth, 'y': 3*cardheight, 'width': cardwidth, 'height': cardheight },
-          'spade3': { 'x': 2*cardwidth, 'y': 3*cardheight, 'width': cardwidth, 'height': cardheight },
-          'spade4': { 'x': 3*cardwidth, 'y': 3*cardheight, 'width': cardwidth, 'height': cardheight },
-          'spade5': { 'x': 4*cardwidth, 'y': 3*cardheight, 'width': cardwidth, 'height': cardheight },
-          'spade6': { 'x': 5*cardwidth, 'y': 3*cardheight, 'width': cardwidth, 'height': cardheight },
-          'spade7': { 'x': 6*cardwidth, 'y': 3*cardheight, 'width': cardwidth, 'height': cardheight },
-          'spade8': { 'x': 7*cardwidth, 'y': 3*cardheight, 'width': cardwidth, 'height': cardheight },
-          'spade9': { 'x': 8*cardwidth, 'y': 3*cardheight, 'width': cardwidth, 'height': cardheight },
-          'spade10': { 'x': 9*cardwidth, 'y': 3*cardheight, 'width': cardwidth, 'height': cardheight },
-          'spade11': { 'x': 10*cardwidth, 'y': 3*cardheight, 'width': cardwidth, 'height': cardheight },
-          'spade12': { 'x': 11*cardwidth, 'y': 3*cardheight, 'width': cardwidth, 'height': cardheight },
-          'spade13': { 'x': 12*cardwidth, 'y': 3*cardheight, 'width': cardwidth, 'height': cardheight }
-        };
-      }
-      initSprites(cardheight, cardwidth);
+var maxValue = 13; 
+var minValue = 1;
+var snapArea = { 'x': 400, 'y': 300 }
+var colors   = ['red', 'black'];
+var suits   = ['club', 'spade', 'heart', 'diamond'];
+var names    = { '11': 'Jack', '12': 'Queen', '13': 'King', '1': 'Ace' }
+var cardheight = 244;
+var cardwidth  = 167;
+var canvascardheight = 100;
+var canvascardwidth  = 75; 
+var cardsnap   = 30; 
+var spriteurl  = 'card_sprite.png';
+var cardsprite = {}
+var initSprites = function(cardheight, cardwidth) {
+cardsprite = { 
+  'club1': { 'x': 0, 'y': 0, 'width': cardwidth, 'height': cardheight },
+  'club2': { 'x': cardwidth, 'y': 0, 'width': cardwidth, 'height': cardheight },
+  'club3': { 'x': 2*cardwidth, 'y': 0, 'width': cardwidth, 'height': cardheight },
+  'club4': { 'x': 3*cardwidth, 'y': 0, 'width': cardwidth, 'height': cardheight },
+  'club5': { 'x': 4*cardwidth, 'y': 0, 'width': cardwidth, 'height': cardheight },
+  'club6': { 'x': 5*cardwidth, 'y': 0, 'width': cardwidth, 'height': cardheight },
+  'club7': { 'x': 6*cardwidth, 'y': 0, 'width': cardwidth, 'height': cardheight },
+  'club8': { 'x': 7*cardwidth, 'y': 0, 'width': cardwidth, 'height': cardheight },
+  'club9': { 'x': 8*cardwidth, 'y': 0, 'width': cardwidth, 'height': cardheight },
+  'club10': { 'x': 9*cardwidth, 'y': 0, 'width': cardwidth, 'height': cardheight },
+  'club11': { 'x': 10*cardwidth, 'y': 0, 'width': cardwidth, 'height': cardheight },
+  'club12': { 'x': 11*cardwidth, 'y': 0, 'width': cardwidth, 'height': cardheight },
+  'club13': { 'x': 12*cardwidth, 'y': 0, 'width': cardwidth, 'height': cardheight },
+  'diamond1': { 'x': 0, 'y': cardheight, 'width': cardwidth, 'height': cardheight },
+  'diamond2': { 'x': cardwidth, 'y': cardheight, 'width': cardwidth, 'height': cardheight },
+  'diamond3': { 'x': 2*cardwidth, 'y': cardheight, 'width': cardwidth, 'height': cardheight },
+  'diamond4': { 'x': 3*cardwidth, 'y': cardheight, 'width': cardwidth, 'height': cardheight },
+  'diamond5': { 'x': 4*cardwidth, 'y': cardheight, 'width': cardwidth, 'height': cardheight },
+  'diamond6': { 'x': 5*cardwidth, 'y': cardheight, 'width': cardwidth, 'height': cardheight },
+  'diamond7': { 'x': 6*cardwidth, 'y': cardheight, 'width': cardwidth, 'height': cardheight },
+  'diamond8': { 'x': 7*cardwidth, 'y': cardheight, 'width': cardwidth, 'height': cardheight },
+  'diamond9': { 'x': 8*cardwidth, 'y': cardheight, 'width': cardwidth, 'height': cardheight },
+  'diamond10': { 'x': 9*cardwidth, 'y': cardheight, 'width': cardwidth, 'height': cardheight },
+  'diamond11': { 'x': 10*cardwidth, 'y': cardheight, 'width': cardwidth, 'height': cardheight },
+  'diamond12': { 'x': 11*cardwidth, 'y': cardheight, 'width': cardwidth, 'height': cardheight },
+  'diamond13': { 'x': 12*cardwidth, 'y': cardheight, 'width': cardwidth, 'height': cardheight },
+  'heart1': { 'x': 0, 'y': 2*cardheight, 'width': cardwidth, 'height': cardheight },
+  'heart2': { 'x': cardwidth, 'y': 2*cardheight, 'width': cardwidth, 'height': cardheight },
+  'heart3': { 'x': 2*cardwidth, 'y': 2*cardheight, 'width': cardwidth, 'height': cardheight },
+  'heart4': { 'x': 3*cardwidth, 'y': 2*cardheight, 'width': cardwidth, 'height': cardheight },
+  'heart5': { 'x': 4*cardwidth, 'y': 2*cardheight, 'width': cardwidth, 'height': cardheight },
+  'heart6': { 'x': 5*cardwidth, 'y': 2*cardheight, 'width': cardwidth, 'height': cardheight },
+  'heart7': { 'x': 6*cardwidth, 'y': 2*cardheight, 'width': cardwidth, 'height': cardheight },
+  'heart8': { 'x': 7*cardwidth, 'y': 2*cardheight, 'width': cardwidth, 'height': cardheight },
+  'heart9': { 'x': 8*cardwidth, 'y': 2*cardheight, 'width': cardwidth, 'height': cardheight },
+  'heart10': { 'x': 9*cardwidth, 'y': 2*cardheight, 'width': cardwidth, 'height': cardheight },
+  'heart11': { 'x': 10*cardwidth, 'y': 2*cardheight, 'width': cardwidth, 'height': cardheight },
+  'heart12': { 'x': 11*cardwidth, 'y': 2*cardheight, 'width': cardwidth, 'height': cardheight },
+  'heart13': { 'x': 12*cardwidth, 'y': 2*cardheight, 'width': cardwidth, 'height': cardheight },
+  'spade1': { 'x': 0, 'y': 3*cardheight, 'width': cardwidth, 'height': cardheight },
+  'spade2': { 'x': cardwidth, 'y': 3*cardheight, 'width': cardwidth, 'height': cardheight },
+  'spade3': { 'x': 2*cardwidth, 'y': 3*cardheight, 'width': cardwidth, 'height': cardheight },
+  'spade4': { 'x': 3*cardwidth, 'y': 3*cardheight, 'width': cardwidth, 'height': cardheight },
+  'spade5': { 'x': 4*cardwidth, 'y': 3*cardheight, 'width': cardwidth, 'height': cardheight },
+  'spade6': { 'x': 5*cardwidth, 'y': 3*cardheight, 'width': cardwidth, 'height': cardheight },
+  'spade7': { 'x': 6*cardwidth, 'y': 3*cardheight, 'width': cardwidth, 'height': cardheight },
+  'spade8': { 'x': 7*cardwidth, 'y': 3*cardheight, 'width': cardwidth, 'height': cardheight },
+  'spade9': { 'x': 8*cardwidth, 'y': 3*cardheight, 'width': cardwidth, 'height': cardheight },
+  'spade10': { 'x': 9*cardwidth, 'y': 3*cardheight, 'width': cardwidth, 'height': cardheight },
+  'spade11': { 'x': 10*cardwidth, 'y': 3*cardheight, 'width': cardwidth, 'height': cardheight },
+  'spade12': { 'x': 11*cardwidth, 'y': 3*cardheight, 'width': cardwidth, 'height': cardheight },
+  'spade13': { 'x': 12*cardwidth, 'y': 3*cardheight, 'width': cardwidth, 'height': cardheight }};  
+}
+initSprites(cardheight, cardwidth);
 
-      var card = function(value, color, suit) {
-        this.value = value || null;
-        this.color = color || null;
-        this.suit = suit || null;
-        if (this.value === null || this.color === null || this.suit === null) {
-          this.suit = suits[Math.floor(Math.random() * (suits.length))];
-          //Color depends on the suit.
-          if (this.suit === 'club' || this.suit === 'spade') {
+var card = function(value, color, suit) {
+    this.value = value || null;
+    this.color = color || null;
+    this.suit = suit || null;
+    if (this.value === null || this.color === null || this.suit === null) {
+        this.suit = suits[Math.floor(Math.random() * (suits.length))];
+        //Color depends on the suit.
+        if (this.suit === 'club' || this.suit === 'spade') {
             this.color = colors[1];
-          } else {
-            this.color = colors[0];
-          }
-          this.value = Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
-        }
-        if (this.value > 10 || this.value === 1) {
-          this.name = names[this.value] + ' of ' + this.suit + 's';
         } else {
-          this.name = this.value + ' of ' + this.suit + 's';
+            this.color = colors[0];
         }
-      }
+        this.value = Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
+    }
+    if (this.value > 10 || this.value === 1) {
+        this.name = names[this.value] + ' of ' + this.suit + 's';
+    } else {
+        this.name = this.value + ' of ' + this.suit + 's';
+    }
+}
 
-      var deck = function() {
-        this.numberInDeck = 0;
-        this.maxInDeck    = 52;
-        this.cards  = [];
-        this.inDeck = {};
-
-        //Initializes the deck.
-        for (var x=0; x<this.maxInDeck; x++) {
-          var newCard = new card();
-          if (!(newCard.suit in this.inDeck)) {
+var deck = function() {
+    this.numberInDeck = 0;
+    this.maxInDeck    = 52;
+    this.cards  = [];
+    this.inDeck = {};
+    for (var x=0; x<this.maxInDeck; x++) {
+        var newCard = new card();
+        if (!(newCard.suit in this.inDeck)) {
             // Add the card to the deck. Also put it in the inDeck index so we can better determine
             // what cards are in the deck.
             this.inDeck[newCard.suit] = [newCard.value];
             this.cards.push(newCard);
             this.numberInDeck ++;
-          } else {
+        } else {
             // If this suit was in the deck already, if the value isn't in, add it.
             if (this.inDeck[newCard.suit].indexOf(newCard.value) === -1) {
-              this.inDeck[newCard.suit][newCard.value] = newCard.value;
-              this.cards.push(newCard);
-              this.numberInDeck ++;
+                this.inDeck[newCard.suit][newCard.value] = newCard.value;
+                this.cards.push(newCard);
+                this.numberInDeck ++;
             } else {
-              x--;
+                x--;
             }
-          }
         }
+    }
+    this.deal = function(callback) {
+        var card = this.cards.pop();
+        this.numberInDeck--;
+        delete this.inDeck[card.suit][card.value];
+        callback(card);
+    }
+}
 
-        this.deal = function(callback) {
-          var card = this.cards.pop();
-          this.numberInDeck--;
-          delete this.inDeck[card.suit][card.value];
-          callback(card);
-        }
-
-      }
-
-      var isNearSnapArea = function(image, snapArea) {
-        if (image.attrs.x > snapArea.x - 30 && image.attrs.x < snapArea.x + 30 && image.attrs.y > snapArea.y - 30 && image.attrs.y < snapArea.y + 30) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-      var isNearCardSnapArea = function(image, layer, callback) {
-        // What the new card will snap to if it is near it
-        var snapTo = { 'x': image.attrs.x, 'y': image.attrs.y };
-        for (var x = 0; x < layer.children.length; x++) {
-          var card   = { 'x': layer.children[x].attrs.x, 'y': layer.children[x].attrs.y, '_id': layer.children[x]._id, 'type': layer.children[x].type }
-          if(isNearSnapArea(image, card) && card.type === 'card' && image._id !== card._id) {
+var isNearSnapArea = function(image, snapArea) {
+    if (image.attrs.x > snapArea.x - 30 && image.attrs.x < snapArea.x + 30 && image.attrs.y > snapArea.y - 30 && image.attrs.y < snapArea.y + 30) {
+        return true;
+    } else {
+        return false;
+    }
+}
+var isNearCardSnapArea = function(image, layer, callback) {
+    // What the new card will snap to if it is near it
+    var snapTo = { 'x': image.attrs.x, 'y': image.attrs.y };
+    for (var x = 0; x < layer.children.length; x++) {
+        var card   = { 'x': layer.children[x].attrs.x, 'y': layer.children[x].attrs.y, '_id': layer.children[x]._id, 'type': layer.children[x].type }
+        if(isNearSnapArea(image, card) && card.type === 'card' && image._id !== card._id) {
             snapTo.x = card.x;
             snapTo.y = card.y + 30;
             callback(snapTo);
             return;
-          }
         }
-      }
-
-
-      $(document).ready(function() {
-        $('#container').disableTextSelection();
-        var newDeck = new deck();
-        var stage = new Kinetic.Stage({
-          container: "container",
-          width: 600,
-          height: 400
-        });
-        var layer = new Kinetic.Layer();
-        var table = new Kinetic.Layer();
-        var tablerect = new Kinetic.Rect({
-          x: 0,
-          y: 0,
-          width: 600,
-          height: 400,
-          fill: "grey",
-          stroke: "black",
-          strokeWidth: 4
-        });
-        table.add(tablerect);
-        var rect = new Kinetic.Rect({
-          x: snapArea.x,
-          y: snapArea.y,
-          width: 75,
-          height: 100,
-          fill: "#00D2FF",
-          stroke: "black",
-          strokeWidth: 4
-        });
-        layer.add(rect);
-        stage.add(table);
-        stage.add(layer);
-
-        $('#deckCount1').html(newDeck.numberInDeck);
-        $('#dealbutton').click(function() {
-          newDeck.deal(function(card) {
-            var imageObj = new Image();
-            imageObj.onload = function() {
-              if (!this.initialized) {
-                var image = new Kinetic.Image({
-                  x: stage.getWidth() / 2 - 53,
-                  y: stage.getHeight() / 2 - 59,
-                  crop: cardsprite[card.suit + card.value],
-                  width: canvascardwidth,
-                  height: canvascardheight,
-                  image: imageObj,
-                  draggable: true,
-                  offset: [canvascardwidth/2, canvascardheight/2],
-                });
-                image.type    = "card";
-                image.tapped  = false;
-                image.value   = card.value;
-                image.suit   = card.suit;
-                this.initialized = true;
-                image.tap     = function() {
-                  if(!image.tapped) {
-                    image.rotateDeg(90);
-                    } else {
-                    image.rotateDeg(-90);
-                  }
-                  image.tapped = !(image.tapped);
-                }
-                layer.add(image);
-                stage.add(layer);
-                image.on("mouseover", function() {
-                  document.body.style.cursor = "pointer";
-                });
-                image.on("mouseout", function() {
-                  document.body.style.cursor = "default";
-                });
-                image.on('dragstart', function() {
-                  image.moveToTop();
-                });
-                image.on('dblclick', function() {
-                  image.tap();
-                  layer.draw();
-                });
-                image.on('dragend', function() {
-                  // If this is near the right side, snap the card to it.
-                  if(isNearSnapArea(image, snapArea)) {
-                    image.attrs.x = snapArea.x;
-                    image.attrs.y = snapArea.y;
-                    layer.draw();
-                  }
-                  isNearCardSnapArea(image, layer, function(snapTo) { 
-                    image.attrs.x = snapTo.x;
-                    image.attrs.y = snapTo.y;
-                    layer.draw();
-                  }); 
-                });
-              }
-            }
-            imageObj.src = spriteurl;
-            var notificationText = "<p>Dealt one card. It was a " + card.name + " with a value of " + card.value + ", suit of " + card.suit + ", and color of " + card.color + ".</p> ";
-            $(notificationText).hide().prependTo('#actionarea').slideToggle("slow");
-            $('#deckCount1').html(newDeck.numberInDeck);
-          });
-        });
-        $('#cardspriteheightwidth').click(function() {
-          cardheight = $('#cardonspriteheight').val();
-          cardwidth  = $('#cardonspritewidth').val();
-          initSprites(cardheight, cardwidth);
-          // Retroactively apply this new setting to old cards
-          for (var x = 0; x < layer.children.length; x++) {
-            if(layer.children[x].type === "card") {
-              //layer.children[x].setImage(imageObj);
-              layer.children[x].setCrop(cardsprite[layer.children[x].suit + layer.children[x].value]);
-            }
-          }
-          layer.draw();
-        });
-        $('#cardheightwidth').click(function() {
-          canvascardheight = $('#cardheight').val();
-          canvascardwidth  = $('#cardwidth').val();
-          // Retroactively apply this new sprite to old cards
-          for (var x = 0; x < layer.children.length; x++) {
-            if(layer.children[x].type === "card") {
-              layer.children[x].setHeight(canvascardheight);
-              layer.children[x].setWidth(canvascardwidth);
-              layer.children[x].setOffset(canvascardwidth/2, canvascardheight/2);
-            }
-          }
-          layer.draw();
-        });
-        $('#roundUp').click(function() {
-          var roundNum = parseInt($('span#roundCount').html())+1;
-          $('span#roundCount').html(roundNum);
-        });
-        $('#roundDown').click(function() {
-          var roundNum = parseInt($('span#roundCount').html())-1;
-          $('span#roundCount').html(roundNum);
-        });
-        $('#rollDie').click(function() {
-          var dieRoll = Math.floor(Math.random() * (parseInt($('input#dieSides').val())))+1;
-          $('span#dieValue').html(dieRoll);
-          // Report the die rolling results in the actionarea
-          //var notificationText = "<p>Rolled a die of X sides with a result of <b>Y<b></p> ";
-          //$(notificationText).hide().prependTo('#actionarea').slideToggle("slow");
-        });
-        $('#spritebutton').click(function() {
-          spriteurl = $('#spriteurl').val();
-          // Retroactively apply this new sprite to old cards
-          // We'll have to just remove the card and then create a new one in its place.
-          var numberOfChildren = layer.children.length;
-          for (var x = 0; x < numberOfChildren; x++) {
-            if(layer.children[x].type === "card") {
-              //var oldCard = layer.children[x];
-              var imageObj = layer.children[x].getImage();
-              imageObj.src = spriteurl
-              // layer.children[x].attrs.image.src = spriteurl
-              layer.children[x].setImage(imageObj);
-            }
-          }
-          layer.draw();
-        });
-        table.on('mouseup', function(mouse) {
-          this.off('mousemove.tableselect');
-          var tableselect = this.get('.tableselect');
-          if(tableselect.length > 0) {
-            var group = new Kinetic.Group({
-              name: 'selectgroup',
-              draggable: true
-            });
-            var selectCoverage = { 'x': [tableselect[0].getX(), tableselect[0].getX()+tableselect[0].getWidth()], 'y': [tableselect[0].getY(), tableselect[0].getY()+tableselect[0].getHeight()] }
-            // MADNESS https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/sort
-            function compareNumbers(a, b)  {  
-              return a - b;  
-            }
-            selectCoverage.x.sort(compareNumbers);
-            selectCoverage.y.sort(compareNumbers);
-            console.log(selectCoverage);
-            for (var x = 0; x < layer.children.length; x++) {
-              if(layer.children[x].type === "card") {
-                var cardX = layer.children[x].getX();
-                var cardY = layer.children[x].getY();
-                if(cardX > selectCoverage.x[0] && cardX < selectCoverage.x[1] && cardY > selectCoverage.y[0] && cardY < selectCoverage.y[1]) {
-                  layer.children[x].setStroke('red');
-                  layer.children[x].setStrokeWidth(5);
-                  group.add(layer.children[x]);
-                }
-              }
-            }
-            if(group.children.length > 0) {
-              layer.add(group);
-              layer.draw();
-            }
-            this.remove(tableselect[0]);
-            this.draw();
-          }
-        });
-        table.on('mousedown', function(mouse) {
-          this.off('mousemove.tableselect');
-          var tableselect = this.get('.tableselect');
-          if(tableselect.length > 0) {
-            this.remove(tableselect[0]);
-          }
-          var tableselect = new Kinetic.Rect({
-            name: 'tableselect',
-            x: mouse.layerX,
-            y: mouse.layerY,
-            width: 0,
-            height: 0,
-            fill: "grey",
-            stroke: "black",
-            strokeWidth: 4
-          });
-          this.add(tableselect);
-          this.on('mousemove.tableselect', function(move) {
-            var position = tableselect.getPosition();
-            tableselect.setSize(move.layerX-position.x, move.layerY-position.y);
-            this.draw();
-          });
-        });
-      });
+    }
+}
