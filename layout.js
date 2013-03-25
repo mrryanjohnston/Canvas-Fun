@@ -2,22 +2,15 @@
 * Prevents click-based selection of text in all matched elements.
 */
 
-jQuery.fn.disableTextSelection = function()
-{
-return this.each(function()
-    {   
-    if (typeof this.onselectstart != "undefined") // IE
-    {   
-    this.onselectstart = function() { return false; };
-    }   
-    else if (typeof this.style.MozUserSelect != "undefined") // Firefox
-    {   
-    this.style.MozUserSelect = "none";
-    }   
-    else // All others
-    {   
-    this.onmousedown = function() { return false; };
-    }   
+jQuery.fn.disableTextSelection = function(){
+    return this.each(function(){   
+        if (typeof this.onselectstart != "undefined"){ //IE
+            this.onselectstart = function() { return false; };
+        }else if (typeof this.style.MozUserSelect != "undefined"){ //Firefox
+            this.style.MozUserSelect = "none";
+        }else{ // All others
+            this.onmousedown = function() { return false; };
+        }   
     }); 
 };
 
