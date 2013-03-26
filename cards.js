@@ -131,7 +131,7 @@ var deck = function() {
 }
 
 var isNearSnapArea = function(image, snapArea) {
-    if (image.attrs.x > snapArea.x - 30 && image.attrs.x < snapArea.x + 30 && image.attrs.y > snapArea.y - 30 && image.attrs.y < snapArea.y + 30) {
+    if (image.attrs.x > snapArea.x - cardsnap && image.attrs.x < snapArea.x + cardsnap && image.attrs.y > snapArea.y - cardsnap && image.attrs.y < snapArea.y + cardsnap) {
         return true;
     } else {
         return false;
