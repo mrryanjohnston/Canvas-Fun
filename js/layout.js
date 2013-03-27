@@ -251,9 +251,9 @@ $(document).ready(function() {
             y: mouse.layerY,
             width: 0,
             height: 0,
-            fill: "grey",
+            fill: "yellow",
             stroke: "black",
-            strokeWidth: 4
+            strokeWidth: 1
         });
         this.add(table_select);
         this.on('mousemove.table_select', function(move) {
