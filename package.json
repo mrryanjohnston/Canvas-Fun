@@ -1,0 +1,16 @@
+{
+    "author": "Ryan Johnston <mrryanjohnston@gmail.com>",
+    "name": "cards",
+    "version": "0.2.0",
+    "contributors": "L. Gabriel Miller <gmiller2007@gmail.com> (http://www.cheddarcode.com/g)".
+    "repository": {
+        "url": "https://github.com/mrryanjohnston/Canvas-Fun"
+    },
+    "dependencies": {
+        "socket.io": "0.9.x",
+        "connect": "2.7.x",
+    },
+    "engines": {
+        "node": "0.10.x"
+    }
+}
