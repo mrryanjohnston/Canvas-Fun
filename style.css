@@ -5,3 +5,7 @@ body {
 canvas {
     border: 1px solid #9C9898;
 } 
+#settings {
+    display:none;
+    height: 0;
+}
