@@ -5,12 +5,11 @@ var connect = require('connect')
 var app = connect()
     .use(connect.favicon())
     .use(connect.static('static'))
+//    .use(connect.logger(function(req, res){ console.log('dev') }))
+//    .use(connect.logger({ immediate: true, format: 'dev' }))
+//  How does I log?
     .use(connect.directory('static'))
     .use(connect.cookieParser())
-    .use(connect.session({ secret: session_key }))
-//    .use(connect.logger('logger'))
-//    .use(function(req, res){
-//        res.end('Hello Card Players!\n');
-//    });
+    .use(connect.session({ secret: session_key }));
 http.createServer(app).listen(port);
 console.log("Server is listening on port "+port+".");
