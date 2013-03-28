@@ -9,6 +9,9 @@ Javascript, [jQuery](http://jquery.com/),
     git clone https://github.com/mrryanjohnston/Canvas-Fun
     cd Canvas-Fun
     npm install
+
+## Run the app
+
     node server.js
 
 ## Misc.
