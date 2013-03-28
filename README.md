@@ -4,6 +4,13 @@ Why not?
 ## What
 Javascript, [jQuery](http://jquery.com/), 
 [Kinetic.js](http://www.kineticjs.com/).
+## Install
+
+    git clone https://github.com/mrryanjohnston/Canvas-Fun
+    cd Canvas-Fun
+    npm install
+    node server.js
+
 ## Misc.
 Card sprite provided by [Brandon Ardiente](http://ardisoft.net/svg-z-cards/)
 under the LGPL. Followed the tutorials by 
