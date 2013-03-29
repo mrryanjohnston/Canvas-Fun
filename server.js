@@ -4,10 +4,8 @@ var connect = require('connect')
   , http = require('http');
 var app = connect()
     .use(connect.favicon())
+    .use(connect.logger('dev'))
     .use(connect.static('static'))
-//    .use(connect.logger(function(req, res){ console.log('dev') }))
-//    .use(connect.logger({ immediate: true, format: 'dev' }))
-//  How does I log?
     .use(connect.directory('static'))
     .use(connect.cookieParser())
     .use(connect.session({ secret: session_key }));
