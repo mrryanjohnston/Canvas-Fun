@@ -11,7 +11,8 @@ i.favicon_path = i.static_directory+"/img/favicon-16.ico";
 /***
 * Web server settings
 */
-i.port = 8061;
+i.port_http = 8000;
+i.port_sockets = 3000;
 i.session_key = "p2(236cVb3S#a'25gffDxrR|tb{{bddR31aAz35917";
 
 /***

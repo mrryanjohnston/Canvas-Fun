@@ -8,10 +8,11 @@ var settings = require('./settings.js');
 */
 var http = require('http')
   , express = require('express')
+  , server = http.createServer(app)
   , cons = require('consolidate')
   , swig = require('swig')
   , mongo = require('mongodb')
-  , io = require('socket.io');
+  , io = require('socket.io').listen(server);
 //  , assert = require('mongodb').assert
 
 /**
@@ -45,8 +46,11 @@ var routes = require(settings.project_directory + '/routes.js')(app);
 /**
 * Start the app
 */
-app.listen(settings.port);
-console.log("Server is listening on port "+settings.port+".");
+app.listen(settings.port_http);
+//app.createServer();
+server.listen(settings.port_sockets);
+console.log("Server is listening on port "+settings.port_http+".");
+console.log("Sockets are listening on port "+settings.port_sockets+".");
 
 /**
 * Load websockets
