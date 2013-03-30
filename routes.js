@@ -18,4 +18,10 @@ app.get('/signup', function(req, res) {
     }); 
 });
 
+app.get('*', function(req, res, next) {
+    res.render('404', {
+        page: ': Error'
+    });
+});
+
 }

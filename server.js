@@ -1,41 +1,46 @@
-var port = 8040;
+/**
+* Basic settings
+*/
+var project_directory = __dirname;
+var views_directory = project_directory+"/views/";
+var static_directory = project_directory+"/static";
+var favicon_path = static_directory+"/img/favicon-16.ico";
+var port = 8060;
 var session_key = "p2(236cVb3S#a'25gffDxrR|tb{{bddR31aAz35917";
-var static_dir = "static";
-var favicon_path = static_dir+"/img/favicon-16.ico";
 
+/**
+* Initialize node modules
+*/
 var http = require('http')
   , express = require('express')
   , cons = require('consolidate')
   , swig = require('swig');
+
+/**
+* Initialize express and give it middleware
+*/
 var app = express()
     .use(express.favicon(favicon_path))
     .use(express.logger('dev'))
-    .use(express.static(static_dir))
-    //.use(express.directory(static_dir))
+    .use(express.static(static_directory))
     .use(express.cookieParser())
     .use(express.session({ secret: session_key }));
+
+/**
+* View settings
+*/
 app.engine('html', cons.swig);
 app.set('view engine', 'html');
-app.set('views', __dirname + '/views');
-swig.init({ root: __dirname + '/views' });
+app.set('views', views_directory ); // Tells swig where to look for templates
+swig.init({ root: views_directory }); // Tells swig where to look for extended templates
 
-app.get('/', function(req, res) {
-    res.render('index', {
-        page: ''
-    }); 
-});
+/**
+* Load the routes
+*/
+var routes = require(project_directory + '/routes.js')(app);
 
-app.get('/login', function(req, res) {
-    res.render('login', {
-        page: ': Login'
-    });
-});
-
-app.get('/signup', function(req, res) {
-    res.render('signup', {
-        page: ': Sign Up'
-    });
-});
-
+/**
+* Start the app
+*/
 app.listen(port);
 console.log("Server is listening on port "+port+".");
