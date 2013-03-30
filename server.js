@@ -4,7 +4,6 @@ var static_dir = "static";
 var connect = require('connect')
   , http = require('http');
 var app = connect()
-//    .use(connect.favicon())
     .use(connect.favicon('static/img/favicon-16.ico'))
     .use(connect.logger('dev'))
     .use(connect.static(static_dir))
