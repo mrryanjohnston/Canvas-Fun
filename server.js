@@ -9,12 +9,14 @@ var settings = require('./settings.js');
 var http = require('http')
   , express = require('express')
   , cons = require('consolidate')
-  , swig = require('swig');
+  , swig = require('swig')
+  , mongo = require('mongodb')
+  , io = require('socket.io');
+//  , assert = require('mongodb').assert
 
 /**
 * Initialize express and give it middleware
 */
-
 var app = express()
     .use(express.favicon(settings.favicon_path))
     .use(express.logger('dev'))
@@ -38,10 +40,15 @@ var routes = require(settings.project_directory + '/routes.js')(app);
 /**
 * Load the database
 */
-var database = require(settings.project_directory + '/database.js')(app);
+//var database = require(settings.project_directory + '/database.js')(settings);
 
 /**
 * Start the app
 */
 app.listen(settings.port);
 console.log("Server is listening on port "+settings.port+".");
+
+/**
+* Load websockets
+*/
+var io_config = require(settings.project_directory + '/sockets.js')(settings);
