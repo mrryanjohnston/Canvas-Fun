@@ -36,6 +36,11 @@ swig.init({ root: settings.views_directory }); // Tells swig where to look for e
 var routes = require(settings.project_directory + '/routes.js')(app);
 
 /**
+* Load the database
+*/
+var database = require(settings.project_directory + '/database.js')(app);
+
+/**
 * Start the app
 */
 app.listen(settings.port);
