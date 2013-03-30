@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div id="container"></div>
+
+<p>This is round <span id="round_count">0</span>. <input type="button" value="Up" id="round_up" /> <input type="button" value="Down" id="round_down" /></p>
+<p>Roll a die of <input type="text" value="6" id="die_sides"/> sides. <input type="button" value="Roll!" id="roll_die" /></p>
+<p>Deck has <span id="deck_count_1">number of</span> cards in it.</p>
+<p><input id="deal_button" type="button" value="Deal 1 Card"/></p>
+
+<div id="settings" style="visibility:hidden">
+    <p><input id="sprite_url" type="text" value="card_sprite.png"/><input id="sprite_button" type="button" value="Get new Sprites"/></p>
+    <p>Cut card from sprite. Height: <input id="card_on_sprite_height" type="text" value="244"/> Width: <input id="card_on_sprite_width" type="text" value="167"/> <input id="card_sprite_height_width" type="button" value="Change cut height width"/></p>
+    <p>Card on canvas dimensions. Height: <input id="card_height" type="text" value="100"/> Width: <input id="card_width" type="text" value="75"/> <input id="card_height_width" type="button" value="Change card height width"/></p>
+</div>
+
+<div id="action_area"></div>
+
+{% endblock %}
