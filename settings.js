@@ -1,13 +1,15 @@
 module.exports = function() {
-    var settings = 
-    {
+    var settings = {
+
     /***
     * Directories and filepaths
     */
     project_directory:  __dirname,
     views_directory: __dirname+"/views",
     static_directory: __dirname+"/static",
-    favicon_path: __dirname+"static/img/favicon-16.ico",
+    favicon_path: __dirname+"/static/img/favicon-16.ico",
+    routes_path: __dirname+"/routes.js",
+    database_path: __dirname+"/database.js",
 
     /***
     * Web server settings
@@ -22,6 +24,5 @@ module.exports = function() {
     database_host: "127.0.0.1",
     database_port: 27017 
     }
-
     return settings;
 }

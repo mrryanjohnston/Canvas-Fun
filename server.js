@@ -1,5 +1,5 @@
 /**
-* Basic settings
+* Load settings
 */
 var settings = require('./settings.js');
 
@@ -35,20 +35,23 @@ swig.init({ root: settings().views_directory });//Tells swig where to look for e
 /**
 * Load the routes
 */
-var routes = require(settings().project_directory + '/routes.js')(app);
+var routes = require(settings().routes_path)(app);
 
 /**
 * Load the database
 */
-var database = require(settings().project_directory+'/database.js')(settings);
+var database = require(settings().database_path)(settings);
 
 /**
 * Start the app
 */
 app.listen(settings().port_http);
 server.listen(settings().port_sockets);
-console.log("Server is listening on port "+settings().port_http+".");
-console.log("Sockets are listening on port "+settings().port_sockets+".");
+
+var color = require('./colors.js');
+
+console.log(color.green+"Server "+color.reset+"is listening on port "+color.green_b+settings().port_http+color.reset+".");
+console.log(color.red+"Sockets "+color.reset+"are listening on port "+color.red_b+settings().port_sockets+color.reset+".");
 
 /**
 * Load websockets

@@ -1,4 +1,8 @@
 module.exports = function(settings){
+
+    /***
+    * MongoDB objects
+    */
     var mongo = {
     Db : require('mongodb').Db,
     MongoClient : require('mongodb').MongoClient,
