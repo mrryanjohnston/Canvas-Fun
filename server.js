@@ -50,8 +50,9 @@ server.listen(settings().port_sockets);
 
 var color = require('./colors.js');
 
-console.log(color.green+"Server "+color.reset+"is listening on port "+color.green_b+settings().port_http+color.reset+".");
-console.log(color.red+"Sockets "+color.reset+"are listening on port "+color.red_b+settings().port_sockets+color.reset+".");
+console.log(color.green+"HTTP"+color.white+" server is listening on port "+color.green_b+settings().port_http+color.white+".");
+console.log(color.red+"Sockets"+color.white+" server is listening on port "+color.red_b+settings().port_sockets+color.white+".");
+console.log(color.blue+"========================================="+color.white);
 
 /**
 * Load websockets
