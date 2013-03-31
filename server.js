@@ -3,6 +3,10 @@
 */
 var settings = require('./settings.js');
 
+console.log("****");
+console.log(settings.project_directory);
+console.log(settings.views_directory);
+console.log("****");
 /**
 * Initialize node modules
 */
@@ -41,7 +45,7 @@ var routes = require(settings.project_directory + '/routes.js')(app);
 /**
 * Load the database
 */
-//var database = require(settings.project_directory + '/database.js')(settings);
+var database = require(settings.project_directory + '/database.js')(settings.database);
 
 /**
 * Start the app
