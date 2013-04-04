@@ -1,4 +1,4 @@
-module.exports = function(settings){
+module.exports = function database_function(settings){
 
     /***
     * MongoDB objects

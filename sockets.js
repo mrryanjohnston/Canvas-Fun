@@ -1,3 +1,3 @@
-module.exports = function(app) {
+module.exports = function sockets_function(app) {
     return "BLARGH!";
 }

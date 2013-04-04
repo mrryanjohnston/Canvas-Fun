@@ -1,4 +1,4 @@
-module.exports = function(app) {
+module.exports = function routes_function(app) {
 
 app.get('/', function(req, res) {
     res.render('index', {
