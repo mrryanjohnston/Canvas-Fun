@@ -26,7 +26,8 @@ module.exports = function settings_function() {
         database_port: 27017,
         mongodb_options: {
             user: "cards_user_xd43hgEdjRLfks33gfddsw3",
-            pass: "cards_password_j3#5gfd343wxzZs"
+            pass: "cards_password_j3#5gfd343wxzZs",
+            server: { poolSize: 5 }
         }
     }
     return settings;
