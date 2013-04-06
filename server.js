@@ -25,6 +25,13 @@ var app = express()
     .use(express.session({ secret: settings().session_key }));
 
 /**
+* Load the database and models
+*/
+var mongoose = require('mongoose');
+mongoose.connect(settings().database_host+":"+settings().database_port, settings().mongodb_options);
+var models = require(settings().models_path)(settings);
+
+/**
 * View settings
 */
 app.engine('html', cons.swig);
@@ -38,17 +45,12 @@ swig.init({ root: settings().views_directory });//Tells swig where to look for e
 var routes = require(settings().routes_path)(app);
 
 /**
-* Load the database
-*/
-var database = require(settings().database_path)(settings);
-
-/**
 * Start the app
 */
 app.listen(settings().port_http);
 server.listen(settings().port_sockets);
 
-var color = require('./colors.js');
+var color = require(settings().colors_path);
 
 console.log(color.fggreen+"HTTP"+color.reset+" server is listening on port "+color.fggreen+color.bold+settings().port_http+color.reset+".");
 console.log(color.fgred+"Sockets"+color.reset+" server is listening on port "+color.fgred+color.bold+settings().port_sockets+color.reset+".");
