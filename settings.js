@@ -28,6 +28,11 @@ module.exports = function settings_function() {
             user: "cards_user_xd43hgEdjRLfks33gfddsw3",
             pass: "cards_password_j3#5gfd343wxzZs",
             server: { poolSize: 5 }
+        },
+        test_account: {
+            user: "test_user",
+            pass: "7c098cddbe690582a71b955b8acf7ddac90d4c25", // "test_password", createHmac("sha1", salt).update(raw_pass).digest("hex")
+            salt: "salty"
         }
     }
     return settings;

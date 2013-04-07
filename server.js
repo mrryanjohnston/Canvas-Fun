@@ -72,3 +72,7 @@ console.log(color.fgwhite+color.bold+"========================================="
 console.log(color.fggreen+"HTTP"+color.reset+" server is listening on port "+color.fggreen+color.bold+settings().port_http+color.reset+".");
 console.log(color.fgred+"Sockets"+color.reset+" server is listening on port "+color.fgred+color.bold+settings().port_sockets+color.reset+".");
 console.log(color.fgwhite+color.bold+"========================================="+color.reset);
+
+var crypto = require('crypto');
+//console.log(crypto.createHash("sha1").update("saltypassword").digest("hex"));
+console.log(crypto.createHmac("sha1","salty").update("password").digest("hex"));
