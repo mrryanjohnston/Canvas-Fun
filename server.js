@@ -75,4 +75,4 @@ console.log(color.fgwhite+color.bold+"========================================="
 
 var crypto = require('crypto');
 //console.log(crypto.createHash("sha1").update("saltypassword").digest("hex"));
-console.log(crypto.createHmac("sha1","salty").update("password").digest("hex"));
+//console.log(crypto.createHmac("sha1","salty").update("password").digest("hex"));

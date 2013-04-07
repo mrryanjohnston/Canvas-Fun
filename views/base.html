@@ -5,22 +5,22 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
     <script src="http://www.html5canvastutorials.com/libraries/kinetic-v3.10.1.js"></script>
     -->
-    <script src="js/lib/jquery/jquery.min.js" type="text/javascript"></script>
-    <script src="js/lib/kinetic/kinetic-v4.4.0.js"></script>
-    <script src="js/lib/socket.io/socket.io.min.js"></script>
-    <script src="js/cards.js"></script>
-    <script src="js/layout.js"></script>
-    <script type="text/javascript">
-//    var socket = io.connect('http://localhost');
-//    socket.on('news', function (data) {
-//        console.log(data);
-//        socket.emit('my other event', { my: 'data' });
-//    });
+    <script type="text/javascript" src="js/lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="js/lib/kinetic/kinetic-v4.4.0.js"></script>
+    <script type="text/javascript" src="js/lib/socket.io/socket.io.min.js"></script>
+    <script type="text/javascript" src="js/cards.js"></script>
+    <script type="text/javascript" src="js/layout.js"></script>
+    <script type="text/javascript" src="js/sockets.js">
     </script>
     <link href="style.css" type="text/css"></style>
     <title>Cards{{ page }}</title>
 </head>
+
+    {% include 'navigation_bar.html' %}
+
+<!--
 <h1>Black Decker: The Cardening</h1>
+-->
 
 <body>
     {% block content %} 
