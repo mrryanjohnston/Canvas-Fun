@@ -1,8 +1,4 @@
 module.exports = function settings_function() {
-    context = {
-        version : 1,
-        year : new Date().getFullYear()
-    };
     var settings = {
 
         /***
@@ -37,6 +33,12 @@ module.exports = function settings_function() {
             user: "test_user",
             pass: "7c098cddbe690582a71b955b8acf7ddac90d4c25", // "test_password", createHmac("sha1", salt).update(raw_pass).digest("hex")
             salt: "salty"
+        },
+        context : {
+            version : 1,
+            year : new Date().getFullYear(),
+            errors : [],
+            messages : []
         }
     }
     return settings;

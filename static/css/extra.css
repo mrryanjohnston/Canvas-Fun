@@ -23,6 +23,10 @@ p#footer_p {
     padding-top:4px;
 }
 
+ul {
+    list-style-type: none;
+}
+
 /* Sticky footer */
 /* http://twitter.github.io/bootstrap/examples/sticky-footer-navbar.html */
 /* The html and body elements cannot have any padding or margin. */

@@ -19,6 +19,27 @@
         <div class="row-fluid">
             <div class="span12">
                 <div class="container">
+
+                    {% if context.errors|length > 0 or context.messages|length > 0 %}
+                        <br>
+                        <div id="flashed_messages">
+                        {% if context.errors|length > 0  %}
+                            <ul class="flashed_messages">
+                            {% for error in context.errors %}
+                                <li><p class="text-error"> {{error}} </p></li>
+                            {% endfor %}
+                            </ul>
+                        {% endif %}
+                        {% if context.messages|length > 0 %}
+                            <ul class="flashed_messages">
+                            {% for message in context.messages %}
+                                <li><p class="text-success"> {{message}} </p></li>
+                            {% endfor %}
+                            </ul>
+                        {% endif %}
+                        </div>
+                    {% endif %}
+
                     {% block content %}
                     {% endblock %}
                     <div id="footer_spacer"></div>

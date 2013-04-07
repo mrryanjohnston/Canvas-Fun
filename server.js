@@ -35,7 +35,7 @@ var app = express()
     .use(express.methodOverride())
     .use(express.session({ secret: settings.session_key }));
 
-app.response.messaage = function(msg){
+app.response.message = function(msg){
     var sess = this.req.session;
     sess.messages = sess.messages || [];
     sess.messages.push(msg);
@@ -67,12 +67,12 @@ console.log(color.fgblue+"Models loaded."+color.reset);
 app.engine('html', cons.swig);
 app.set('view engine', 'html');
 app.set('views', settings.views_directory );//Tells swig where to look for templates
-swig.init({ root: settings.views_directory });//Tells swig where to look for extended templates
+swig.init({ root: settings.views_directory, autoescape: true });//Tells swig where to look for extended templates
 
 /**
 * Load the routes
 */
-var routes = require(settings.routes_path)(app);
+var routes = require(settings.routes_path)(app, settings);
 console.log(color.fgyellow+"Routes loaded."+color.reset);
 
 /**
@@ -87,7 +87,7 @@ app.listen(settings.port_http);
 server.listen(settings.port_sockets);
 
 console.log(color.fgwhite+color.bold+"========================================="+color.reset);
-console.log(color.fgwhite+"Running release number "+color.bold+context.version+color.reset);
+console.log(color.fgwhite+"Running release number "+color.bold+settings.context.version+color.reset);
 console.log(color.fggreen+"HTTP"+color.reset+" server is listening on port "+color.fggreen+color.bold+settings.port_http+color.reset+".");
 console.log(color.fgred+"Sockets"+color.reset+" server is listening on port "+color.fgred+color.bold+settings.port_sockets+color.reset+".");
 console.log(color.fgwhite+color.bold+"========================================="+color.reset);
