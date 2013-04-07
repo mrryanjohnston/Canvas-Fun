@@ -69,6 +69,7 @@ app.listen(settings().port_http);
 server.listen(settings().port_sockets);
 
 console.log(color.fgwhite+color.bold+"========================================="+color.reset);
+console.log(color.fgwhite+"Running release number "+color.bold+context.version+color.reset);
 console.log(color.fggreen+"HTTP"+color.reset+" server is listening on port "+color.fggreen+color.bold+settings().port_http+color.reset+".");
 console.log(color.fgred+"Sockets"+color.reset+" server is listening on port "+color.fgred+color.bold+settings().port_sockets+color.reset+".");
 console.log(color.fgwhite+color.bold+"========================================="+color.reset);

@@ -1,4 +1,8 @@
 module.exports = function settings_function() {
+    context = {
+        version : 1,
+        year : new Date().getFullYear()
+    };
     var settings = {
 
         /***
