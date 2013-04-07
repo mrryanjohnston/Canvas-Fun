@@ -2,6 +2,13 @@
 
 {% block content %}
 
-<h2>Sign Up</h2>
+<br>
+<form id="signupform" class="form-signin" method="post" action="/signup">
+    <h2 class="form-signin-heading">Sign Up</h2>
+    <input type="text" class="input-block-level" placeholder="Username">
+    <input type="text" class="input-block-level" placeholder="Email Address">
+    <input type="password" class="input-block-level" placeholder="Password">
+    <button class="btn btn-large btn-primary">Go!</button>
+</form>
 
 {% endblock %}

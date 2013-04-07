@@ -1,8 +1,8 @@
-.bgfade {
+body {
     background-color: #f0f0f0;
 }
 
-form#loginform {
+form#loginform, form#signupform {
     max-width: 250px;
     padding: 25px;
     outline: 1px solid #ccc;
