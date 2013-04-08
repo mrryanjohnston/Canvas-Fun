@@ -2,36 +2,40 @@
     <div class="navbar-inner">
         <div class="container">
             <a class="brand" href="/">The Cardening</a>
-                <ul class="nav pull-right">
-                    <li>
-                        <a href="/chat">Play</a>
-                    </li>
-                {% if session.username %}
-                    <li>
-                        <a href="/user">Account</a>
-                    </li>
-                    <li>
-                        <a href="/logout">Logout</a>
-                    </li>
-                {% else %}
-                    <li>
-                        <a href="/login">Login</a>
-                        <!-- Maybe make this a dropdown? -->
-                    </li>
-                {% endif %}
-                    <li>
-                        <a href="/about">About</a>
-                    </li>
-                    <li class="dropdown">
-                        <a id="notification_button" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown" data-target="#">
-                            <i class="icon-comment icon-white"></i> Notifications
-                        </a>
-                        <ul id="notifications_list" class="dropdown-menu" role="menu" aria-labelledby="notification_button">
-                            <li class="notification" role="presentation">You have no notifications.</li>
-                            <!-- add li elements via jquery when notifications come in -->
-                        </ul>
-                    </li>
-                </ul>
+        {% if session.username %}
+            <ul class="nav pull-left">
+                <li>
+                    <a href="/chat">Play</a>
+                </li>
+                <li class="dropdown">
+                    <a id="notification_button" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown" data-target="#">
+                        <i class="icon-comment icon-white"></i> Notifications
+                    </a>
+                    <ul id="notifications_list" class="dropdown-menu" role="menu" aria-labelledby="notification_button">
+                        <li class="notification" role="presentation">You have no notifications.</li>
+                        <!-- add li elements here when notifications are received -->
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li>
+                    <a href="/user">Account</a>
+                </li>
+                <li>
+                    <a href="/logout">Logout</a>
+                </li>
+        {% else %}
+            <ul class="nav pull-right">
+                <li>
+                    <a href="/login">Login</a>
+                    <!-- Maybe make this a dropdown? -->
+                </li>
+                <li>
+                    <a href="/signup">Register</a>
+                    <!-- Maybe make this a dropdown too? -->
+                </li>
+        {% endif %}
+            </ul>
         </div>
     </div>
 </div>
