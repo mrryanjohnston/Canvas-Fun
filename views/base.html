@@ -6,7 +6,7 @@
     -->
     <link rel="stylesheet" href="css/extra.css?v={{context.version}}" type="text/css"></style>
     <link rel="stylesheet" href="css/lib/bootstrap/bootstrap.min.css" type="text/css"></style>
-    <title>Cards{{context.page}}</title>
+    <title>Cards{{context.page_title}}</title>
 </head>
 
 <body>
@@ -20,28 +20,18 @@
             <div class="span12">
                 <div class="container">
 
-                    {% if context.errors|length > 0 or context.messages|length > 0 %}
+                    {% if session.messages|length > 0 %}
                         <br>
-                        <div id="flashed_messages">
-                        {% if context.errors|length > 0  %}
-                            <ul class="flashed_messages">
-                            {% for error in context.errors %}
-                                <li><p class="text-error"> {{error}} </p></li>
+                        <ul class="flashed_messages">
+                            {% for message in session.messages %}
+                                {{message}}
                             {% endfor %}
-                            </ul>
-                        {% endif %}
-                        {% if context.messages|length > 0 %}
-                            <ul class="flashed_messages">
-                            {% for message in context.messages %}
-                                <li><p class="text-success"> {{message}} </p></li>
-                            {% endfor %}
-                            </ul>
-                        {% endif %}
-                        </div>
+                        </ul>
                     {% endif %}
 
                     {% block content %}
                     {% endblock %}
+
                     <div id="footer_spacer"></div>
                 </div>
             </div>

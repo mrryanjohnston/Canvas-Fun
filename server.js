@@ -67,7 +67,7 @@ console.log(color.fgblue+"Models loaded."+color.reset);
 app.engine('html', cons.swig);
 app.set('view engine', 'html');
 app.set('views', settings.views_directory );//Tells swig where to look for templates
-swig.init({ root: settings.views_directory, autoescape: true });//Tells swig where to look for extended templates
+swig.init({ root: settings.views_directory, autoescape: false });//Tells swig where to look for extended templates
 
 /**
 * Load the routes
