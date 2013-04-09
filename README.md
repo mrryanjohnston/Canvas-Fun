@@ -2,8 +2,13 @@
 ## Why
 Why not?
 ## What
-Javascript, [jQuery](http://jquery.com/), 
-[Kinetic.js](http://www.kineticjs.com/).
+Javascript, [node.js](http://www.nodejs.org),
+[socket.io](http://www.socket.io),
+[express](http://www.expressjs.com),
+[MongoDB](http://www.mongodb.org),
+[jQuery](http://jquery.com/), 
+[Kinetic.js](http://www.kineticjs.com/),
+[Twitter Bootstrap](http://twitter.github.io/bootstrap).
 ## Install
 
     git clone https://github.com/mrryanjohnston/Canvas-Fun
@@ -15,9 +20,10 @@ Javascript, [jQuery](http://jquery.com/),
     node server.js
 
 ## Misc.
-Card sprite provided by [Brandon Ardiente](http://ardisoft.net/svg-z-cards/)
-under the LGPL. Followed the tutorials by 
-[Eric Rowell](http://www.html5canvastutorials.com/kineticjs/html5-canvas-events-tutorials-introduction-with-kineticjs/).
+Card sprite provided by [Brandon Ardiente](http://ardisoft.net/svg-z-cards/) under the LGPL.  
+Followed the tutorials by [Eric Rowell](http://www.html5canvastutorials.com/kineticjs/html5-canvas-events-tutorials-introduction-with-kineticjs/).  
+Twitter Bootstrap theme [United](http://bootswatch.com/united).  
+
 ## License
 Copyright (c) 2013, Ryan Johnston, L Gabriel Miller
 All rights reserved.

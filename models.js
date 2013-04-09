@@ -3,7 +3,7 @@ module.exports = function models_function(mongoose) {
     var schema = mongoose.Schema
     ,   objectid = schema.ObjectId;
 
-    var user = new schema({
+    var user_schema = new schema({
            username : String
         ,  password : String
         ,  salt : String
@@ -16,4 +16,5 @@ module.exports = function models_function(mongoose) {
     });
     //}
     //return models;
+    return mongoose.model('User', user_schema);
 }
