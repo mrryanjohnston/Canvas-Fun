@@ -23,6 +23,7 @@ Javascript, [node.js](http://www.nodejs.org),
 Card sprite provided by [Brandon Ardiente](http://ardisoft.net/svg-z-cards/) under the LGPL.  
 Followed the tutorials by [Eric Rowell](http://www.html5canvastutorials.com/kineticjs/html5-canvas-events-tutorials-introduction-with-kineticjs/).  
 Twitter Bootstrap theme [United](http://bootswatch.com/united).  
+[Sticky footer](http://twitter.github.io/bootstrap/examples/sticky-footer.html) by Marty Bean and Ryan Fait.
 
 ## License
 Copyright (c) 2013, Ryan Johnston, L Gabriel Miller
