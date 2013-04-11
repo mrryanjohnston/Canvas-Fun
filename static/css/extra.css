@@ -2,15 +2,19 @@ body {
     background-color: #f0f0f0;
 }
 
+form#loginform, form#signupform, ul#account_list, ul#notifications_list {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    box-shadow: 3px 3px #ccc;
+}
+
 form#loginform, form#signupform {
     max-width: 250px;
     padding: 25px;
     background-color: #fff;
-    box-shadow: 3px 3px #ccc;
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    border-radius: 0;
 }
+
 
 ul#notifications_list, div#login_dropdown {
     width: 250px;
