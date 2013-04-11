@@ -5,12 +5,14 @@ body {
 form#loginform, form#signupform {
     max-width: 250px;
     padding: 25px;
-    outline: 1px solid #ccc;
     background-color: #fff;
     box-shadow: 3px 3px #ccc;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
 }
 
-ul#notifications_list {
+ul#notifications_list, div#login_dropdown {
     width: 250px;
 }
 

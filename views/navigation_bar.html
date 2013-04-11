@@ -13,7 +13,6 @@
                     </a>
                     <ul id="notifications_list" class="dropdown-menu" role="menu" aria-labelledby="notification_button">
                         <li class="notification" role="presentation">You have no notifications.</li>
-                        <!-- add li elements here when notifications are received -->
                     </ul>
                 </li>
             </ul>
@@ -26,13 +25,22 @@
                 </li>
         {% else %}
             <ul class="nav pull-right">
-                <li>
-                    <a href="/login">Login</a>
-                    <!-- Maybe make this a dropdown? -->
+                <li class="dropdown">
+                    <a id="login_button" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown" data-target="#">
+                        <i class="icon-comment icon-white"></i> Login
+                    </a>
+                    <form id="loginform" class="form-signin dropdown-menu" role="menu" method="post" action="/login">
+                        <h2 class="form-signin-heading">Log In</h2>
+                        <input type="text" class="input-block-level" placeholder="Username" name="username">
+                        <input type="password" class="input-block-level" placeholder="Password" name="password">
+                        <label class="checkbox">
+                            <input type="checkbox" value="1" name="remember"> Remember me
+                        </label>
+                        <button class="btn btn-large btn-primary" type="submit">Go!</button>
+                    </form>
                 </li>
                 <li>
                     <a href="/signup">Register</a>
-                    <!-- Maybe make this a dropdown too? -->
                 </li>
         {% endif %}
             </ul>

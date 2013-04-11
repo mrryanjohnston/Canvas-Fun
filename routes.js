@@ -53,18 +53,6 @@ app.get('/game', function(req, res) {
 /***
 * /login - Login
 */
-app.get('/login', function(req, res) {
-    if (!req.session.username){
-        page_context.page_title = ': Login';
-        res.render('login', {
-            session: req.session,
-            context: page_context
-        });
-    }else{
-        res.redirect('*');
-    }
-    debug(req);
-});
 
 app.post('/login', function(req, res) {
     if(!req.session.username){
