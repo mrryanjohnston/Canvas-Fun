@@ -60,15 +60,9 @@ app.post('/login', function(req, res) {
         ,   password = req.body.password;
         if( username === "username" && password === "password" ){
             req.session.username = req.body.username;
-            //req.session.messages.push("<li><p class=\"text-success\">You are signed in.</p></li>"); //This will never be seen.
-            res.redirect('/chat');
+            res.send("OK");
         }else{
-            page_context.page_title = ': Login';
-            req.session.messages.push("<li><p class=\"text-error\">Error: The credentials you provided are not valid.</p></li>");
-            res.render('login', {
-                session: req.session,
-                context: page_context
-            });
+            res.send("Error.");
         }
     }else{
         res.redirect('*');
@@ -84,7 +78,7 @@ app.get('/logout', function(req, res) {
         req.session.destroy();
         page_context.page_title = ': Logout';
         //req.session.messages.push("<li><p class=\"text-success\">You are signed out.</p></li>"); //This will never be seen.
-        res.redirect('/login');
+        res.redirect('/');
     }else{
         res.redirect('*');
     }
