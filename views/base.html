@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--
+    <link rel="stylesheet" href="style.css?v={{context.version}}" type="text/css"></style>
+    -->
+    <link rel="stylesheet" href="css/extra.css?v={{context.version}}" type="text/css"></style>
+    <link rel="stylesheet" href="css/lib/bootstrap/bootstrap.min.css" type="text/css"></style>
+    <title>Cards{{context.page_title}}</title>
+</head>
+
+<body>
+    <div id="content" class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                {% include 'navigation_bar.html' %}
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="container">
+
+                    {% if session.messages|length > 0 %}
+                        <br>
+                        <ul class="flashed_messages">
+                            {% for message in session.messages %}
+                                {{message}}
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+
+                    {% block content %}
+                    {% endblock %}
+
+                    <div id="footer_spacer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer">
+        <div class="container">
+            <p id="footer_p">
+                &copy;{{context.year}} <a target="_blank" href="http://goatse.cx">Ryan Johnston</a> &amp; <a target="_blank" href="http://www.cheddarcode.com/g">L. Gabriel Miller</a>
+            </p>
+        </div>
+    </div>
+
+    <!--
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+    <script src="http://www.html5canvastutorials.com/libraries/kinetic-v3.10.1.js"></script>
+    -->
+    <script type="text/javascript" src="js/lib/jquery/jquery.min.js"></script>
+    <!--
+    <script type="text/javascript" src="js/lib/kinetic/kinetic-v4.4.0.js"></script>
+    <script type="text/javascript" src="js/layout.js?v={{context.version}}"></script>
+    -->
+    <script type="text/javascript" src="js/lib/socket.io/socket.io.min.js"></script>
+    <script type="text/javascript" src="js/cards.js?v={{context.version}}"></script>
+    <script type="text/javascript" src="js/sockets.js?v={{context.version}}"></script>
+    <script type="text/javascript" src="js/lib/bootstrap/bootstrap.js"></script>
+    <script type="text/javascript" src="js/site.js"></script>
+
+</body>
+
+</html>

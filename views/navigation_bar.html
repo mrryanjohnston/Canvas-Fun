@@ -1,0 +1,53 @@
+<div id="navigation_bar" class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="/">The Cardening</a>
+        {% if session.username %}
+            <ul class="nav pull-left">
+                <li>
+                    <a href="/chat">Play</a>
+                </li>
+                <li class="dropdown">
+                    <a id="notification_button" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown" data-target="#">
+                        <i class="icon-comment icon-white"></i> Notifications
+                    </a>
+                    <ul id="notifications_list" class="dropdown-menu" role="menu" aria-labelledby="notification_button">
+                        <li class="notification" role="presentation">You have no notifications.</li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li class="dropdown">
+                    <a id="account_button" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown" data-target="#">
+                        <i class="icon-chevron-down icon-white"></i> User
+                    </a>
+                    <ul id="account_list" class="dropdown-menu" role="menu" aria-labelledby="account_button">
+                        <li role="presentation"><a href="/user"><i class="icon-user"></i> User Dashboard</a></li>
+                        <li role="presentation"><a href="/logout"><i class="icon-remove"></i> Logout</a></li>
+                    </ul>
+                </li>
+        {% else %}
+            <ul class="nav pull-right">
+                <li class="dropdown">
+                    <a id="login_dropdown_button" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown" data-target="#">
+                        <i class="icon-comment icon-white"></i> Login
+                    </a>
+                    <form id="loginform" class="form-signin dropdown-menu" role="menu" method="post">
+                        <h2 class="form-signin-heading">Log In</h2>
+                        <div id="login_error"></div>
+                        <input id="username" type="text" class="input-block-level" placeholder="Username" name="username">
+                        <input id="password" type="password" class="input-block-level" placeholder="Password" name="password">
+                        <label class="checkbox">
+                            <input type="checkbox" value="1" name="remember"> Remember me
+                        </label>
+                        <button id="login_button" class="btn btn-large btn-primary" type="submit">Go!</button>
+                    </form>
+                </li>
+                <li>
+                    <a href="/signup">Register</a>
+                </li>
+        {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>

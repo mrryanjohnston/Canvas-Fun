@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<br>
+<form id="signupform" class="form-signin" method="post" action="/signup">
+    <h2 class="form-signin-heading">Sign Up</h2>
+    <input type="text" class="input-block-level" placeholder="Username" name="username">
+    <input type="text" class="input-block-level" placeholder="Email Address" name="email">
+    <input type="password" class="input-block-level" placeholder="Password" name="password">
+    <button class="btn btn-large btn-primary">Go!</button>
+</form>
+
+{% endblock %}

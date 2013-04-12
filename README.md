@@ -1,16 +1,32 @@
-# Cards Canvas Testing
+# Card Gamer
 ## Why
-This is simply an opportunity for me to experiment with HTML5's canvas element.
+Why not?
 ## What
-Javascript, [jQuery](http://jquery.com/), 
-[Kinetic.js](http://www.kineticjs.com/).
+Javascript, [node.js](http://www.nodejs.org),
+[socket.io](http://www.socket.io),
+[express](http://www.expressjs.com),
+[MongoDB](http://www.mongodb.org),
+[jQuery](http://jquery.com/), 
+[Kinetic.js](http://www.kineticjs.com/),
+[Twitter Bootstrap](http://twitter.github.io/bootstrap).
+## Install
+
+    git clone https://github.com/mrryanjohnston/Canvas-Fun
+    cd Canvas-Fun
+    npm install
+
+## Run the app
+
+    node server.js
+
 ## Misc.
-Card sprite provided by [Brandon Ardiente](http://ardisoft.net/svg-z-cards/)
-under the LGPL. Followed the tutorials by 
-[Eric Rowell](http://www.html5canvastutorials.com/kineticjs/html5-canvas-events-tutorials-introduction-with-kineticjs/).
+Card sprite provided by [Brandon Ardiente](http://ardisoft.net/svg-z-cards/) under the LGPL.  
+Followed the tutorials by [Eric Rowell](http://www.html5canvastutorials.com/kineticjs/html5-canvas-events-tutorials-introduction-with-kineticjs/).  
+Twitter Bootstrap theme [United](http://bootswatch.com/united).  
+[Sticky footer](http://twitter.github.io/bootstrap/examples/sticky-footer.html) by Marty Bean and Ryan Fait.
+
 ## License
-Do I really need one of these for this?
-Copyright (c) 2012, Ryan Johnston
+Copyright (c) 2013, Ryan Johnston, L Gabriel Miller
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
