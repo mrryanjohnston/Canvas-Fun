@@ -25,6 +25,7 @@ Javascript, [node.js](http://www.nodejs.org),
     curl https://raw.github.com/creationix/nvm/master/install.sh | sh
     restart terminal
     nvm install v0.8.19
+    nvm use v0.8.19
 
 ## Misc.
 Card sprite provided by [Brandon Ardiente](http://ardisoft.net/svg-z-cards/) under the LGPL.  
