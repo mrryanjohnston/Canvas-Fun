@@ -17,7 +17,7 @@ Javascript, [node.js](http://www.nodejs.org),
 
 ## Run the app
 
-    node server.js
+    npm start
 
 ## Misc.
 Card sprite provided by [Brandon Ardiente](http://ardisoft.net/svg-z-cards/) under the LGPL.  
