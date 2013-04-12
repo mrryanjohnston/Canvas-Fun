@@ -19,6 +19,13 @@ Javascript, [node.js](http://www.nodejs.org),
 
     npm start
 
+## Problems
+
+    Your version of node might be incompatible with mongoose or another package. This project uses v0.8.19. You can get that by installing node via nvm:
+    curl https://raw.github.com/creationix/nvm/master/install.sh | sh
+    restart terminal
+    nvm install v0.8.19
+
 ## Misc.
 Card sprite provided by [Brandon Ardiente](http://ardisoft.net/svg-z-cards/) under the LGPL.  
 Followed the tutorials by [Eric Rowell](http://www.html5canvastutorials.com/kineticjs/html5-canvas-events-tutorials-introduction-with-kineticjs/).  
