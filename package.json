@@ -5,6 +5,9 @@
     "contributors": [
         "L. Gabriel Miller <gmiller2007@gmail.com> (http://www.cheddarcode.com/g)"
     ],
+    "scripts": {
+        "start":"node server.js"
+    },
     "repository": {
         "type": "git",
         "url": "https://github.com/mrryanjohnston/Canvas-Fun"

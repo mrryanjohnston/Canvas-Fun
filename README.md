@@ -17,7 +17,15 @@ Javascript, [node.js](http://www.nodejs.org),
 
 ## Run the app
 
-    node server.js
+    npm start
+
+## Problems
+
+    Your version of node might be incompatible with mongoose or another package. This project uses v0.8.19. You can get that by installing node via nvm:
+    curl https://raw.github.com/creationix/nvm/master/install.sh | sh
+    restart terminal
+    nvm install v0.8.19
+    nvm use v0.8.19
 
 ## Misc.
 Card sprite provided by [Brandon Ardiente](http://ardisoft.net/svg-z-cards/) under the LGPL.  
