@@ -20,19 +20,21 @@ Javascript, [node.js](http://www.nodejs.org),
     npm start
 
 ## Problems
+###Node Version
+Your version of nodejs might be incompatible with mongoose or another package. This project uses v0.8.19. You can get that by installing node and setting node versions via nvm:
 
-    Your version of node might be incompatible with mongoose or another package. This project uses v0.8.19. You can get that by installing node via nvm:
     curl https://raw.github.com/creationix/nvm/master/install.sh | sh
     restart terminal
     nvm install v0.8.19
     nvm use v0.8.19
     
-### Mongoose can be a butt. You may need to install it prior to running npm install. e.g.:
+###Mongoose package
+Mongoose can be a butt. You may need to install it prior to running npm install. e.g.:
 
     npm install mongoose
     npm install
     
-###MongoDB:
+###MongoDB setup
 You'll need to have a copy of mongodb running a database. We recommend using [mongoctl](http://github.com/mongolab/mongoctl). More directions on this later.
 
 ## Misc.
