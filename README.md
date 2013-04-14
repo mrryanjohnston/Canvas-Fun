@@ -27,6 +27,11 @@ Your version of nodejs might be incompatible with mongoose or another package. T
     restart terminal
     nvm install v0.8.19
     nvm use v0.8.19
+
+###NPM Version
+Your version of npm might be incompatible with mongoose or another package. We're using v1.2.10.
+
+    npm install npm@1.2.10 -g
     
 ###Mongoose package
 Mongoose can be a butt. You may need to install it prior to running npm install. e.g.:
