@@ -26,6 +26,13 @@ Javascript, [node.js](http://www.nodejs.org),
     restart terminal
     nvm install v0.8.19
     nvm use v0.8.19
+    
+    Mongoose can be a butt. You may need to install it prior to running npm install. e.g.:
+    npm install mongoose
+    npm install
+    
+    MongoDB:
+    You'll need to have a copy of mongodb running a database. We recommend using [mongoctl](http://github.com/mongolab/mongoctl). More directions on this later.
 
 ## Misc.
 Card sprite provided by [Brandon Ardiente](http://ardisoft.net/svg-z-cards/) under the LGPL.  

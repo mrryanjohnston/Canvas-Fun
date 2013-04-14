@@ -2,6 +2,7 @@
     "author": "Ryan Johnston <mrryanjohnston@gmail.com>",
     "name": "cards",
     "version": "0.2.0",
+    "description":"A collaborative, web-based card-game playing application.",
     "contributors": [
         "L. Gabriel Miller <gmiller2007@gmail.com> (http://www.cheddarcode.com/g)"
     ],
@@ -20,6 +21,9 @@
         "mongoose":"3.6.x"
     },
     "engines": {
-        "node": "0.10.x"
-    }
+        "node": "0.8.19",
+        "npm": "1.2.10"
+    },
+    "os" : [ "linux" ],
+    "license": "BSD"
 }
