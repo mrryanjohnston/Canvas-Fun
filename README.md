@@ -34,13 +34,23 @@ Your version of npm might be incompatible with mongoose or another package. We'r
     npm install npm@1.2.10 -g
     
 ###Mongoose package
-Mongoose can be a butt. You may need to install it prior to running npm install. e.g.:
+Mongoose can be a butt. You may need to install it prior to running npm install.
 
     npm install mongoose
     npm install
     
 ###MongoDB setup
-You'll need to have a copy of mongodb running a database. We recommend using [mongoctl](http://github.com/mongolab/mongoctl). More directions on this later.
+You'll need to have a copy of mongodb running a database. We recommend using [mongoctl](http://github.com/mongolab/mongoctl). Install python, build tools, and pip. Pick one of the follow based on your OS/distro:
+
+    sudo apt-get install python build-essential python-pip
+    sudo pacman -S base-devel python python-pip (should test this too)
+    sudo yum install python python-pip build-essential ??? (need to test this)
+
+Then:
+
+    sudo pip install mongoctl
+    create mongoctl config, server config, cluster config
+    mongoctl start [servername]
 
 ## Misc.
 Card sprite provided by [Brandon Ardiente](http://ardisoft.net/svg-z-cards/) under the LGPL.  
