@@ -1,4 +1,4 @@
-module.exports = function models_function(mongoose) {
+module.exports = function models_function(mongoose, settings) {
     var schemas = {
         user_schema: {
                username : String
@@ -13,7 +13,7 @@ module.exports = function models_function(mongoose) {
         }
     };
     var models = {
-        user: mongoose.model('user', schemas.user_schema, 'users')
+        user: mongoose.model('user', schemas.user_schema, settings.mongodb_collections.user_accounts)
     };
     return models;
 }

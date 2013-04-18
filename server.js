@@ -6,6 +6,9 @@ var settings = new Settings();
 console.log("Settings loaded.");
 var color = require(settings.colors_path);
 console.log(color.fgred+"C"+color.fggreen+"o"+color.fgyellow+"l"+color.fgblue+"o"+color.fgmagenta+"r"+color.fgcyan+"s "+color.fgwhite+"l"+color.fgred+"o"+color.fggreen+"a"+color.fgyellow+"d"+color.fgblue+"e"+color.fgmagenta+"d"+color.fgcyan+"."+color.reset);
+//var Logging = require('./logging.js')(color);
+//var logging = new Logging();
+//logging.http();
 
 /**
 * Initialize node modules
@@ -57,7 +60,7 @@ console.log(color.bgmagenta+color.fgblack+"Express started."+color.reset);
 */
 var mongoose = require('mongoose');
 console.log(color.fgwhite+"DB loaded."+color.reset);
-mongoose.connect(settings.database_host+":"+settings.database_port+"/"+settings.database_name, settings.mongodb_options);
+mongoose.connect(settings.database_host+":"+settings.database_port+"/"+settings.mongodb_database_name, settings.mongodb_options);
 console.log(color.bgwhite+color.fgblack+"DB connected."+color.reset);
 var models = require(settings.models_path)(mongoose, crypto);
 console.log(color.fgblue+"Models loaded."+color.reset);
