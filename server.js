@@ -57,7 +57,7 @@ console.log(color.bgmagenta+color.fgblack+"Express started."+color.reset);
 */
 var mongoose = require('mongoose');
 console.log(color.fgwhite+"DB loaded."+color.reset);
-mongoose.connect(settings.database_host+":"+settings.database_port, settings.mongodb_options);
+mongoose.connect(settings.database_host+":"+settings.database_port+"/"+settings.database_name, settings.mongodb_options);
 console.log(color.bgwhite+color.fgblack+"DB connected."+color.reset);
 var models = require(settings.models_path)(mongoose, crypto);
 console.log(color.fgblue+"Models loaded."+color.reset);

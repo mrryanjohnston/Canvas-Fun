@@ -13,7 +13,7 @@ module.exports = function models_function(mongoose) {
         }
     };
     var models = {
-        user: mongoose.model('user', schemas.user_schema)
+        user: mongoose.model('user', schemas.user_schema, 'users')
     };
     return models;
 }

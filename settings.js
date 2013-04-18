@@ -24,6 +24,7 @@ module.exports = function settings_function() {
         */
         database_host: "127.0.0.1",
         database_port: 27017,
+        database_name: "cards",
         mongodb_options: {
             user: "cards_user_xd43hgEdjRLfks33gfddsw3",
             pass: "cards_password_j3#5gfd343wxzZs",
