@@ -1,4 +1,6 @@
-module.exports = function routes_function(app, settings) {
+module.exports = function routes_function(app, settings, models, crypto) {
+
+//console.log(models);
 
 var page_context = settings.context;
 
@@ -60,9 +62,9 @@ app.post('/login', function(req, res) {
         ,   password = req.body.password;
         if( username === "username" && password === "password" ){
             req.session.username = req.body.username;
-            res.send("OK");
+            res.send(200);
         }else{
-            res.send("Error.");
+            res.send(401);
         }
     }else{
         res.redirect('*');
@@ -98,7 +100,33 @@ app.get('/signup', function(req, res) {
     }else{
         res.redirect('*');
     }
-    debug(req);
+    //debug(req);
+});
+
+app.post('/signup', function(req, res) {
+    console.log('post hit signup!');
+    if (req.session.username){
+        res.redirect('*');
+    }else{
+        var salt = String(Date.now());
+        var password = crypto.createHmac("sha1", salt).update(req.body.password).digest("hex");
+        var account = new models.user({
+            username: req.body.username,
+            email: req.body.email,
+            password: password,
+            salt: salt
+        });
+        account.save(function save_account(error) {
+            if (error) {
+                console.log(error);
+                res.send(409);
+                return handleError(error);
+            }else{
+                res.send(200);
+            }
+        });
+    }
+    //debug(req);
 });
 
 /***

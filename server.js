@@ -59,7 +59,7 @@ var mongoose = require('mongoose');
 console.log(color.fgwhite+"DB loaded."+color.reset);
 mongoose.connect(settings.database_host+":"+settings.database_port, settings.mongodb_options);
 console.log(color.bgwhite+color.fgblack+"DB connected."+color.reset);
-var models = require(settings.models_path)(mongoose);
+var models = require(settings.models_path)(mongoose, crypto);
 console.log(color.fgblue+"Models loaded."+color.reset);
 
 /**
@@ -70,10 +70,13 @@ app.set('view engine', 'html');
 app.set('views', settings.views_directory );//Tells swig where to look for templates
 swig.init({ root: settings.views_directory, autoescape: false });//Tells swig where to look for extended templates
 
+var crypto = require('crypto');
+console.log(color.fggreen+"Crypto loaded."+color.reset);
+
 /**
 * Load the routes
 */
-var routes = require(settings.routes_path)(app, settings);
+var routes = require(settings.routes_path)(app, settings, models, crypto);
 console.log(color.fgyellow+"Routes loaded."+color.reset);
 
 /**
@@ -93,6 +96,3 @@ console.log(color.fggreen+"HTTP"+color.reset+" server is listening on port "+col
 console.log(color.fgred+"Sockets"+color.reset+" server is listening on port "+color.fgred+color.bold+settings.port_sockets+color.reset+".");
 console.log(color.fgwhite+color.bold+"========================================="+color.reset);
 
-var crypto = require('crypto');
-//console.log(crypto.createHash("sha1").update("saltypassword").digest("hex"));
-//console.log(crypto.createHmac("sha1","salty").update("password").digest("hex"));
