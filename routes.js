@@ -120,7 +120,6 @@ app.post('/signup', function(req, res) {
             if (error) {
                 console.log(error);
                 res.send(409);
-                return handleError(error);
             }else{
                 res.send(200);
             }

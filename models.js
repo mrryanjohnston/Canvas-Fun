@@ -1,7 +1,7 @@
 module.exports = function models_function(mongoose, settings) {
     var schemas = {
         user_schema: {
-               username : String
+            username : { type: String, unique: true }
             ,  password : String
             ,  salt : String
             ,  email : String

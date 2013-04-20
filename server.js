@@ -62,7 +62,7 @@ var mongoose = require('mongoose');
 console.log(color.fgwhite+"DB loaded."+color.reset);
 mongoose.connect(settings.database_host+":"+settings.database_port+"/"+settings.mongodb_database_name, settings.mongodb_options);
 console.log(color.bgwhite+color.fgblack+"DB connected."+color.reset);
-var models = require(settings.models_path)(mongoose, crypto);
+var models = require(settings.models_path)(mongoose, settings);
 console.log(color.fgblue+"Models loaded."+color.reset);
 
 /**
