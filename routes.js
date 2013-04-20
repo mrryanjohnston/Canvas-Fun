@@ -61,7 +61,7 @@ app.post('/login', function(req, res) {
         var email = req.body.email
         ,   password = req.body.password;
         models.user.findOne({ email: email },
-            function(error, account){
+            function find_account_record_at_login(error, account){
                 if(account.password == crypto.createHmac("sha1", account.salt).update(password).digest("hex")){
                     req.session.email = email;
                     res.send(200);
