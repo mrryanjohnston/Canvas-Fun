@@ -2,7 +2,7 @@
     <div class="navbar-inner">
         <div class="container">
             <a class="brand" href="/">The Cardening</a>
-        {% if session.username %}
+        {% if session.email %}
             <ul class="nav pull-left">
                 <li>
                     <a href="/chat">Play</a>
@@ -35,7 +35,7 @@
                     <form id="loginform" class="form-signin dropdown-menu" role="menu" method="post">
                         <h2 class="form-signin-heading">Log In</h2>
                         <div id="login_error"></div>
-                        <input id="username" type="text" class="input-block-level" placeholder="Username" name="username">
+                        <input id="email" type="text" class="input-block-level" placeholder="Email Address" name="email">
                         <input id="password" type="password" class="input-block-level" placeholder="Password" name="password">
                         <label class="checkbox">
                             <input type="checkbox" value="1" name="remember"> Remember me

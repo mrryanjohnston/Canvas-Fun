@@ -1,10 +1,10 @@
 module.exports = function models_function(mongoose, settings) {
     var schemas = {
         user_schema: {
-            username : { type: String, unique: true }
+            email : { type: String, unique: true }
             ,  password : String
             ,  salt : String
-            ,  email : String
+            ,  username : String
             ,  date_signup : { type: Date, default: Date.now }
             ,  date_login : Date
             ,  record_games_won : { type : Number, default: 0 }

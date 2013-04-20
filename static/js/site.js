@@ -4,7 +4,7 @@ $(document).ready(function on_page_load() {
         $.ajax({
             url: 'login',
             data: {
-                username : $('#username').val(),
+                email : $('#email').val(),
                 password : $('#password').val()
                 },
             type: 'post',

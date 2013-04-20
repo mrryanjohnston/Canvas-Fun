@@ -24,7 +24,7 @@ app.get('/', function(req, res) {
 * /chat - Global chat
 */
 app.get('/chat', function(req, res) {
-    if (req.session.username){
+    if (req.session.email){
         page_context.page_title = ': Chat';
         res.render('chat', {
             session: req.session,
@@ -40,7 +40,7 @@ app.get('/chat', function(req, res) {
 * /game - Playing games
 */
 app.get('/game', function(req, res) {
-    if (req.session.username){
+    if (req.session.email){
         page_context.page_title = ': Game in progress';
         res.render('game', {
             session: req.session,
@@ -57,15 +57,18 @@ app.get('/game', function(req, res) {
 */
 
 app.post('/login', function(req, res) {
-    if(!req.session.username){
-        var username = req.body.username
+    if(!req.session.email){
+        var email = req.body.email
         ,   password = req.body.password;
-        if( username === "username" && password === "password" ){
-            req.session.username = req.body.username;
-            res.send(200);
-        }else{
-            res.send(401);
-        }
+        models.user.findOne({ email: email },
+            function(error, account){
+                if(account.password == crypto.createHmac("sha1", account.salt).update(password).digest("hex")){
+                    req.session.email = email;
+                    res.send(200);
+                }else{
+                    res.send(401);
+                }
+            });
     }else{
         res.redirect('*');
     }
@@ -76,7 +79,7 @@ app.post('/login', function(req, res) {
 * /logout - Logout
 */
 app.get('/logout', function(req, res) {
-    if (req.session.username){
+    if (req.session.email){
         req.session.destroy();
         page_context.page_title = ': Logout';
         //req.session.messages.push("<li><p class=\"text-success\">You are signed out.</p></li>"); //This will never be seen.
@@ -91,7 +94,7 @@ app.get('/logout', function(req, res) {
 * /signup - Registration
 */
 app.get('/signup', function(req, res) {
-    if (!req.session.username){
+    if (!req.session.email){
         page_context.page_title = ': Sign Up';
         res.render('signup', {
             session: req.session,
@@ -104,26 +107,43 @@ app.get('/signup', function(req, res) {
 });
 
 app.post('/signup', function(req, res) {
-    console.log('post hit signup!');
-    if (req.session.username){
+    //console.log('post hit signup!');
+    if (req.session.email){
         res.redirect('*');
     }else{
-        var salt = String(Date.now());
-        var password = crypto.createHmac("sha1", salt).update(req.body.password).digest("hex");
-        var account = new models.user({
-            username: req.body.username,
-            email: req.body.email,
-            password: password,
-            salt: salt
-        });
-        account.save(function save_account(error) {
-            if (error) {
-                console.log(error);
-                res.send(409);
-            }else{
-                res.send(200);
-            }
-        });
+        var failure1 = req.body.email !== req.body.email2;
+        var failure2 = req.body.password !== req.body.password2;
+        var failure3 = req.body.email.length === 0;
+        var failure4 = req.body.password.length === 0;
+        var failure5 = req.body.password.length === 0;
+        if(failure1){
+            res.send(409);
+        }else if(failure2){
+            res.send(409);
+        }else if(failure3){
+            res.send(409);
+        }else if(failure4){
+            res.send(409);
+        }else if(failure5){
+            res.send(409);
+        }else{
+            var salt = settings.mongodb_salt_keyword+String(Date.now());
+            var password = crypto.createHmac("sha1", salt).update(req.body.password).digest("hex");
+            var account = new models.user({
+                username: req.body.username,
+                email: req.body.email,
+                password: password,
+                salt: salt
+            });
+            account.save(function save_account(error) {
+                if (error) {
+                    console.log(error);
+                    res.send(409);
+                }else{
+                    res.send(200);
+                }
+            });
+        }
     }
     //debug(req);
 });
@@ -132,7 +152,7 @@ app.post('/signup', function(req, res) {
 * /user - User Dashboard
 */
 app.get('/user', function(req, res, next) {
-    if (req.session.username){
+    if (req.session.email){
         page_context.page_title = ': User Dashboard';
         res.render('user', {
             session: req.session,
