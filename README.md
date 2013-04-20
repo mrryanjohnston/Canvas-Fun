@@ -20,19 +20,37 @@ Javascript, [node.js](http://www.nodejs.org),
     npm start
 
 ## Problems
+###Node Version
+Your version of nodejs might be incompatible with mongoose or another package. This project uses v0.8.19. You can get that by installing node and setting node versions via nvm:
 
-    Your version of node might be incompatible with mongoose or another package. This project uses v0.8.19. You can get that by installing node via nvm:
     curl https://raw.github.com/creationix/nvm/master/install.sh | sh
     restart terminal
     nvm install v0.8.19
     nvm use v0.8.19
+
+###NPM Version
+Your version of npm might be incompatible with mongoose or another package. We're using v1.2.10.
+
+    npm install npm@1.2.10 -g
     
-    Mongoose can be a butt. You may need to install it prior to running npm install. e.g.:
+###Mongoose package
+Mongoose can be a butt. You may need to install it prior to running npm install.
+
     npm install mongoose
     npm install
     
-    MongoDB:
-    You'll need to have a copy of mongodb running a database. We recommend using [mongoctl](http://github.com/mongolab/mongoctl). More directions on this later.
+###MongoDB setup
+You'll need to have a copy of mongodb running a database. We recommend using [mongoctl](http://github.com/mongolab/mongoctl). Install python, build tools, and pip. Pick one of the follow based on your OS/distro:
+
+    sudo apt-get install python build-essential python-pip
+    sudo pacman -S base-devel python python-pip (should test this too)
+    sudo yum install python python-pip build-essential ??? (need to test this)
+
+Then:
+
+    sudo pip install mongoctl
+    create mongoctl config, server config, cluster config
+    mongoctl start [servername]
 
 ## Misc.
 Card sprite provided by [Brandon Ardiente](http://ardisoft.net/svg-z-cards/) under the LGPL.  

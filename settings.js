@@ -24,15 +24,17 @@ module.exports = function settings_function() {
         */
         database_host: "127.0.0.1",
         database_port: 27017,
+        mongodb_database_name: "cards",
+        mongodb_salt_keyword: "salty"+String(Math.floor(Math.random()*10000000000000000))+"poop",
+        /*
         mongodb_options: {
             user: "cards_user_xd43hgEdjRLfks33gfddsw3",
             pass: "cards_password_j3#5gfd343wxzZs",
             server: { poolSize: 5 }
         },
-        test_account: {
-            user: "test_user",
-            pass: "7c098cddbe690582a71b955b8acf7ddac90d4c25", // "test_password", createHmac("sha1", salt).update(raw_pass).digest("hex")
-            salt: "salty"
+        */
+        mongodb_collections: {
+            user_accounts: "users"
         },
         context : {
             version : 1,
