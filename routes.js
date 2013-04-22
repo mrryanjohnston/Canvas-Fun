@@ -58,17 +58,22 @@ app.get('/game', function(req, res) {
 
 app.post('/login', function(req, res) {
     if(!req.session.email){
-        var email = req.body.email
-        ,   password = req.body.password;
-        models.user.findOne({ email: email },
-            function find_account_record_at_login(error, account){
-                if(account.password == crypto.createHmac("sha1", account.salt).update(password).digest("hex")){
-                    req.session.email = email;
-                    res.send(200);
-                }else{
-                    res.send(401);
+        if(!req.body.password || !req.body.email){
+            res.send(401);
+        }else{
+            var email = req.body.email
+            ,   password = req.body.password;
+            models.user.findOne({ email: email },
+                function find_account_record_at_login(error, account){
+                    if(account.password == crypto.createHmac("sha1", account.salt).update(password).digest("hex")){
+                        req.session.email = email;
+                        res.send(200);
+                    }else{
+                        res.send(401);
+                    }
                 }
-            });
+            );
+        }
     }else{
         res.redirect('*');
     }
