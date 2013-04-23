@@ -2,6 +2,24 @@
 
 {% block content %}
 
-<h2>User Dashboard</h2>
+<form id="signupform" class="form-signin" method="post" action="/user">
+    <h2>User Dashboard</h2>
+    {% if length(session.avatar_url|escape) > 1 %}
+        <img src="{{ session.avatar_url|escape }}">
+    {% else %}
+        <img data-src="holder.js/200x200">
+    {% endif %}
+    <br>
+    <input id="username" type="text" name="username" class="input-block-level" value="{{ session.username|escape }}" placeholder="Username">
+    <input id="avatar_url" type="text" name="avatar" class="input-block-level" value="{{ session.avatar_url|escape }}" placeholder="Avatar URL">
+    <input id="email" type="text" name="email" class="input-block-level" value="{{ session.email|escape }}" placeholder="Email Address">
+    <input id="email_confirmation" name="email2" type="text" class="input-block-level" value="{{ session.email|escape }}" placeholder="Confirm Email Address">
+    <input id="password" name="password" type="text" class="input-block-level" placeholder="Password">
+    <input id="password_confirmation" name="password2" type="text" class="input-block-level" placeholder="Confirm Password">
+</form>
 
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="js/lib/holder/holder.js"></script>
 {% endblock %}
