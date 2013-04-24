@@ -163,6 +163,7 @@ app.post('/signup', function(req, res) {
 */
 app.get('/user', function(req, res, next) {
     if (req.session.email){
+        // check req.query.user_id and load relevant page
         page_context.page_title = ': User Dashboard';
         res.render('user', {
             session: req.session,
@@ -172,6 +173,16 @@ app.get('/user', function(req, res, next) {
         res.redirect('*');
     }
     debug(req);
+});
+
+app.post('/user', function(req, res) {
+    if (!req.session.email){
+        res.redirect('*');
+    }else{
+        // Make sure passwords match
+        // Make sure emails match
+        // Update values for your account
+    }
 });
 
 /***
