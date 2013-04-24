@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!--
-    <link rel="stylesheet" href="style.css?v={{context.version}}" type="text/css"></style>
-    -->
     <link rel="stylesheet" href="css/extra.css?v={{context.version}}" type="text/css"></style>
     <link rel="stylesheet" href="css/lib/bootstrap/bootstrap.min.css" type="text/css"></style>
     <title>Cards{{context.page_title}}</title>
 </head>
 
 <body>
-    <div id="content" class="container-fluid">
+    <div id="page_wrapper" class="container-fluid">
         <div class="row-fluid">
             <div class="span12">
                 {% include 'navigation_bar.html' %}
@@ -18,15 +15,16 @@
         </div>
         <div class="row-fluid">
             <div class="span12">
-                <div class="container">
+                <div id="content" class="container">
 
                     {% if session.messages|length > 0 %}
-                        <br>
-                        <ul class="flashed_messages">
-                            {% for message in session.messages %}
-                                {{message}}
-                            {% endfor %}
-                        </ul>
+                        <div class="alert alert-error">
+                            <ul class="flashed_messages">
+                                {% for message in session.messages %}
+                                    {{message}}
+                                {% endfor %}
+                            </ul>
+                        </div>
                     {% endif %}
 
                     {% block content %}

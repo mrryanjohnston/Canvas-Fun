@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<form id="signupform" class="form-signin" method="post" action="/user">
+<form id="user_form" class="form-horizontal" method="post" action="/user">
     <h2>User Dashboard</h2>
     {% if length(session.avatar_url|escape) > 1 %}
         <img src="{{ session.avatar_url|escape }}">
@@ -10,12 +10,59 @@
         <img data-src="holder.js/200x200">
     {% endif %}
     <br>
-    <input id="username" type="text" name="username" class="input-block-level" value="{{ session.username|escape }}" placeholder="Username">
-    <input id="avatar_url" type="text" name="avatar" class="input-block-level" value="{{ session.avatar_url|escape }}" placeholder="Avatar URL">
-    <input id="email" type="text" name="email" class="input-block-level" value="{{ session.email|escape }}" placeholder="Email Address">
-    <input id="email_confirmation" name="email2" type="text" class="input-block-level" value="{{ session.email|escape }}" placeholder="Confirm Email Address">
-    <input id="password" name="password" type="text" class="input-block-level" placeholder="Password">
-    <input id="password_confirmation" name="password2" type="text" class="input-block-level" placeholder="Confirm Password">
+    <div class="control-group">
+        <label class="control-label" for="username">Username: </label>
+        <div class="controls">
+            <input id="username" type="text" name="username" class="input-block-level" value="{{ session.username|escape }}">
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="avatar_url">Avatar URL: </label>
+        <div class="controls">
+            <input id="avatar_url" type="text" name="avatar" class="input-block-level" value="{{ session.avatar_url|escape }}">
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="email">Email Address: </label>
+        <div class="controls">
+            <input id="email" type="text" name="email" class="input-block-level" value="{{ session.email|escape }}" placeholder="name@email.com">
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="email_confirmation">Confirm Email Address: </label>
+        <div class="controls">
+            <input id="email_confirmation" name="email_confirmation" type="text" class="input-block-level" value="{{ session.email|escape }}" placeholder="name@email.com">
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="username">Password: </label>
+        <div class="controls">
+            <input id="password" name="password" type="text" class="input-block-level" placeholder="Leave blank to not change">
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="username">Confirm Password: </label>
+        <div class="controls">
+            <input id="password_confirmation" name="password_confirmation" type="text" class="input-block-level" placeholder="Leave blank to not change">
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="username">Sign-up Date: </label>
+        <div class="controls">
+            <input id="date_signup" name="date_signup" type="text" class="input-block-level" value="{{ session.date_signup|date('Y-m-d') }}" readonly>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <div class="controls">
+            <button id="dashboard_submit" class="btn btn-large btn-primary" type="submit">Update</button>
+        </div>
+
 </form>
 
 {% endblock %}

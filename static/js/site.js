@@ -1,5 +1,5 @@
 $(document).ready(function on_page_load() {
-    $('#loginform').submit(function click_login(){
+    $('#login_form').submit(function click_login(){
         event.preventDefault();
         $.ajax({
             url: 'login',
