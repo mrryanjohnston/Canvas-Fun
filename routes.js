@@ -163,7 +163,11 @@ app.post('/signup', function(req, res) {
 */
 app.get('/user', function(req, res, next) {
     if (req.session.email){
-        // check req.query.user_id and load relevant page
+        // check req.query.id and load relevant page
+        if(req.query.id){
+            console.log("hit on req.query.id");
+            console.log(req.query.id);
+        }
         page_context.page_title = ': User Dashboard';
         res.render('user', {
             session: req.session,
