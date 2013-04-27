@@ -19,6 +19,7 @@ form#login_form, form#signup_form, form#user_form, ul#account_list, ul#notificat
     -moz-border-radius: 0;
     border-radius: 0;
     box-shadow: 3px 3px #ccc;
+    border: 1px solid #bbb;
 }
 
 form#login_form, form#signup_form {

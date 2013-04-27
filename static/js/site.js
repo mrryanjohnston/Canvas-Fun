@@ -9,7 +9,8 @@ $(document).ready(function on_page_load() {
                 },
             type: 'post',
             error: function on_login_failure(){
-                $("#login_error").html("<p class='text-error'>The credentials you provided are invalid.</p>");
+                $("#login_error").removeClass("none");
+                $("#login_error p").text("The credentials you provided are invalid.");
             },
             success: function on_login_success(){
                 window.location.replace("/");
