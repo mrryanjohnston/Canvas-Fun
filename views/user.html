@@ -103,6 +103,7 @@ $(document).ready(function(){
     $.getScript("js/lib/holder/holder.js", function on_load_holderjs(){
         //If holder.js is used we have to wait until it is called before accessing image's height
         $("#profile_label").css("line-height",$("#profile").css("height"));
+        $("#profile").css("max-width",$("#username").css("width"));
     });
 });
 
