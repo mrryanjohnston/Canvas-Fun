@@ -2,6 +2,11 @@
 
 {% block content %}
 
+<div id="signup_error">
+    <p class="none alert alert-error">
+    </p>
+</div>
+
 <form id="signup_form" class="form-signin" method="post" action="/signup">
     <h2 class="form-signin-heading">Sign Up</h2>
     <input id="signup_username" type="text" class="input-block-level" placeholder="Username" name="username">
@@ -44,6 +49,29 @@
             $('#error_password').addClass("none");
             $('#error_password p').text("");
         }
+    });
+    $('#signup_form').submit(function click_signup(){
+        event.preventDefault();
+        $.ajax({
+            url: 'signup',
+            data: {
+                username : $('#signup_username').val(),
+                email : $('#signup_email').val(),
+                email_confirmation : $('#signup_email_confirmation').val(),
+                password : $('#signup_password').val(),
+                password_confirmation : $('#signup_password_confirmation').val()
+            },
+            type: 'post',
+            error: function on_signup_failure(){
+                $("#signup_error").removeClass("none");
+                $("#signup_error p").text("An account with the provided credentials could not be created.");
+            },
+            success: function on_signup_success(){
+                $("#email").val($("#signup_email").val());
+                $("#password").val($("#signup_password").val());
+                helpers.login();
+            }
+        });
     });
 
 </script>

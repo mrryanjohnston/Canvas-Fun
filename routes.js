@@ -121,8 +121,8 @@ app.post('/signup', function(req, res) {
     if (req.session.email){
         res.redirect('*');
     }else{
-        var failure1 = req.body.email !== req.body.email2;
-        var failure2 = req.body.password !== req.body.password2;
+        var failure1 = req.body.email !== req.body.email_confirmation;
+        var failure2 = req.body.password !== req.body.password_confirmation;
         var failure3 = req.body.email.length === 0;
         var failure4 = req.body.password.length === 0;
         var failure5 = req.body.password.length === 0;
