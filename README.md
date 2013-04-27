@@ -50,6 +50,7 @@ Then:
 
     sudo pip install mongoctl
     create mongoctl config, server config, cluster config
+    mongoctl install-mongodb 2.2.3
     mongoctl start [servername]
 
 ## Misc.
