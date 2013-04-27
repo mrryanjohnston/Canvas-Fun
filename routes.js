@@ -67,6 +67,7 @@ app.post('/login', function(req, res) {
                     req.session._id = account._id;
                     req.session.email = email;
                     req.session.username = account.username;
+                    req.session.bio = account.bio;
                     req.session.date_signup = account.date_signup;
                     req.session.record_games_won = account.record_games_won;
                     req.session.record_games_lost = account.record_games_lost;
@@ -181,7 +182,7 @@ app.get('/user', function(req, res, next) {
 });
 
 app.post('/user', function(req, res) {
-    if (!req.session.email){
+    if (!req.session.email || req.query.id){
         res.redirect('*');
     }else{
         var failure1 = req.body.email !== req.body.email_confirmation;
@@ -202,12 +203,14 @@ app.post('/user', function(req, res) {
             var update = {
                 email: req.body.email,
                 username: req.body.username,
+                bio: req.body.bio,
                 avatar_url: req.body.avatar_url
             };
             models.user.update(conditions, update, function update_callback_1(error, rows){
                 if(rows===1){
                     req.session.email = req.body.email;
                     req.session.username = req.body.username;
+                    req.session.bio = req.body.bio;
                     req.session.avatar_url = req.body.avatar_url;
                     res.send(200);
                 }else{
@@ -220,6 +223,7 @@ app.post('/user', function(req, res) {
             var update = {
                 email: req.body.email,
                 username: req.body.username,
+                bio: req.body.bio,
                 avatar_url: req.body.avatar_url,
                 password: crypto.createHmac("sha1", salt).update(req.body.password).digest("hex"),
                 salt: salt
@@ -228,6 +232,7 @@ app.post('/user', function(req, res) {
                 if(rows===1){
                     req.session.email = req.body.email;
                     req.session.username = req.body.username;
+                    req.session.bio = req.body.bio;
                     req.session.avatar_url = req.body.avatar_url;
                     res.send(200);
                 }else{
