@@ -14,8 +14,5 @@ module.exports = function models_function(mongoose, settings) {
     var models = {
         user: mongoose.model('user', schemas.user_schema, settings.mongodb_collections.user_accounts)
     };
-    // http://stackoverflow.com/questions/14454271/auto-increment-document-number-in-mongo-mongoose
-    //console.log(models.user.pre);
-    //console.log(mongoose);
     return models;
 }

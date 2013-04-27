@@ -26,7 +26,6 @@ module.exports = function settings_function() {
         database_port: 27017,
         mongodb_database_name: "cards",
         mongodb_salt_keyword: "salty"+String(Math.floor(Math.random()*10000000000000000))+"poop",
-        user_id: 0, // Auto-increment counter
         /*
         mongodb_options: {
             user: "cards_user_xd43hgEdjRLfks33gfddsw3",

@@ -11,12 +11,12 @@
     <h2 class="form-signin-heading">Sign Up</h2>
     <input id="signup_username" type="text" class="input-block-level" placeholder="Username" name="username">
     <input id="signup_email" type="text" class="input-block-level" placeholder="Email Address" name="email">
-    <div class="none" id="error_email">
+    <div id="error_email" class="none alert alert-error">
         <p></p>
     </div>
     <input id="signup_email_confirmation" type="text" class="input-block-level" placeholder="Confirm Email Address" name="email2">
     <input id="signup_password" type="password" class="input-block-level" placeholder="Password" name="password">
-    <div class="none" id="error_password">
+    <div id="error_password" class="none alert alert-error">
         <p></p>
     </div>
     <input id="signup_password_confirmation" type="password" class="input-block-level" placeholder="Confirm Password" name="password2">
@@ -31,10 +31,8 @@
     $('#signup_email,#signup_email_confirmation').change(function(){
         if($('#signup_email').val() !== $('#signup_email_confirmation').val()){
             $('#error_email').removeClass("none");
-            $('#error_email').addClass("alert alert-error");
             $('#error_email p').text("Your email addresses do not match.");
         }else{
-            $('#error_email').removeClass("alert alert-error");
             $('#error_email').addClass("none");
             $('#error_email p').text("");
         }
@@ -42,10 +40,8 @@
     $('#signup_password,#signup_password_confirmation').change(function(){
         if($('#signup_password').val() !== $('#signup_password_confirmation').val()){
             $('#error_password').removeClass("none");
-            $('#error_password').addClass("alert alert-error");
             $('#error_password p').text("Your email addresses do not match.");
         }else{
-            $('#error_password').removeClass("alert alert-error");
             $('#error_password').addClass("none");
             $('#error_password p').text("");
         }

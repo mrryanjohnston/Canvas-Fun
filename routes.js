@@ -64,6 +64,7 @@ app.post('/login', function(req, res) {
             function find_account_record_at_login(error, account){
                 if(account !== null){
                     if(account.password == crypto.createHmac("sha1", account.salt).update(password).digest("hex")){
+                    req.session._id = account._id;
                     req.session.email = email;
                     req.session.username = account.username;
                     req.session.date_signup = account.date_signup;
@@ -162,11 +163,11 @@ app.post('/signup', function(req, res) {
 * /user - User Dashboard
 */
 app.get('/user', function(req, res, next) {
+    console.log(req.session);
     if (req.session.email){
         // check req.query.id and load relevant page
         if(req.query.id){
-            console.log("hit on req.query.id");
-            console.log(req.query.id);
+            console.log("hit on req.query.id: "+req.query.id);
         }
         page_context.page_title = ': User Dashboard';
         res.render('user', {
@@ -183,9 +184,58 @@ app.post('/user', function(req, res) {
     if (!req.session.email){
         res.redirect('*');
     }else{
-        // Make sure passwords match
-        // Make sure emails match
-        // Update values for your account
+        var failure1 = req.body.email !== req.body.email_confirmation;
+        var failure2 = req.body.password !== req.body.password_confirmation;
+        var failure3 = req.body.username.length === 0;
+        var failure4 = req.body.email.length === 0;
+        var no_password_update = req.body.password.length === 0;
+        var conditions = { _id : req.session._id };
+        if(failure1){
+            res.send(409);
+        }else if(failure2){
+            res.send(409);
+        }else if(failure3){
+            res.send(409);
+        }else if(failure4){
+            res.send(409);
+        }else if(no_password_update){
+            var update = {
+                email: req.body.email,
+                username: req.body.username,
+                avatar_url: req.body.avatar_url
+            };
+            models.user.update(conditions, update, function update_callback_1(error, rows){
+                if(rows===1){
+                    req.session.email = req.body.email;
+                    req.session.username = req.body.username;
+                    req.session.avatar_url = req.body.avatar_url;
+                    res.send(200);
+                }else{
+                    res.send(409);
+                }
+            });
+            // update db but not password
+        }else{
+            var salt = settings.mongodb_salt_keyword+String(Date.now());
+            var update = {
+                email: req.body.email,
+                username: req.body.username,
+                avatar_url: req.body.avatar_url,
+                password: crypto.createHmac("sha1", salt).update(req.body.password).digest("hex"),
+                salt: salt
+            };
+            models.user.update(conditions, update, function update_callback_2(error, rows){
+                if(rows===1){
+                    req.session.email = req.body.email;
+                    req.session.username = req.body.username;
+                    req.session.avatar_url = req.body.avatar_url;
+                    res.send(200);
+                }else{
+                    res.send(409);
+                }
+            });
+            // update db including password
+        }
     }
 });
 

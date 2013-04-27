@@ -4,12 +4,20 @@
 
 <form id="user_form" class="form-horizontal" method="post" action="/user">
     <h2>User Dashboard</h2>
-    {% if length(session.avatar_url|escape) > 1 %}
+    {% if session.avatar_url|length > 1 %}
         <img src="{{ session.avatar_url|escape }}">
     {% else %}
         <img data-src="holder.js/200x200">
     {% endif %}
     <br>
+    <div id="update_error" class="alert alert-error none">
+        <p>
+        </p>
+    </div>
+    <div id="update_success" class="alert alert-success none">
+        <p>
+        </p>
+    </div>
     <div class="control-group">
         <label class="control-label" for="username">Username: </label>
         <div class="controls">
@@ -30,6 +38,11 @@
         </div>
     </div>
 
+    <div id="error_email" class="alert alert-error none">
+        <p>
+        </p>
+    </div>
+
     <div class="control-group">
         <label class="control-label" for="email_confirmation">Confirm Email Address: </label>
         <div class="controls">
@@ -38,21 +51,26 @@
     </div>
 
     <div class="control-group">
-        <label class="control-label" for="username">Password: </label>
+        <label class="control-label" for="password">Password: </label>
         <div class="controls">
-            <input id="password" name="password" type="text" class="input-block-level" placeholder="Leave blank to not change">
+            <input id="password" name="password" type="password" class="input-block-level" placeholder="Leave blank to not change">
+        </div>
+    </div>
+
+    <div id="error_password" class="alert alert-error none">
+        <p>
+        </p>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="password_confirmation">Confirm Password: </label>
+        <div class="controls">
+            <input id="password_confirmation" name="password_confirmation" type="password" class="input-block-level" placeholder="Leave blank to not change">
         </div>
     </div>
 
     <div class="control-group">
-        <label class="control-label" for="username">Confirm Password: </label>
-        <div class="controls">
-            <input id="password_confirmation" name="password_confirmation" type="text" class="input-block-level" placeholder="Leave blank to not change">
-        </div>
-    </div>
-
-    <div class="control-group">
-        <label class="control-label" for="username">Sign-up Date: </label>
+        <label class="control-label" for="date_signup">Sign-up Date: </label>
         <div class="controls">
             <input id="date_signup" name="date_signup" type="text" class="input-block-level" value="{{ session.date_signup|date('Y-m-d') }}" readonly>
         </div>
@@ -69,4 +87,52 @@
 
 {% block js %}
 <script type="text/javascript" src="js/lib/holder/holder.js"></script>
+<script type="text/javascript">
+
+$("#email,#email_confirmation").change(function(){
+    if($("#email").val() !== $("#email_confirmation").val()){
+        $("#error_email").removeClass("none");
+        $("#error_email p").text("Your email addresses do not match.");
+    }else{
+        $("#error_email").addClass("none");
+        $("#error_email p").text("");
+    }
+});
+
+$("#password,#password_confirmation").change(function(){
+    if($("#password").val() !== $("#password_confirmation").val()){
+        $("#error_password").removeClass("none");
+        $("#error_password p").text("Your passwords do not match.");
+    }else{
+        $("#error_password").addClass("none");
+        $("#error_password p").text("");
+    }
+});
+
+$("#user_form").submit(function(){
+    event.preventDefault();
+    $.ajax({
+        url: 'user',
+        data: {
+            username: $("#username").val(),
+            avatar_url: $("#avatar_url").val(),
+            email: $("#email").val(),
+            email_confirmation: $("#email_confirmation").val(),
+            password: $("#password").val(),
+            password_confirmation: $("#password_confirmation").val()
+        },
+        type: 'post',
+        error: function on_update_profile_failure(){
+            $("#update_error").removeClass("none");
+            $("#update_error p").text("There was an error updating your account.");
+        },
+        success: function on_update_profile_success(){
+            $("#update_success").removeClass("none");
+            $("#update_success p").text("Your account was successfully updated");
+            window.location.replace("/user");
+        }
+    });
+});
+
+</script>
 {% endblock %}
