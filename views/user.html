@@ -2,95 +2,108 @@
 
 {% block content %}
 
-<form id="user_form" class="form-horizontal" method="post" action="/user">
-    <div id="update_error" class="alert alert-error none">
-        <p>
-        </p>
-    </div>
-    <div id="update_success" class="alert alert-success none">
-        <p>
-        </p>
-    </div>
-    <div class="control-group">
-        <label id="profile_label" class="control-label" for="profile"><strong>{{ session.username|escape }}</strong></label>
-        <div class="controls">
-            {% if session.avatar_url|length > 1 %}
-                <img id="profile" class="img-polaroid" src="{{ session.avatar_url|escape }}">
-            {% else %}
-                <img id="profile" class="img-polaroid" data-src="holder.js/200x200">
+<div class="row-fluid">
+    <div class="span8">
+        <form id="user_form" class="form-horizontal"{% if !locals %} method="post" action="/user"{%endif%}>
+            <div id="update_error" class="alert alert-error none">
+                <p>
+                </p>
+            </div>
+            <div id="update_success" class="alert alert-success none">
+                <p>
+                </p>
+            </div>
+            <div class="control-group">
+                <label id="profile_label" class="control-label" for="profile"><strong>{% if locals %}{{ locals.username|escape }}{% else %}{{ session.username|escape }}{% endif %}</strong></label>
+                <div class="controls">
+                    {% if locals %}
+                        {% if locals.avatar_url|length > 1 %}
+                            <img id="profile" class="img-polaroid" src="{{ locals.avatar_url|escape }}">
+                        {% else %}
+                            <img id="profile" class="img-polaroid" data-src="holder.js/200x200">
+                        {% endif %}
+                    {% else %}
+                        {% if session.avatar_url|length > 1 %}
+                            <img id="profile" class="img-polaroid" src="{{ session.avatar_url|escape }}">
+                        {% else %}
+                            <img id="profile" class="img-polaroid" data-src="holder.js/200x200">
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="username">Username: </label>
+                <div class="controls">
+                    <input id="username" type="text" name="username" class="input-block-level" value="{% if locals %}{{ locals.username|escape }}{% else %}{{ session.username|escape }}{% endif %}"{% if locals %} readonly{% endif %}>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="bio">About: </label>
+                <div class="controls">
+                    <textarea id="bio" name="bio" class="input-block-level"{% if locals %} readonly{% endif %}>{% if locals %}{{ locals.bio|escape }}{% else %}{{ session.bio|escape }}{% endif %}</textarea>
+                </div>
+            </div>
+            {% if !locals %}
+            <div class="control-group">
+                <label class="control-label" for="avatar_url">Avatar URL: </label>
+                <div class="controls">
+                    <input id="avatar_url" type="text" name="avatar" class="input-block-level" value="{{ session.avatar_url|escape }}">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="email">Email Address: </label>
+                <div class="controls">
+                    <input id="email" type="text" name="email" class="input-block-level" value="{{ session.email|escape }}" placeholder="name@email.com">
+                </div>
+            </div>
+            <div id="error_email" class="alert alert-error none">
+                <p>
+                </p>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="email_confirmation">Confirm Email Address: </label>
+                <div class="controls">
+                    <input id="email_confirmation" name="email_confirmation" type="text" class="input-block-level" value="{{ session.email|escape }}" placeholder="name@email.com">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="password">Password: </label>
+                <div class="controls">
+                    <input id="password" name="password" type="password" class="input-block-level" placeholder="Leave blank to not change">
+                </div>
+            </div>
+            <div id="error_password" class="alert alert-error none">
+                <p>
+                </p>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="password_confirmation">Confirm Password: </label>
+                <div class="controls">
+                    <input id="password_confirmation" name="password_confirmation" type="password" class="input-block-level" placeholder="Leave blank to not change">
+                </div>
+            </div>
             {% endif %}
-        </div>
+            <div class="control-group">
+                <label class="control-label" for="date_signup">Sign-up Date: </label>
+                <div class="controls">
+                    <input id="date_signup" name="date_signup" type="text" class="input-block-level" value="{% if locals %}{{ locals.date_signup|date('Y-m-d') }}{% else %}{{ session.date_signup|date('Y-m-d') }}{% endif %}" readonly>
+                </div>
+            </div>
+            {% if !locals %}
+            <div class="control-group">
+                <div class="controls">
+                    <button id="dashboard_submit" class="btn btn-large btn-primary" type="submit">Update</button>
+                </div>
+            </div>
+            {% endif %}
+        </form>
     </div>
-    <div class="control-group">
-        <label class="control-label" for="username">Username: </label>
-        <div class="controls">
-            <input id="username" type="text" name="username" class="input-block-level" value="{{ session.username|escape }}">
-        </div>
+    <div id="user_record" class="span4">
+        <h4>Record</h4>
+        <p>Wins: {% if locals %}{{ locals.record_games_won }}{% else %}{{ session.record_games_won }}{% endif %}</p>
+        <p>Losses: {% if locals %}{{ locals.record_games_lost }}{% else %}{{ session.record_games_lost }}{% endif %}</p>
     </div>
-    <div class="control-group">
-        <label class="control-label" for="bio">About: </label>
-        <div class="controls">
-            <textarea id="bio" name="bio" class="input-block-level">{{ session.bio|escape }}</textarea>
-        </div>
-    </div>
-    <div class="control-group">
-        <label class="control-label" for="avatar_url">Avatar URL: </label>
-        <div class="controls">
-            <input id="avatar_url" type="text" name="avatar" class="input-block-level" value="{{ session.avatar_url|escape }}">
-        </div>
-    </div>
-
-    <div class="control-group">
-        <label class="control-label" for="email">Email Address: </label>
-        <div class="controls">
-            <input id="email" type="text" name="email" class="input-block-level" value="{{ session.email|escape }}" placeholder="name@email.com">
-        </div>
-    </div>
-
-    <div id="error_email" class="alert alert-error none">
-        <p>
-        </p>
-    </div>
-
-    <div class="control-group">
-        <label class="control-label" for="email_confirmation">Confirm Email Address: </label>
-        <div class="controls">
-            <input id="email_confirmation" name="email_confirmation" type="text" class="input-block-level" value="{{ session.email|escape }}" placeholder="name@email.com">
-        </div>
-    </div>
-
-    <div class="control-group">
-        <label class="control-label" for="password">Password: </label>
-        <div class="controls">
-            <input id="password" name="password" type="password" class="input-block-level" placeholder="Leave blank to not change">
-        </div>
-    </div>
-
-    <div id="error_password" class="alert alert-error none">
-        <p>
-        </p>
-    </div>
-
-    <div class="control-group">
-        <label class="control-label" for="password_confirmation">Confirm Password: </label>
-        <div class="controls">
-            <input id="password_confirmation" name="password_confirmation" type="password" class="input-block-level" placeholder="Leave blank to not change">
-        </div>
-    </div>
-
-    <div class="control-group">
-        <label class="control-label" for="date_signup">Sign-up Date: </label>
-        <div class="controls">
-            <input id="date_signup" name="date_signup" type="text" class="input-block-level" value="{{ session.date_signup|date('Y-m-d') }}" readonly>
-        </div>
-    </div>
-
-    <div class="control-group">
-        <div class="controls">
-            <button id="dashboard_submit" class="btn btn-large btn-primary" type="submit">Update</button>
-        </div>
-    </div>
-</form>
+</div>
 
 {% endblock %}
 

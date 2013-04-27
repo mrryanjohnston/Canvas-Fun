@@ -1,3 +1,7 @@
+#flashed_messages p {
+    text-align: center;
+    margin-top: 12px;
+}
 .clear {
     clear: both;
 }
@@ -26,7 +30,7 @@ body {
     background-color: #f0f0f0;
 }
 
-form#login_form, form#signup_form, form#user_form, ul#account_list, ul#notifications_list {
+form#login_form, form#signup_form, form#user_form, ul#account_list, ul#notifications_list, div#user_record {
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0;
@@ -40,10 +44,14 @@ form#login_form, form#signup_form {
     background-color: #fff;
 }
 
-form#user_form {
-    max-width: 500px;
-    padding: 25px;
+form#user_form, div#user_record {
+    /*max-width: 500px;*/
+    padding: 0 12px;
     background-color: #fff;
+}
+
+form#user_form {
+    padding-top: 12px;
 }
 
 

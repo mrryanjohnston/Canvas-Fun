@@ -6,6 +6,11 @@ var page_context = settings.context;
 
 var debug = function(req){
     console.log(req.session);
+    if(req.locals){
+        console.log("LOCALS >>>>>>>>>>>");
+        console.log(req.locals);
+        console.log("<<<<<<<<<<<<<<<<<<");
+    }
 };
 
 /***
@@ -166,16 +171,56 @@ app.post('/signup', function(req, res) {
 app.get('/user', function(req, res, next) {
     console.log(req.session);
     if (req.session.email){
-        // check req.query.id and load relevant page
-        if(req.query.id){
-            console.log("hit on req.query.id: "+req.query.id);
-        }
         page_context.page_title = ': User Dashboard';
-        res.render('user', {
-            session: req.session,
-            context: page_context
-        });
-    }else{
+        if(!req.query.id){ // load self page
+            res.render('user', {
+                session: req.session,
+                context: page_context
+            });
+        }else if(req.query.id.match(/^[0-9a-fA-F]{24}$/) && req.query.id.length === 24){
+            console.log("hit on req.query.id: "+req.query.id);
+            models.user.findById(req.query.id,
+                function find_account_record_for_user_id(error, account){
+                    //if(error) return next(error);
+                    /*
+                    if(error){
+                        console.log(error);
+                        req.session.messages.push(error);
+                        res.render('user', {
+                            session: req.session,
+                            context: page_context
+                        });
+                    }else */
+                    if(account !== null && error == null){
+                        res.locals.username = account.username;
+                        res.locals.avatar_url = account.avatar_url;
+                        res.locals.bio = account.bio;
+                        res.locals.date_signup = account.date_signup;
+                        res.locals.record_games_won = account.record_games_won;
+                        res.locals.record_games_lost = account.record_games_lost;
+                        res.render('user', {
+                            session: req.session,
+                            context: page_context,
+                            locals: res.locals
+                        });
+                    }else{ // no account found at specified id
+                        console.log(error);
+                        req.session.messages.push("Error: The specified user could not be found.");
+                        res.render('user', {
+                            session: req.session,
+                            context: page_context
+                        });
+                    }
+                }
+            );
+        }else{ // invalid id, failed regex and/or length
+            req.session.messages.push("Error: The specified user id is invalid.");
+            res.render('user', {
+                session: req.session,
+                context: page_context
+            });
+        }
+    }else{ // not signed in
         res.redirect('*');
     }
     debug(req);
