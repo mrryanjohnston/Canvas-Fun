@@ -1,3 +1,15 @@
+.clear {
+    clear: both;
+}
+
+.right {
+    float: right;
+}
+
+.left {
+    float: left;
+}
+
 #content {
     margin-top: 28px;
 }

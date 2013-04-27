@@ -3,13 +3,6 @@
 {% block content %}
 
 <form id="user_form" class="form-horizontal" method="post" action="/user">
-    <h2>User Dashboard</h2>
-    {% if session.avatar_url|length > 1 %}
-        <img src="{{ session.avatar_url|escape }}">
-    {% else %}
-        <img data-src="holder.js/200x200">
-    {% endif %}
-    <br>
     <div id="update_error" class="alert alert-error none">
         <p>
         </p>
@@ -17,6 +10,16 @@
     <div id="update_success" class="alert alert-success none">
         <p>
         </p>
+    </div>
+    <div class="control-group">
+        <label id="profile_label" class="control-label" for="profile"><strong>{{ session.username|escape }}</strong></label>
+        <div class="controls">
+            {% if session.avatar_url|length > 1 %}
+                <img id="profile" class="img-polaroid" src="{{ session.avatar_url|escape }}">
+            {% else %}
+                <img id="profile" class="img-polaroid" data-src="holder.js/200x200">
+            {% endif %}
+        </div>
     </div>
     <div class="control-group">
         <label class="control-label" for="username">Username: </label>
@@ -86,6 +89,7 @@
         <div class="controls">
             <button id="dashboard_submit" class="btn btn-large btn-primary" type="submit">Update</button>
         </div>
+    </div/
 
 </form>
 
@@ -94,6 +98,13 @@
 {% block js %}
 <script type="text/javascript" src="js/lib/holder/holder.js"></script>
 <script type="text/javascript">
+
+$(document).ready(function(){
+    $.getScript("js/lib/holder/holder.js", function on_load_holderjs(){
+        //If holder.js is used we have to wait until it is called before accessing image's height
+        $("#profile_label").css("line-height",$("#profile").css("height"));
+    });
+});
 
 $("#email,#email_confirmation").change(function(){
     if($("#email").val() !== $("#email_confirmation").val()){
