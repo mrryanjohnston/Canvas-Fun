@@ -36,7 +36,7 @@ $(document).ready(function() {
         y: 0,
         width: side_width,
         height: side_height,
-        fill: "lightgrey",
+        fill: "lightgrey", // "casino green" #009900, starbucks green #006633
         stroke: "black",
         strokeWidth: 3
     });
