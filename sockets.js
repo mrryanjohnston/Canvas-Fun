@@ -5,7 +5,6 @@ module.exports = function sockets_function(settings, io, app) {
     // Tutorial by http://udidu.blogspot.com/2012/11/chat-evolution-nodejs-and-socketio.html
     // Ripped off of https://github.com/uditalias/chat-nodejs
     io.sockets.on('connection', function(socket){
-
         socket.on('connect', function(data){
             connect(socket, data);
         });
@@ -25,7 +24,7 @@ module.exports = function sockets_function(settings, io, app) {
 
     function connect(socket, data){
         data.clientId = generateId(); //Grab from req.session._id
-        chatClients[socket.id] = data;
+        chat_clients[socket.id] = data;
         socket.emit('ready', { clientId: data.clientId });
         subscribe(socket, { room: 'lobby' });
         socket.emit('roomslist', { rooms: get_rooms() });
@@ -38,11 +37,11 @@ module.exports = function sockets_function(settings, io, app) {
                 unsubscribe(socket, { room: room.replace('/','') });
             }
         }
-        delete chatClients[socket.id];
+        delete chat_clients[socket.id];
     }
 
     function chatmessage(socket, data){
-        socket.broadcast.to(data.room).emit('chatmessage', { client: chatClients[socket.id], message: data.message, room: data.room });
+        socket.broadcast.to(data.room).emit('chatmessage', { client: chat_clients[socket.id], message: data.message, room: data.room });
     }
 
     function subscribe(socket, data){
@@ -71,10 +70,10 @@ module.exports = function sockets_function(settings, io, app) {
         var socketIds = io.sockets.manager.rooms['/' + room];
         var clients = [];
         if(socketIds && socketIds.length > 0){
-            socketsCount = socketIds.lenght;
+            socketsCount = socketIds.length;
             for(var i = 0, len = socketIds.length; i < len; i++){
                 if(socketIds[i] != socketId){
-                    clients.push(chatClients[socketIds[i]]);
+                    clients.push(chat_clients[socketIds[i]]);
                 }
             }
         }
@@ -90,7 +89,7 @@ module.exports = function sockets_function(settings, io, app) {
 
     function update_presence(room, socket, state){
         room = room.replace('/','');
-        socket.broadcast.to(room).emit('presence', { client: chatClients[socket.id], state: state, room: room });
+        socket.broadcast.to(room).emit('presence', { client: chat_clients[socket.id], state: state, room: room });
     }
 
     function generateId(){
