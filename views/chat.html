@@ -5,3 +5,11 @@
 <h2>Chat / Game preparation view</h2>
 
 {% endblock %}
+
+{% block js %}
+
+<script type="text/javascript">
+    var nickname = {{ session.username|escape }};
+</script>
+
+{% endblock %}
