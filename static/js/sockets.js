@@ -210,7 +210,7 @@
             socket.emit('subscribe', { room: room });
             //Avgrund.hide();
         } else {
-            shake('#addroom-popup', '#addroom-popup .input input', 'tada', 'yellow');
+            //shake('#addroom-popup', '#addroom-popup .input input', 'tada', 'yellow');
             $('#addroom-popup .input input').val('');
         }
     }
@@ -240,7 +240,7 @@
             insertMessage(nickname, message, true, true);
             $('.chat-input input').val('');
         } else {
-            shake('.chat', '.chat input', 'wobble', 'yellow');
+            //shake('.chat', '.chat input', 'wobble', 'yellow');
         }
     }
 
@@ -266,19 +266,19 @@
                 (date.getMinutes() < 10 ? '0' + date.getMinutes().toString() : date.getMinutes());
     }
 
-    function shake(container, input, effect, bgColor){
-        if(!lockShakeAnimation){
-            lockShakeAnimation = true;
-            $(container).addClass(effect);
-            $(input).addClass(bgColor);
-            window.setTimeout(function(){
-                $(container).removeClass(effect);
-                $(input).removeClass(bgColor);
-                $(input).focus();
-                lockShakeAnimation = false;
-            }, 1500);
-        }
-    }
+//    function shake(container, input, effect, bgColor){
+//        if(!lockShakeAnimation){
+//            lockShakeAnimation = true;
+//            $(container).addClass(effect);
+//            $(input).addClass(bgColor);
+//            window.setTimeout(function(){
+//                $(container).removeClass(effect);
+//                $(input).removeClass(bgColor);
+//                $(input).focus();
+//                lockShakeAnimation = false;
+//            }, 1500);
+//        }
+//    }
     
     function connect(){
         $('.chat-shadow .content').html('Connecting...');
