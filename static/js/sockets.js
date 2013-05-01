@@ -7,14 +7,13 @@ $(document).ready(function setup_sockets(){
 
     var NICK_MAX_LENGTH = 15,
         ROOM_MAX_LENGTH = 10,
-        lockShakeAnimation = false,
         socket = null,
         clientId = null,
         nickname = null,
-        currentRoom = null,
-        serverAddress = 'http://localhost:3000',
-        serverDisplayName = 'Server',
-        serverDisplayColor = '#1c5380',
+        current_room = null,
+        server_address = 'http://localhost:3000',
+        server_display_name = 'Server',
+        server_display_color = '#1c5380',
         tmplt = {
             room: [
                 '<li data-roomId="${room}">',
@@ -78,8 +77,8 @@ $(document).ready(function setup_sockets(){
 
         $('.chat-rooms ul li').live('click', function(){
             var room = $(this).attr('data-roomId');
-            if(room != currentRoom){
-                socket.emit('unsubscribe', { room: currentRoom });
+            if(room != current_room){
+                socket.emit('unsubscribe', { room: current_room });
                 socket.emit('subscribe', { room: room });
             }
         });
@@ -115,7 +114,7 @@ $(document).ready(function setup_sockets(){
         socket.on('roomclients', function(data){
             addRoom(data.room, false);
             setCurrentRoom(data.room);
-            insertMessage(serverDisplayName, 'Welcome to the room: `' + data.room + '`... enjoy!', true, false, true);
+            insertMessage(server_display_name, 'Welcome to the room: `' + data.room + '`... enjoy!', true, false, true);
             $('.chat-clients ul').empty();
             addClient({ nickname: nickname, clientId: clientId }, false, true);
             for(var i = 0, len = data.clients.length; i < len; i++){
@@ -152,7 +151,7 @@ $(document).ready(function setup_sockets(){
         if($('.chat-rooms ul li[data-roomId="' + name + '"]').length == 0){
             $.tmpl(tmplt.room, { room: name }).appendTo('.chat-rooms ul');
             if(announce){
-                insertMessage(serverDisplayName, 'The room `' + name + '` created...', true, false, true);
+                insertMessage(server_display_name, 'The room `' + name + '` created...', true, false, true);
             }
         }
     }
@@ -160,7 +159,7 @@ $(document).ready(function setup_sockets(){
     function removeRoom(name, announce){
         $('.chat-rooms ul li[data-roomId="' + name + '"]').remove();
         if(announce){
-            insertMessage(serverDisplayName, 'The room `' + name + '` destroyed...', true, false, true);
+            insertMessage(server_display_name, 'The room `' + name + '` destroyed...', true, false, true);
         }
     }
 
@@ -171,7 +170,7 @@ $(document).ready(function setup_sockets(){
         }
 
         if(announce){
-            insertMessage(serverDisplayName, client.nickname + ' has joined the room...', true, false, true);
+            insertMessage(server_display_name, client.nickname + ' has joined the room...', true, false, true);
         }
         $html.appendTo('.chat-clients ul')
     }
@@ -179,16 +178,16 @@ $(document).ready(function setup_sockets(){
     function removeClient(client, announce){
         $('.chat-clients ul li[data-clientId="' + client.clientId + '"]').remove();
         if(announce){
-            insertMessage(serverDisplayName, client.nickname + ' has left the room...', true, false, true);
+            insertMessage(server_display_name, client.nickname + ' has left the room...', true, false, true);
         }
     }
 
     function createRoom(){
         var room = $('#addroom-popup .input input').val().trim();
-        if(room && room.length <= ROOM_MAX_LENGTH && room != currentRoom){
+        if(room && room.length <= ROOM_MAX_LENGTH && room != current_room){
             $('.chat-shadow').show().find('.content').html('Creating room: ' + room + '...');
             $('.chat-shadow').animate({ 'opacity': 1 }, 200);
-            socket.emit('unsubscribe', { room: currentRoom });
+            socket.emit('unsubscribe', { room: current_room });
             socket.emit('subscribe', { room: room });
         } else {
             $('#addroom-popup .input input').val('');
@@ -196,7 +195,7 @@ $(document).ready(function setup_sockets(){
     }
 
     function setCurrentRoom(room){
-        currentRoom = room;
+        current_room = room;
         $('.chat-rooms ul li.selected').removeClass('selected');
         $('.chat-rooms ul li[data-roomId="' + room + '"]').addClass('selected');
     }
@@ -204,7 +203,7 @@ $(document).ready(function setup_sockets(){
     function handleMessage(){
         var message = $('.chat-input input').val().trim();
         if(message){
-            socket.emit('chatmessage', { message: message, room: currentRoom });
+            socket.emit('chatmessage', { message: message, room: current_room });
             insertMessage(nickname, message, true, true);
             $('.chat-input input').val('');
         }
@@ -220,7 +219,7 @@ $(document).ready(function setup_sockets(){
             $html.addClass('marker');
         }
         if(isServer){
-            $html.find('.sender').css('color', serverDisplayColor);
+            $html.find('.sender').css('color', server_display_color);
         }
         $html.appendTo('.chat-messages ul');
         $('.chat-messages').animate({ scrollTop: $('.chat-messages ul').height() }, 100);
@@ -234,7 +233,7 @@ $(document).ready(function setup_sockets(){
 
     function connect(){
         $('.chat-shadow .content').html('Connecting...');
-        socket = io.connect(serverAddress);
+        socket = io.connect(server_address);
         bindSocketEvents();
     }
 
