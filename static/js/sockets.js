@@ -3,7 +3,7 @@
 */
 
 
-(function($){
+$(document).ready(function setup_sockets(){
 
     var NICK_MAX_LENGTH = 15,
         ROOM_MAX_LENGTH = 10,
@@ -34,7 +34,7 @@
             ].join("")
         };
 
-    function bindDOMEvents(){
+    function bind_DOM_Events(){
         
         $('.chat-input input').on('keydown', function(e){
             var key = e.which || e.keyCode;
@@ -45,15 +45,6 @@
             handleMessage();
         });
 
-//        $('#nickname-popup .input input').on('keydown', function(e){
-//            var key = e.which || e.keyCode;
-//            if(key == 13) { handleNickname(); }
-//        });
-//
-//        $('#nickname-popup .begin').on('click', function(){
-//            handleNickname();
-//        });
-        
         $('#addroom-popup .input input').on('keydown', function(e){
             var key = e.which || e.keyCode;
             if(key == 13) { createRoom(); }
@@ -63,17 +54,8 @@
             createRoom();
         });
 
-//        $('.big-button-green.start').on('click', function(){
-//            $('#nickname-popup .input input').val('');
-//            //Avgrund.show('#nickname-popup');
-//            window.setTimeout(function(){
-//                $('#nickname-popup .input input').focus();
-//            },100);
-//        });
-
         $('.chat-rooms .title-button').on('click', function(){
             $('#addroom-popup .input input').val('');
-            //Avgrund.show('#addroom-popup');
             window.setTimeout(function(){
                 $('#addroom-popup .input input').focus();
             },100);
@@ -208,9 +190,7 @@
             $('.chat-shadow').animate({ 'opacity': 1 }, 200);
             socket.emit('unsubscribe', { room: currentRoom });
             socket.emit('subscribe', { room: room });
-            //Avgrund.hide();
         } else {
-            //shake('#addroom-popup', '#addroom-popup .input input', 'tada', 'yellow');
             $('#addroom-popup .input input').val('');
         }
     }
@@ -221,26 +201,12 @@
         $('.chat-rooms ul li[data-roomId="' + room + '"]').addClass('selected');
     }
 
-//    function handleNickname(){
-//        var nick = $('#nickname-popup .input input').val().trim();
-//        if(nick && nick.length <= NICK_MAX_LENGTH){
-//            nickname = nick;
-//            //Avgrund.hide();
-//            connect();
-//        } else {
-//            shake('#nickname-popup', '#nickname-popup .input input', 'tada', 'yellow');
-//            $('#nickname-popup .input input').val('');
-//        }
-//    }
-
     function handleMessage(){
         var message = $('.chat-input input').val().trim();
         if(message){
             socket.emit('chatmessage', { message: message, room: currentRoom });
             insertMessage(nickname, message, true, true);
             $('.chat-input input').val('');
-        } else {
-            //shake('.chat', '.chat input', 'wobble', 'yellow');
         }
     }
 
@@ -266,28 +232,12 @@
                 (date.getMinutes() < 10 ? '0' + date.getMinutes().toString() : date.getMinutes());
     }
 
-//    function shake(container, input, effect, bgColor){
-//        if(!lockShakeAnimation){
-//            lockShakeAnimation = true;
-//            $(container).addClass(effect);
-//            $(input).addClass(bgColor);
-//            window.setTimeout(function(){
-//                $(container).removeClass(effect);
-//                $(input).removeClass(bgColor);
-//                $(input).focus();
-//                lockShakeAnimation = false;
-//            }, 1500);
-//        }
-//    }
-    
     function connect(){
         $('.chat-shadow .content').html('Connecting...');
         socket = io.connect(serverAddress);
         bindSocketEvents();
     }
 
-    $(function(){
-        bindDOMEvents();
-    });
+    bind_DOM_Events();
 
-})(jQuery);
+});
