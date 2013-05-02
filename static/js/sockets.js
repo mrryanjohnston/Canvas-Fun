@@ -14,6 +14,7 @@ $(document).ready(function setup_sockets(){
         server_address = 'http://localhost:3000',
         server_display_name = 'Server',
         server_display_color = '#1c5380',
+        // Edit
         tmplt = {
             room: [
                 '<li data-roomId="${room}">',
@@ -149,6 +150,7 @@ $(document).ready(function setup_sockets(){
     function addRoom(name, announce){
         name = name.replace('/','');
         if($('.chat-rooms ul li[data-roomId="' + name + '"]').length == 0){
+        // Edit
             $.tmpl(tmplt.room, { room: name }).appendTo('.chat-rooms ul');
             if(announce){
                 insertMessage(server_display_name, 'The room `' + name + '` created...', true, false, true);
@@ -164,6 +166,7 @@ $(document).ready(function setup_sockets(){
     }
 
     function addClient(client, announce, isMe){
+        // Edit
         var $html = $.tmpl(tmplt.client, client);
         if(isMe){
             $html.addClass('me');
@@ -210,6 +213,7 @@ $(document).ready(function setup_sockets(){
     }
 
     function insertMessage(sender, message, showTime, isMe, isServer){
+        // Edit
         var $html = $.tmpl(tmplt.message, {
             sender: sender,
             text: message,
