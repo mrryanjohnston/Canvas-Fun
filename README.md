@@ -9,20 +9,24 @@ Javascript, [node.js](http://www.nodejs.org),
 [jQuery](http://jquery.com/), 
 [Kinetic.js](http://www.kineticjs.com/),
 [Twitter Bootstrap](http://twitter.github.io/bootstrap).
-## Install
+
+## Installation
 
     git clone https://github.com/mrryanjohnston/Canvas-Fun
     cd Canvas-Fun
+    npm preinstall
     npm install
 
-## Run the app
+## Controlling the application
+
+Start and stop the application as a long running process, respectively:
 
     npm start
+    npm stop
 
-## Run the app as though it were a daemon
+Start the server as a short running process
 
-    npm install forever -g
-    forever start server.js
+    npm test
 
 ## Problems
 ###Node Version

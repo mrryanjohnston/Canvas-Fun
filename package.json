@@ -7,7 +7,10 @@
         "L. Gabriel Miller <gmiller2007@gmail.com> (http://www.cheddarcode.com/g)"
     ],
     "scripts": {
-        "start":"node server.js"
+        "preinstall":"npm install forever -g", // You may need sudo to run this command.
+        "start":"forever start server.js",
+        "stop":"forever stop server.js",
+        "test":"node server.js"
     },
     "repository": {
         "type": "git",
