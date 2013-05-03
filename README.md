@@ -19,6 +19,11 @@ Javascript, [node.js](http://www.nodejs.org),
 
     npm start
 
+## Run the app as though it were a daemon
+
+    npm install forever -g
+    forever start server.js
+
 ## Problems
 ###Node Version
 Your version of nodejs might be incompatible with mongoose or another package. This project uses v0.8.19. You can get that by installing node and setting node versions via nvm:
