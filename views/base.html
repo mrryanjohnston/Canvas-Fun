@@ -18,10 +18,19 @@
                 <div id="content" class="container">
 
                     {% if session.messages|length > 0 %}
+                        <div id="flashed_messages">
+                        {#
+                        <!--
                         <div id="flashed_messages" class="alert alert-error">
+                        -->
                             {% for message in session.messages %}
-                                <p>{{message}}</p>
+                                <!--<p>{{ message }}</p>-->
+                                {% if %}
+                                <p>{{ message }}</p>
+                                {% else if %}
+                                {% endif %}
                             {% endfor %}
+                        #}
                         </div>
                     {% endif %}
 

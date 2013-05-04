@@ -19,10 +19,11 @@ Javascript, [node.js](http://www.nodejs.org),
 
 ## Controlling the application
 
-Start and stop the application as a long running process, respectively:
+Start, stop, and restart the application as a long running process, respectively:
 
     npm start
     npm stop
+    npm restart
 
 Start the server as a short running process
 

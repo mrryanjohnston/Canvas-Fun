@@ -1,15 +1,17 @@
-module.exports = function routes_function(app, settings, models, crypto) {
-
-//console.log(models);
+module.exports = function routes_function(app, settings, models, crypto, color) {
 
 var page_context = settings.context;
 
-var debug = function(req){
-    console.log(req.session);
-    if(req.locals){
-        console.log("LOCALS >>>>>>>>>>>");
-        console.log(req.locals);
-        console.log("<<<<<<<<<<<<<<<<<<");
+function debug(req, res){
+    if (settings.debug == true){
+        console.log(color.fgred+"SESSION >>>>>>>>>>>"+color.reset);
+        console.log(req.session);
+        console.log(color.fgred+"<<<<<<<<<<<<<<<<<<"+color.reset);
+        if(res.locals){
+            console.log(color.fggreen+"LOCALS >>>>>>>>>>>"+color.reset);
+            console.log(res.locals);
+            console.log(color.fggreen+"<<<<<<<<<<<<<<<<<<"+color.reset);
+        }
     }
 };
 
@@ -20,9 +22,10 @@ app.get('/', function(req, res) {
         page_context.page_title = '';
         res.render('about', {
             session: req.session,
-            context: page_context
+            context: page_context,
+            locals: res.locals
         });
-    debug(req);
+    debug(req, res);
 });
 
 /***
@@ -33,12 +36,13 @@ app.get('/chat', function(req, res) {
         page_context.page_title = ': Chat';
         res.render('chat', {
             session: req.session,
-            context: page_context
+            context: page_context,
+            locals: res.locals
         });
     }else{
         res.redirect('*');
     }
-    debug(req);
+    debug(req, res);
 });
 
 /***
@@ -49,12 +53,13 @@ app.get('/game', function(req, res) {
         page_context.page_title = ': Game in progress';
         res.render('game', {
             session: req.session,
-            context: page_context
+            context: page_context,
+            locals: res.locals
         });
     }else{
         res.redirect('*');
     }
-    debug(req);
+    debug(req, res);
 });
 
 /***
@@ -64,7 +69,8 @@ app.get('/game', function(req, res) {
 app.post('/login', function(req, res) {
     if(!req.session.email){
         var email = req.body.email
-        ,   password = req.body.password;
+        ,   password = req.body.password
+        ,   remember_me = req.body.remember_me;
         models.user.findOne({ email: email },
             function find_account_record_at_login(error, account){
                 if(account !== null){
@@ -77,6 +83,11 @@ app.post('/login', function(req, res) {
                     req.session.record_games_won = account.record_games_won;
                     req.session.record_games_lost = account.record_games_lost;
                     req.session.avatar_url = account.avatar_url;
+                    if(remember_me === "true"){
+                        req.session.cookie.maxAge = 365 * 24 * 60 * 60 * 1000;
+                    }else{
+                        req.session.cookie.maxAge = null;
+                    }
                     res.send(200);
                     }else{
                         res.send(401);
@@ -89,7 +100,7 @@ app.post('/login', function(req, res) {
     }else{
         res.redirect('*');
     }
-    debug(req);
+    debug(req, res);
 });
 
 /***
@@ -104,7 +115,7 @@ app.get('/logout', function(req, res) {
     }else{
         res.redirect('*');
     }
-    debug(req);
+    debug(req, res);
 });
 
 /***
@@ -115,16 +126,16 @@ app.get('/signup', function(req, res) {
         page_context.page_title = ': Sign Up';
         res.render('signup', {
             session: req.session,
-            context: page_context
+            context: page_context,
+            locals: res.locals
         });
     }else{
         res.redirect('*');
     }
-    //debug(req);
+    debug(req, res);
 });
 
 app.post('/signup', function(req, res) {
-    //console.log('post hit signup!');
     if (req.session.email){
         res.redirect('*');
     }else{
@@ -133,15 +144,7 @@ app.post('/signup', function(req, res) {
         var failure3 = req.body.email.length === 0;
         var failure4 = req.body.password.length === 0;
         var failure5 = req.body.password.length === 0;
-        if(failure1){
-            res.send(409);
-        }else if(failure2){
-            res.send(409);
-        }else if(failure3){
-            res.send(409);
-        }else if(failure4){
-            res.send(409);
-        }else if(failure5){
+        if(failure1 || failure2 || failure3 || failure4 || failure5){
             res.send(409);
         }else{
             var salt = settings.mongodb_salt_keyword+String(Date.now());
@@ -162,7 +165,7 @@ app.post('/signup', function(req, res) {
             });
         }
     }
-    //debug(req);
+    debug(req, res);
 });
 
 /***
@@ -172,10 +175,14 @@ app.get('/user', function(req, res, next) {
     console.log(req.session);
     if (req.session.email){
         page_context.page_title = ': User Dashboard';
+        //if(req.query.success){
+        //    page_context.success = true;
+        //}
         if(!req.query.id){ // load self page
             res.render('user', {
                 session: req.session,
-                context: page_context
+                context: page_context,
+                locals: res.locals
             });
         }else if(req.query.id.match(/^[0-9a-fA-F]{24}$/) && req.query.id.length === 24){
             console.log("hit on req.query.id: "+req.query.id);
@@ -188,7 +195,8 @@ app.get('/user', function(req, res, next) {
                         req.session.messages.push(error);
                         res.render('user', {
                             session: req.session,
-                            context: page_context
+                            context: page_context,
+                            locals: res.locals
                         });
                     }else */
                     if(account !== null && error == null){
@@ -198,6 +206,7 @@ app.get('/user', function(req, res, next) {
                         res.locals.date_signup = account.date_signup;
                         res.locals.record_games_won = account.record_games_won;
                         res.locals.record_games_lost = account.record_games_lost;
+                        res.locals.other_user = true;
                         res.render('user', {
                             session: req.session,
                             context: page_context,
@@ -205,25 +214,29 @@ app.get('/user', function(req, res, next) {
                         });
                     }else{ // no account found at specified id
                         console.log(error);
-                        req.session.messages.push("Error: The specified user could not be found.");
+                        req.session.messages.push({"failure":"Error: The specified user id could not be found."});
+                        //req.session.messages.push("Error: The specified user could not be found.");
                         res.render('user', {
                             session: req.session,
-                            context: page_context
+                            context: page_context,
+                            locals: res.locals
                         });
                     }
                 }
             );
         }else{ // invalid id, failed regex and/or length
-            req.session.messages.push("Error: The specified user id is invalid.");
+            req.session.messages.push({"failure":"Error: The specified user id is invalid."});
+            //req.session.messages.push("Error: The specified user id is invalid.");
             res.render('user', {
                 session: req.session,
-                context: page_context
+                context: page_context,
+                locals: res.locals
             });
         }
     }else{ // not signed in
         res.redirect('*');
     }
-    debug(req);
+    debug(req, res);
 });
 
 app.post('/user', function(req, res) {
@@ -236,13 +249,7 @@ app.post('/user', function(req, res) {
         var failure4 = req.body.email.length === 0;
         var no_password_update = req.body.password.length === 0;
         var conditions = { _id : req.session._id };
-        if(failure1){
-            res.send(409);
-        }else if(failure2){
-            res.send(409);
-        }else if(failure3){
-            res.send(409);
-        }else if(failure4){
+        if(failure1 || failure2 || failure3 || failure4){
             res.send(409);
         }else if(no_password_update){
             var update = {
@@ -251,19 +258,27 @@ app.post('/user', function(req, res) {
                 bio: req.body.bio,
                 avatar_url: req.body.avatar_url
             };
+            // update db but not password
             models.user.update(conditions, update, function update_callback_1(error, rows){
                 if(rows===1){
                     req.session.email = req.body.email;
                     req.session.username = req.body.username;
                     req.session.bio = req.body.bio;
                     req.session.avatar_url = req.body.avatar_url;
+                    //req.session.messages.push("<li><p class=\"text-success\">You are signed out.</p></li>"); //This will never be seen.
+                    req.session.messages.push({"success":"Your settings were successfully updated."});
                     res.send(200);
+                    //res.render('user', {
+                    //    session: req.session,
+                    //    context: page_context,
+                    //    locals: res.locals
+                    //});
                 }else{
                     res.send(409);
                 }
             });
-            // update db but not password
         }else{
+            // update db including password
             var salt = settings.mongodb_salt_keyword+String(Date.now());
             var update = {
                 email: req.body.email,
@@ -284,9 +299,9 @@ app.post('/user', function(req, res) {
                     res.send(409);
                 }
             });
-            // update db including password
         }
     }
+    debug(req, res);
 });
 
 /***
@@ -296,15 +311,16 @@ app.get('/404', function(req, res, next) {
     page_context.page_title = ': Error';
     res.render('404', {
         session: req.session,
-        context: page_context
+        context: page_context,
+        locals: res.locals
     });
-    debug(req);
+    debug(req, res);
 });
 
 app.get('*', function(req, res, next) {
     page_context.page_title = ': Error';
     res.redirect('/404');
-    debug(req);
+    debug(req, res);
 });
 
 }

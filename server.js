@@ -40,9 +40,9 @@ var app = express()
     .use(express.session({ secret: settings.session_key }));
 
 app.response.message = function(msg){
-    var sess = this.req.session;
-    sess.messages = sess.messages || [];
-    sess.messages.push(msg);
+    var session = this.req.session;
+    session.messages = session.messages || [];
+    session.messages.push(msg);
 };
 
 app.use(function(req, res, next){
@@ -79,7 +79,7 @@ console.log(color.fggreen+"Crypto loaded."+color.reset);
 /**
 * Load the routes
 */
-var routes = require(settings.routes_path)(app, settings, models, crypto);
+var routes = require(settings.routes_path)(app, settings, models, crypto, color);
 console.log(color.fgyellow+"Routes loaded."+color.reset);
 
 /**

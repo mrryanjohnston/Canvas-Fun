@@ -1,6 +1,8 @@
 module.exports = function settings_function() {
     var settings = {
 
+        debug: true,
+
         /***
         * Directories and filepaths
         */

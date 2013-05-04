@@ -4,7 +4,8 @@ var helpers = {
             url: 'login',
             data: {
                 email : $('#email').val(),
-                password : $('#password').val()
+                password : $('#password').val(),
+                remember_me : $('#remember_me').is(":checked")
                 },  
             type: 'post',
             error: function on_login_failure(){

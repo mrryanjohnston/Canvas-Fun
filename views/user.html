@@ -4,19 +4,21 @@
 
 <div class="row-fluid">
     <div class="span8">
-        <form id="user_form" class="form-horizontal"{% if !locals %} method="post" action="/user"{%endif%}>
+        <form id="user_form" class="form-horizontal"{% if !locals.other_user %} method="post" action="/user"{%endif%}>
             <div id="update_error" class="alert alert-error none">
-                <p>
-                </p>
+                <p></p>
             </div>
+            {#
+            {% if context.success %}
             <div id="update_success" class="alert alert-success none">
-                <p>
-                </p>
+                <p></p>
             </div>
+            {% endif %}
+            #}
             <div class="control-group">
-                <label id="profile_label" class="control-label" for="profile"><strong>{% if locals %}{{ locals.username|escape }}{% else %}{{ session.username|escape }}{% endif %}</strong></label>
+                <label id="profile_label" class="control-label" for="profile"><strong>{% if locals.other_user %}{{ locals.username|escape }}{% else %}{{ session.username|escape }}{% endif %}</strong></label>
                 <div class="controls">
-                    {% if locals %}
+                    {% if locals.other_user %}
                         {% if locals.avatar_url|length > 1 %}
                             <img id="profile" class="img-polaroid" src="{{ locals.avatar_url|escape }}">
                         {% else %}
@@ -34,13 +36,13 @@
             <div class="control-group">
                 <label class="control-label" for="username">Username: </label>
                 <div class="controls">
-                    <input id="username" type="text" name="username" class="input-block-level" value="{% if locals %}{{ locals.username|escape }}{% else %}{{ session.username|escape }}{% endif %}"{% if locals %} readonly{% endif %}>
+                    <input id="username" type="text" name="username" class="input-block-level" value="{% if locals.other_user %}{{ locals.username|escape }}{% else %}{{ session.username|escape }}{% endif %}"{% if locals.other_user %} readonly{% endif %}>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="bio">About: </label>
                 <div class="controls">
-                    <textarea id="bio" name="bio" class="input-block-level"{% if locals %} readonly{% endif %}>{% if locals %}{{ locals.bio|escape }}{% else %}{{ session.bio|escape }}{% endif %}</textarea>
+                    <textarea id="bio" name="bio" class="input-block-level"{% if locals.other_user %} readonly{% endif %}>{% if locals.other_user %}{{ locals.bio|escape }}{% else %}{{ session.bio|escape }}{% endif %}</textarea>
                 </div>
             </div>
             {% if !locals %}
@@ -86,7 +88,7 @@
             <div class="control-group">
                 <label class="control-label" for="date_signup">Sign-up Date: </label>
                 <div class="controls">
-                    <input id="date_signup" name="date_signup" type="text" class="input-block-level" value="{% if locals %}{{ locals.date_signup|date('Y-m-d') }}{% else %}{{ session.date_signup|date('Y-m-d') }}{% endif %}" readonly>
+                    <input id="date_signup" name="date_signup" type="text" class="input-block-level" value="{% if locals.other_user %}{{ locals.date_signup|date('Y-m-d') }}{% else %}{{ session.date_signup|date('Y-m-d') }}{% endif %}" readonly>
                 </div>
             </div>
             {% if !locals %}
@@ -100,8 +102,8 @@
     </div>
     <div id="user_record" class="span4">
         <h4>Record</h4>
-        <p>Wins: {% if locals %}{{ locals.record_games_won }}{% else %}{{ session.record_games_won }}{% endif %}</p>
-        <p>Losses: {% if locals %}{{ locals.record_games_lost }}{% else %}{{ session.record_games_lost }}{% endif %}</p>
+        <p>Wins: {% if locals.other_user %}{{ locals.record_games_won }}{% else %}{{ session.record_games_won }}{% endif %}</p>
+        <p>Losses: {% if locals.other_user %}{{ locals.record_games_lost }}{% else %}{{ session.record_games_lost }}{% endif %}</p>
     </div>
 </div>
 
@@ -158,8 +160,7 @@ $("#user_form").submit(function(){
             $("#update_error p").text("There was an error updating your account.");
         },
         success: function on_update_profile_success(){
-            $("#update_success").removeClass("none");
-            $("#update_success p").text("Your account was successfully updated");
+            //window.location.replace("/user?success");
             window.location.replace("/user");
         }
     });
