@@ -108,10 +108,10 @@ app.post('/login', function(req, res) {
 */
 app.get('/logout', function(req, res) {
     if (req.session.email){
-        req.session.destroy();
         page_context.page_title = ': Logout';
-        //req.session.messages.push("<li><p class=\"text-success\">You are signed out.</p></li>"); //This will never be seen.
+        //req.session.messages.push({'success': 'You were successfully signed out.'}); //This will never be seen.
         res.redirect('/');
+        req.session.destroy();
     }else{
         res.redirect('*');
     }
@@ -175,9 +175,6 @@ app.get('/user', function(req, res, next) {
     console.log(req.session);
     if (req.session.email){
         page_context.page_title = ': User Dashboard';
-        //if(req.query.success){
-        //    page_context.success = true;
-        //}
         if(!req.query.id){ // load self page
             res.render('user', {
                 session: req.session,
@@ -188,17 +185,6 @@ app.get('/user', function(req, res, next) {
             console.log("hit on req.query.id: "+req.query.id);
             models.user.findById(req.query.id,
                 function find_account_record_for_user_id(error, account){
-                    //if(error) return next(error);
-                    /*
-                    if(error){
-                        console.log(error);
-                        req.session.messages.push(error);
-                        res.render('user', {
-                            session: req.session,
-                            context: page_context,
-                            locals: res.locals
-                        });
-                    }else */
                     if(account !== null && error == null){
                         res.locals.username = account.username;
                         res.locals.avatar_url = account.avatar_url;
@@ -215,7 +201,6 @@ app.get('/user', function(req, res, next) {
                     }else{ // no account found at specified id
                         console.log(error);
                         res.locals.messages.push({"error":"The specified user id could not be found."});
-                        //req.session.messages.push("Error: The specified user could not be found.");
                         res.render('user', {
                             session: req.session,
                             context: page_context,
@@ -226,7 +211,6 @@ app.get('/user', function(req, res, next) {
             );
         }else{ // invalid id, failed regex and/or length
             res.locals.messages.push({"error":"The specified user id is invalid."});
-            //req.session.messages.push("Error: The specified user id is invalid.");
             res.render('user', {
                 session: req.session,
                 context: page_context,
@@ -265,14 +249,8 @@ app.post('/user', function(req, res) {
                     req.session.username = req.body.username;
                     req.session.bio = req.body.bio;
                     req.session.avatar_url = req.body.avatar_url;
-                    //req.session.messages.push("<li><p class=\"text-success\">You are signed out.</p></li>"); //This will never be seen.
-                    req.session.locals.push({"success":"Your settings were successfully updated."});
+                    req.session.messages.push({"success":"Your settings were successfully updated."}); //req.session instead of res.locals to defer to next request.
                     res.send(200);
-                    //res.render('user', {
-                    //    session: req.session,
-                    //    context: page_context,
-                    //    locals: res.locals
-                    //});
                 }else{
                     res.send(409);
                 }
