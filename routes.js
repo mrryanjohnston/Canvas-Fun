@@ -214,7 +214,7 @@ app.get('/user', function(req, res, next) {
                         });
                     }else{ // no account found at specified id
                         console.log(error);
-                        req.session.messages.push({"failure":"Error: The specified user id could not be found."});
+                        res.locals.messages.push({"error":"The specified user id could not be found."});
                         //req.session.messages.push("Error: The specified user could not be found.");
                         res.render('user', {
                             session: req.session,
@@ -225,7 +225,7 @@ app.get('/user', function(req, res, next) {
                 }
             );
         }else{ // invalid id, failed regex and/or length
-            req.session.messages.push({"failure":"Error: The specified user id is invalid."});
+            res.locals.messages.push({"error":"The specified user id is invalid."});
             //req.session.messages.push("Error: The specified user id is invalid.");
             res.render('user', {
                 session: req.session,
@@ -266,7 +266,7 @@ app.post('/user', function(req, res) {
                     req.session.bio = req.body.bio;
                     req.session.avatar_url = req.body.avatar_url;
                     //req.session.messages.push("<li><p class=\"text-success\">You are signed out.</p></li>"); //This will never be seen.
-                    req.session.messages.push({"success":"Your settings were successfully updated."});
+                    req.session.locals.push({"success":"Your settings were successfully updated."});
                     res.send(200);
                     //res.render('user', {
                     //    session: req.session,
