@@ -5,11 +5,9 @@
 
 $(document).ready(function setup_sockets(){
 
-    var NICK_MAX_LENGTH = 15,
-        ROOM_MAX_LENGTH = 10,
-        socket = null,
-        clientId = null,
-        nickname = null,
+    var socket = null,
+        //clientId = null,
+        //nickname = null,
         current_room = null,
         server_address = 'http://localhost:3000',
         server_display_name = 'Server',
@@ -213,6 +211,7 @@ $(document).ready(function setup_sockets(){
     }
 
     function insertMessage(sender, message, showTime, isMe, isServer){
+        
         // Edit
         var $html = $.tmpl(tmplt.message, {
             sender: sender,

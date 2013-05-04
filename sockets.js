@@ -1,4 +1,4 @@
-module.exports = function sockets_function(settings, io, app) {
+module.exports = function sockets_function(settings, io, app, models) {
     io.set('log level', 3); // See https://github.com/LearnBoost/Socket.IO/wiki/Configuring-Socket.IO
     io.set('transports', [ 'websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']);
 

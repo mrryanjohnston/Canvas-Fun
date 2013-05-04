@@ -85,7 +85,7 @@ console.log(color.fgyellow+"Routes loaded."+color.reset);
 /**
 * Load websockets
 */
-var io_config = require(settings.project_directory + '/sockets.js')(settings, io, app);
+var io_config = require(settings.project_directory + '/sockets.js')(settings, io, app, models);
 
 /**
 * Start the app
