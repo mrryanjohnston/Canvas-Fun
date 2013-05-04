@@ -63,6 +63,9 @@ Then:
     mongoctl install-mongodb 2.2.3
     mongoctl start [servername]
 
+###Redis
+v2.6.12
+
 ## Misc.
 Card sprite provided by [Brandon Ardiente](http://ardisoft.net/svg-z-cards/) under the LGPL.  
 Followed the tutorials by [Eric Rowell](http://www.html5canvastutorials.com/kineticjs/html5-canvas-events-tutorials-introduction-with-kineticjs/).  

@@ -6,7 +6,7 @@ $(document).ready(function(){
                 clearInterval(login_focus);
             }
         }, 100);
-    }); 
+    });
 });
 
 var helpers = {

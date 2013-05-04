@@ -17,9 +17,10 @@ module.exports = function settings_function() {
         /***
         * Web server settings
         */
-        port_http: 8000,
-        port_sockets: 3000,
-        session_key: "p2(236cVb3S#a,25gffDxrR|tb{{bddR31aAz35917",
+        port: 8000,
+        session_key: "2cards2furious",
+        session_secret: "p2(236cVb3S#a,25gffDxrR|tb{{bddR31aAz35917",
+        cookie_secret: "11rn@J2d9SSv21qz%17201439pKTB28cnOWe4cjd!kd",
 
         /***
         * Database server settings
@@ -37,6 +38,13 @@ module.exports = function settings_function() {
         */
         mongodb_collections: {
             user_accounts: "users"
+        },
+        redis_settings: {
+            host: "127.0.0.1",
+            port: "6379",
+            pass: "SHittYpAssWORd",
+            db: "cards",
+            ttl: 60*60*24*365
         },
         context : {
             version : 1,

@@ -2,7 +2,7 @@
 //
 //})
 
-$('#login_form').submit(function(){
+$('#login_form').submit(function(event){
     event.preventDefault();
     helpers.login();
 });
