@@ -24,7 +24,7 @@ module.exports = function sockets_function(settings, io, app, models, string){
         var room = "lobby";
         //user_list : get_clients_in_room() // get_clients_in_room(room)
         io.sockets.emit('ready', { message: '<a href="/user?id='+socket.handshake.session._id+'" target="_blank">'+socket.handshake.session.username+'</a> has connected.'});
-        io.sockets.emit('userlist', { users : user_list(room), room : room});
+        //io.sockets.emit('userlist', { users : user_list(room), room : room});
     }
 
     function message(socket, data){
@@ -33,6 +33,7 @@ module.exports = function sockets_function(settings, io, app, models, string){
         console.log("A client sent a message.");
         console.log("data: "+JSON.stringify(data));
         io.sockets.emit('message', data );
+        console.log(io.sockets.manager.rooms);
     }
 
     function disconnect(socket, data){
@@ -40,26 +41,25 @@ module.exports = function sockets_function(settings, io, app, models, string){
         //console.log("data: "+data);
         data = {
             username: socket.handshake.session.username,
-            user_id : socket.handshake.session._id,
-            user_list : get_clients_in_room() // get_clients_in_room(room)
+            user_id : socket.handshake.session._id
+            //user_list : get_clients_in_room() // get_clients_in_room(room)
         };
         io.sockets.emit('disconnect', data);
     }
 
-    function user_list(room){
-        return null;
-    }
-
-    function subscribe(socket, data){
-        var rooms = get_rooms();
-        if(rooms.indexOf('/' + data.room) < 0){
-            socket.broadcast.emit('addroom', { room: data.room });
+    function get_clients_in_room(room){
+        var socketIds = io.sockets.manager.rooms['/' + room];
+        var clients = [];
+        if(socketIds && socketIds.length > 0){
+            socketsCount = socketIds.length;
+            for(var i = 0, len = socketIds.length; i < len; i++){
+                if(socketIds[i] != socketId){
+                    clients.push(chat_clients[socketIds[i]]);
+                }
+            }
         }
-        socket.join(data.room);
-        update_presence(data.room, socket, 'online');
-        socket.emit('roomclients', { room: data.room, clients: get_clients_in_room(socket.id, data.room) });
+        return clients;
     }
-
 
     /*
     // Tutorial by http://udidu.blogspot.com/2012/11/chat-evolution-nodejs-and-socketio.html

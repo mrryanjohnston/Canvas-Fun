@@ -5,6 +5,7 @@ Why not?
 Javascript, [node.js](http://www.nodejs.org),
 [socket.io](http://www.socket.io),
 [express](http://www.expressjs.com),
+[Redis](http://www.redis.io/),
 [MongoDB](http://www.mongodb.org),
 [jQuery](http://jquery.com/), 
 [Kinetic.js](http://www.kineticjs.com/),
@@ -28,7 +29,7 @@ Start, stop, and restart the application as a long running process, respectively
 
     npm start
     npm stop
-    npm restart
+    npm restart #this is actually broken
 
 Start the server as a short running process
 
@@ -54,12 +55,13 @@ Mongoose can be a butt. You may need to install it prior to running npm install.
     npm install mongoose
     npm install
     
-###MongoDB setup
-You'll need to have a copy of mongodb running a database. We recommend using [mongoctl](http://github.com/mongolab/mongoctl). Install python, build tools, and pip. Pick one of the follow based on your OS/distro:
+###MongoDB deployment
+You'll need to have a copy of mongodb running your database. We recommend using [mongoctl](http://github.com/mongolab/mongoctl) to provision servers. Install python, build tools, and pip. Pick one of the follow based on your OS/distro:
 
     sudo apt-get install python build-essential python-pip
-    sudo pacman -S base-devel python python-pip (should test this too)
+    sudo pacman -S base-devel python2 python2-pip
     sudo yum install python python-pip build-essential ??? (need to test this)
+    brew install ?something?
 
 Then:
 
@@ -69,7 +71,7 @@ Then:
     mongoctl start [servername]
 
 ###Redis
-We're using v2.6.12(but this probably doesn't matter too much). For development purposes it isn't daemonized, while in production it should be. To run do as follows:
+We're using v2.6.12(but the version probably doesn't matter). For development purposes it isn't daemonized, while in production it should be. To run do as follows:
 
     redis-server redis.conf
 
