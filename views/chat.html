@@ -7,8 +7,8 @@
 
 <div class="row-fluid">
     <div id="chat_window" class="span10">
-        <div class="container-fluid">
-
+        <div class="container-fluid" id="chat_container">
+            <!--
             <div class="row-fluid">
                 <div class="span2">
                     <p>[9:16] Name:</p>
@@ -44,10 +44,12 @@
                     <p>Text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text </p>
                 </div>
             </div>
+            -->
 
         </div>
     </div>
     <div id="user_window" class="span2">
+        <!--
         <p>List</p>
         <p>of</p>
         <p>current</p>
@@ -96,12 +98,15 @@
         <p>of</p>
         <p>current</p>
         <p>users</p>
+        -->
     </div>
 </div>
 
 <div class="row-fluid">
     <div id="chat_input_wrapper" class="span12">
+        <form id="chat_form">
         <input id="chat_input" type="text" class="input-block-level">
+        </form>
     </div>
 </div>
 
@@ -116,9 +121,6 @@
         $("#chat_window,#user_window").css("max-height",document.body.clientHeight-$("#navigation_bar, #footer, chat_input").height()-100);
     });
 
-    var nickname = "{{ session.username|escape }}";
-    var id = "{{ session._id }}";
-    var email = "{{ session.email }}";
 </script>
 
 <script type="text/javascript" src="js/sockets.js"></script>

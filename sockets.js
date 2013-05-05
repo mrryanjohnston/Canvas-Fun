@@ -1,36 +1,61 @@
-module.exports = function sockets_function(settings, io, app, models, session_sockets) {
-    io.set('log level', 3); // See https://github.com/LearnBoost/Socket.IO/wiki/Configuring-Socket.IO
+module.exports = function sockets_function(settings, io, app, models){ //, session_sockets) {
+    io.set('log level', 0); // See https://github.com/LearnBoost/Socket.IO/wiki/Configuring-Socket.IO
     io.set('transports', [ 'websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']);
 
     io.sockets.on('connection', function(socket){
+
         socket.on('connect', function(data){
-            console.log(socket);
-            console.log(data);
-            console.log(session_sockets.user);
             connect(socket, data);
         });
-        socket.on('chat_message', function(data){
-            chat_message(socket, data);
+
+        socket.on('message', function(data){
+            message(socket, data);
         });
+
         socket.on('disconnect', function(){
             disconnect(socket);
         });
+
     });
 
     function connect(socket, data){
-        socket.emit(data, { chat_message: "You are connected!"});
-        console.log("A client connected.");
-        console.log("data: "+data);
+        console.log("A client connected with the session id "+socket.handshake.sessionID);
+        var room = "lobby";
+        // Check session email v the db. If it's ok then return a 'ready'.
+        io.sockets.emit('ready', { message: socket.handshake.session.username+" has connected."});
+        io.sockets.emit('userlist', { users : user_list(room), room : room});
     }
 
-    function chat_message(socket, data){
+    function message(socket, data){
+        //console.log(app);
+        //console.log(session_sockets);
+        console.log("===========");
+        data.user = socket.handshake.session.username;
+        data.message = data.message;
         console.log("A client sent a message.");
-        console.log("data: "+data);
+        console.log("data: "+JSON.stringify(data));
+        //io.sockets.emit('message', { data : data });// {data: data});
+        io.sockets.emit('message', data );// {data: data});
     }
 
     function disconnect(socket, data){
         console.log("A client disconnected.");
-        console.log("data: "+data);
+        //console.log("data: "+data);
+        io.sockets.emit('disconnect', { user: socket.handshake.session.username });
+    }
+
+    function user_list(room){
+        return null;
+    }
+
+    function subscribe(socket, data){
+        var rooms = get_rooms();
+        if(rooms.indexOf('/' + data.room) < 0){
+            socket.broadcast.emit('addroom', { room: data.room });
+        }
+        socket.join(data.room);
+        update_presence(data.room, socket, 'online');
+        socket.emit('roomclients', { room: data.room, clients: get_clients_in_room(socket.id, data.room) });
     }
 
 

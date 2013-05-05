@@ -25,7 +25,8 @@
         "mongoose":"3.6.x",
         "redis":"0.8.x",
         "connect-redis":"1.4.x",
-        "session.socket.io":"0.1.x"
+        "session.socket.io":"0.1.x",
+        "cookie-signature":"1.0.x"
     },
     "engines": {
         "node": "0.8.19",

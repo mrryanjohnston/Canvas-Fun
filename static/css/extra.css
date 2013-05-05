@@ -1,8 +1,16 @@
+#chat_form {
+    margin: 0;
+}
+#chat_container {
+    padding: 0 4px;
+}
 #chat_window, #user_window {
     margin-bottom: 8px;
     background-color: #fff;
-    padding: 12px 0 0 12px;
     overflow: auto;
+}
+#chat_window {
+    padding: 12px 0 0 2px;
 }
 
 #chat_input {
@@ -14,7 +22,7 @@
 
 #user_window {
     line-height: 10px;
-    padding-top: 17px;
+    padding: 17px 0 0 12px;
 }
 
 #flashed_messages p {
@@ -104,7 +112,7 @@ html, body {
     height: auto !important;
     height: 100%;
     /* Negative indent footer by it's height */
-    margin: 0 auto -35px;
+    margin: 0 auto -37px;
 }
 
 /* Set the fixed height of the footer here */

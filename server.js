@@ -26,7 +26,9 @@ var app = express()
     .use(express.methodOverride());
 //    .use(express.session({ store: session_store, key: settings.session_key }));
 
-var cookie_parser = express.cookieParser(settings.session_secret);
+//var cookie_parser = express.cookieParser(settings.session_secret);
+var cookie_parser = express.cookieParser();
+var cookie_signature = require('cookie-signature');
 var cookie = require('cookie');
 //var parseSignedCookie = require('cookie');
 app.use(cookie_parser)
@@ -88,41 +90,52 @@ console.log(color.fgyellow+"Routes loaded."+color.reset);
 /**
 * Load websockets
 */
-var SessionSockets = require('session.socket.io');
-var session_sockets = new SessionSockets(io, session_store, cookie_parser, settings.session_secret);
-var io_config = require(settings.project_directory + '/sockets.js')(settings, io, app, models, session_sockets);
+//var SessionSockets = require('session.socket.io');
+//var session_sockets = new SessionSockets(io, session_store, cookie_parser, settings.session_secret);
+var io_config = require(settings.project_directory + '/sockets.js')(settings, io, app, models);//, session_sockets);
 // Authenticate sockets with sessions stored in redis
 // https://github.com/alphapeter/socket.io-express
-//var socket_authentication = require('socket.io-express').createAuthFunction(cookie_parser, redis_store);
-//io.set('authorization', function(handshake, callback){
-//    console.log(handshake);
-//    //try{
-//        if (handshake.headers.cookie) {
-//            var sessionCookie = require('cookie').parse(handshake.headers.cookie);
-//            //var sessionID = require('cookie').parseSignedCookies(sessionCookie, settings.session_secret);
-//            //var sessionID = express.utils.parseSignedCookie(sessionCookie[settings.session_key], settings.session_secret);
-//            var sessionID = express.utils.parseCookie(require('cookie').parse(sessionCookie[settings.session_key]), settings.session_secret);
-//            var session_d = sessionCookie[settings.session_key];
-//            console.log(sessionCookie);
-//            //console.log(express.session.Store);
-//            //console.log("----");
-//            console.log(sessionID);
-//            session_store.get(sessionID, function(error, session) {
-//                if (error || !session) {
-//                    callback('Error'+error, false);
-//                } else {
-//                    handshake.session = session;
-//                    handshake.sessionID = sessionID;
-//                    callback(null, true);
-//                }
-//            });
-//        } else {
-//            callback('No cookie', false);
-//        }
-//    //}catch(error){
-//    //    callback('No cookie. '+error, false);
-//    //}
-//});
+var socket_authentication = require('socket.io-express').createAuthFunction(cookie_parser, redis_store);
+io.set('authorization', function(handshake, callback){
+    console.log(handshake);
+    console.log("##");
+    //try{
+        if (handshake.headers.cookie) {
+            var sessionCookie = cookie.parse(handshake.headers.cookie);
+            //var sessionID = cookie.parseCookie(sessionCookie, settings.session_secret);
+            //var sessionID = cookie.parseSignedCookies(sessionCookie, settings.session_secret);
+            //var sessionID = express.utils.parseSignedCookie(sessionCookie[settings.session_key], settings.session_secret);
+            //var sessionID = express.utils.parseCookie(cookie.parse(sessionCookie[settings.session_key]), settings.session_secret);
+            //console.log(sessionCookie);
+            //console.log("----");
+            var sessionID = sessionCookie[settings.session_key].slice(2,26);
+            //var sessionID = cookie_signature.unsign(sessionCookie, settings.session_secret);
+            //console.log(express.session.Store);
+            //console.log(sessionID);
+            //console.log(sessionCookie);
+            //console.log("----");
+            //console.log(sessionID);
+            //handshake.sessionID = sessionCookie;
+            
+            session_store.get(sessionID, function(error, session) {
+                if (error || !session) {
+                    callback('Error'+error, false);
+                    console.log("Auth Error");
+                } else {
+                    handshake.session = session;
+                    handshake.sessionID = sessionID;
+                    console.log("Auth OK!");
+                    callback(null, true);
+                }
+            });
+            //callback(null, true);
+        } else {
+            callback('No cookie', false);
+        }
+    //}catch(error){
+    //    callback('No cookie. '+error, false);
+    //}
+});
 
 /**
 * Start the app
