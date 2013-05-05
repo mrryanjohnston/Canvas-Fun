@@ -13,7 +13,7 @@
                 {% if locals.avatar_url|length > 1 %}
                     <img id="profile" class="img-polaroid" src="{{ locals.avatar_url }}">
                 {% else %}
-                    <img id="profile" class="img-polaroid .right" data-src="holder.js/200x200">
+                    <img id="profile" class="img-polaroid right" data-src="holder.js/200x200">
                 {% endif %}
             {% else %}
                 {% if session.avatar_url|length > 1 %}
