@@ -4,6 +4,7 @@ var page_context = settings.context;
 
 function debug(req, res){
     if (settings.debug == true){
+        console.log(req);
         console.log(color.fgred+"SESSION >>>>>>>>>>>"+color.reset);
         console.log(req.session);
         console.log(color.fgred+"<<<<<<<<<<<<<<<<<<"+color.reset);

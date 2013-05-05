@@ -64,7 +64,20 @@ Then:
     mongoctl start [servername]
 
 ###Redis
-v2.6.12
+We're using v2.6.12(but this probably doesn't matter too much). For development purposes it isn't daemonized, while in production it should be. To run do as follows:
+
+    redis-server
+
+To access the store:
+
+    redis-cli -a SHittYpAssWORd
+
+To [control](http://redis.io/commands) redis, once logged-in: 
+
+    keys *
+    flushdb
+    shutdown
+    etc.
 
 ## Misc.
 Card sprite provided by [Brandon Ardiente](http://ardisoft.net/svg-z-cards/) under the LGPL.  

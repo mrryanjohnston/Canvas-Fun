@@ -6,7 +6,7 @@ $(document).ready(function(){
 
 function connect(){
     var socket
-    ,   server_address = "helium";
+    ,   server_address = "/";
     socket = io.connect(server_address);
     bind_dom_listeners(socket);
     bind_sockets(socket);

@@ -27,7 +27,7 @@ var app = express()
 //    .use(express.session({ store: session_store, key: settings.session_key }));
 
 //var cookie_parser = express.cookieParser(settings.session_secret);
-var cookie_parser = express.cookieParser();
+var cookie_parser = express.cookieParser(settings.session_secret);
 var cookie_signature = require('cookie-signature');
 var cookie = require('cookie');
 //var parseSignedCookie = require('cookie');
@@ -101,19 +101,44 @@ io.set('authorization', function(handshake, callback){
     console.log("##");
     //try{
         if (handshake.headers.cookie) {
-            var sessionCookie = cookie.parse(handshake.headers.cookie);
+            var sessionCookie = cookie.parse(handshake.headers.cookie)[settings.session_key];
             //var sessionID = cookie.parseCookie(sessionCookie, settings.session_secret);
             //var sessionID = cookie.parseSignedCookies(sessionCookie, settings.session_secret);
             //var sessionID = express.utils.parseSignedCookie(sessionCookie[settings.session_key], settings.session_secret);
             //var sessionID = express.utils.parseCookie(cookie.parse(sessionCookie[settings.session_key]), settings.session_secret);
             //console.log(sessionCookie);
             //console.log("----");
-            var sessionID = sessionCookie[settings.session_key].slice(2,26);
-            //var sessionID = cookie_signature.unsign(sessionCookie, settings.session_secret);
+            var sessionID = sessionCookie.slice(2,26);
+            var sessionID1 = sessionCookie.slice(2, sessionCookie.lastIndexOf('.'));
+            var sessionID2 = sessionCookie.slice(2);
+            //var sessionID2 = sessionCookie.slice(2,111);
+//            var sessionID3 = sessionCookie;
+//            var sessionID4 = sessionCookie.slice(0,26);
+//            var sessionID5 = sessionCookie.slice(0,sessionCookie.lastIndexOf('.'));
+//            var sessionID6 = sessionCookie.slice(2,sessionCookie.lastIndexOf('.'));
+//            var sessionIb = cookie_signature.unsign(sessionID4, settings.session_secret);
+            //var sessionIc = cookie_signature.unsign(sessionID2, settings.session_secret);
             //console.log(express.session.Store);
+            console.log(sessionCookie);
             //console.log(sessionID);
+            //console.log("/////");
+            console.log("s:"+cookie_signature.sign(sessionID, settings.session_secret));
+            console.log("s:"+cookie_signature.sign(sessionID2, settings.session_secret));
+            var sessionIDU1 = cookie_signature.unsign(sessionID, settings.session_secret);
+            var sessionIDU2 = cookie_signature.unsign(sessionID1, settings.session_secret);
+            var sessionIDU3 = cookie_signature.unsign(sessionID2, settings.session_secret);
+            console.log("!!! >>> "+sessionIDU1);
+            console.log("!!! >>> "+sessionIDU2);
+            console.log("!!! >>> "+sessionIDU3);
+            console.log(cookie_signature.sign("_t92ptnewGjXKfShCUQY2S1e", settings.session_secret));
             //console.log(sessionCookie);
             //console.log("----");
+//            console.log(cookie_signature.sign(sessionID, settings.session_secret));
+            //console.log(cookie_signature.sign(sessionID2, settings.session_secret));
+//            console.log(cookie_signature.sign(sessionID3, settings.session_secret));
+//            console.log(cookie_signature.sign(sessionID4, settings.session_secret));
+//            console.log(cookie_signature.sign(sessionID5, settings.session_secret));
+//            console.log(cookie_signature.sign(sessionID6, settings.session_secret));
             //console.log(sessionID);
             //handshake.sessionID = sessionCookie;
             
