@@ -56,6 +56,9 @@ var swig = require('swig');
 console.log(color.fgred+"Swig loaded."+color.reset);
 var io = require('socket.io').listen(server);
 console.log(color.fgcyan+"Socket.io loaded."+color.reset);
+var crypto = require('crypto');
+console.log(color.fggreen+"Crypto loaded."+color.reset);
+var string = require('string');
 
 /**
 * Load the database and models
@@ -75,8 +78,6 @@ app.set('view engine', 'html');
 app.set('views', settings.views_directory );//Tells swig where to look for templates
 swig.init({ root: settings.views_directory, autoescape: false });//Tells swig where to look for extended templates
 
-var crypto = require('crypto');
-console.log(color.fggreen+"Crypto loaded."+color.reset);
 
 /**
 * Load the routes
@@ -87,7 +88,7 @@ console.log(color.fgyellow+"Routes loaded."+color.reset);
 /**
 * Load websockets
 */
-var io_config = require(settings.project_directory + '/sockets.js')(settings, io, app, models);
+var io_config = require(settings.project_directory + '/sockets.js')(settings, io, app, models, string);
 // Authenticate sockets with sessions stored in redis
 // https://github.com/alphapeter/socket.io-express
 var socket_authentication = require('socket.io-express').createAuthFunction(cookie_parser, redis_store);

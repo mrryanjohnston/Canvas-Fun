@@ -1,8 +1,9 @@
-module.exports = function sockets_function(settings, io, app, models){ //, session_sockets) {
+module.exports = function sockets_function(settings, io, app, models, string){ //, session_sockets) {
     io.set('log level', 0); // See https://github.com/LearnBoost/Socket.IO/wiki/Configuring-Socket.IO
     io.set('transports', [ 'websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']);
 
     io.sockets.on('connection', function(socket){
+        socket.handshake.session.username = string(socket.handshake.session.username).escapeHTML().s;
 
         socket.on('connect', function(data){
             connect(socket, data);
@@ -22,7 +23,7 @@ module.exports = function sockets_function(settings, io, app, models){ //, sessi
         console.log("A client connected with the session id "+socket.handshake.sessionID);
         var room = "lobby";
         // Check session email v the db. If it's ok then return a 'ready'.
-        io.sockets.emit('ready', { message: socket.handshake.session.username+" has connected."});
+        io.sockets.emit('ready', { message: '<a href="/user?id='+socket.handshake.session._id+'" target="_blank">'+socket.handshake.session.username+'</a> has connected.'});
         io.sockets.emit('userlist', { users : user_list(room), room : room});
     }
 
@@ -41,7 +42,11 @@ module.exports = function sockets_function(settings, io, app, models){ //, sessi
     function disconnect(socket, data){
         console.log("A client disconnected.");
         //console.log("data: "+data);
-        io.sockets.emit('disconnect', { user: socket.handshake.session.username });
+        data = {
+            username: socket.handshake.session.username,
+            user_id : socket.handshake.session._id
+        };
+        io.sockets.emit('disconnect', data);
     }
 
     function user_list(room){

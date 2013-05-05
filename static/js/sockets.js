@@ -57,7 +57,7 @@ function create_chat_element(element, data){
     if( element === "message" ){
         var item = '<div class="row-fluid"> \
                         <div class="span2"> \
-                            <p>['+now+'] '+data.user+'</p> \
+                            <p>['+now+'] '+data.user+':</p> \
                         </div> \
                         <div class="span10"> \
                             <p>'+data.data+'</p> \
@@ -93,7 +93,7 @@ function create_chat_element(element, data){
                             <p>['+now+']</p> \
                         </div> \
                         <div class="span10"> \
-                            <p>'+data.user+' has disconnected.</p> \
+                            <p><a href="/user?id='+data.user_id+'" target="_blank">'+data.username+'</a> has disconnected.</p> \
                         </div> \
                     </div>';
         chat_space.append(item);

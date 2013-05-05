@@ -26,7 +26,8 @@
         "redis":"0.8.x",
         "connect-redis":"1.4.x",
         "socket.io-express":"0.0.x",
-        "cookie-signature":"1.0.x"
+        "cookie-signature":"1.0.x",
+        "string":"1.3.x"
     },
     "engines": {
         "node": "0.8.19",
