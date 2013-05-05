@@ -76,7 +76,7 @@ console.log(color.fgblue+"Models loaded."+color.reset);
 app.engine('html', cons.swig);
 app.set('view engine', 'html');
 app.set('views', settings.views_directory );//Tells swig where to look for templates
-swig.init({ root: settings.views_directory, autoescape: false });//Tells swig where to look for extended templates
+swig.init({ root: settings.views_directory, autoescape: true });//Tells swig where to look for extended templates
 
 
 /**
@@ -93,19 +93,13 @@ var io_config = require(settings.project_directory + '/sockets.js')(settings, io
 // https://github.com/alphapeter/socket.io-express
 var socket_authentication = require('socket.io-express').createAuthFunction(cookie_parser, redis_store);
 io.set('authorization', function(handshake, callback){
-    console.log(handshake);
-    console.log("##");
     if (handshake.headers.cookie) {
         var sessionCookie = cookie.parse(handshake.headers.cookie)[settings.session_key];
         var sessionCookie = sessionCookie.slice(2);
         var sessionID = sessionCookie.slice(0,24);
-        //console.log("sessionID: "+sessionID);
         var sessionID_and_hash = sessionCookie;
         var sessionID_and_hash_rehashed = cookie_signature.sign(sessionID_and_hash, settings.session_secret).slice(0,111);
-        //console.log(sessionCookie);
-        //console.log(cookie_signature.sign(sessionID_and_hash, settings.session_secret).slice(0,111)); // Why is this correct from 0,111, but not 100%? wtf is going on?
         if(sessionCookie == sessionID_and_hash_rehashed){
-            console.log("match");
             session_store.get(sessionID, function(error, session) {
                 if (error || !session) {
                     callback('Error: '+error, false);
@@ -113,7 +107,7 @@ io.set('authorization', function(handshake, callback){
                 } else {
                     handshake.session = session;
                     handshake.sessionID = sessionID;
-                    console.log("Auth passed through.");
+                    console.log("Socket.io auth from session successful.");
                     callback(null, true);
                 }
             });

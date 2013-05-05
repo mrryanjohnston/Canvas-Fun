@@ -1,3 +1,18 @@
+form textarea {
+    resize: none;
+}
+
+img#profile {
+    padding: 0;
+}
+
+#right_container, #friends_container {
+    padding: 0;
+}
+#friends_list p {
+    padding-left: 12px;
+    margin-top: 6px;
+}
 #chat_form {
     margin: 0;
 }
@@ -57,7 +72,7 @@ body {
     background-color: #f0f0f0;
 }
 
-form#login_form, form#signup_form, form#user_form, ul#account_list, ul#notifications_list, div#user_record, div#about, div#chat_window, div#user_window, div#chat_input_wrapper {
+form#login_form, form#signup_form, form#user_form, ul#account_list, ul#notifications_list, div#user_record, div#friends_list, div#about, div#chat_window, div#user_window, div#chat_input_wrapper {
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0;
@@ -71,7 +86,7 @@ form#login_form, form#signup_form {
     background-color: #fff;
 }
 
-form#user_form, div#user_record, div#about {
+form#user_form, div#user_record, div#friends_list, div#about {
     /*max-width: 500px;*/
     padding: 0 12px;
     background-color: #fff;

@@ -9,47 +9,42 @@
 <div class="row-fluid">
     <div class="span8">
         <form id="user_form" class="form-horizontal"{% if !locals.other_user %} method="post" action="/user"{%endif%}>
-            <div class="control-group">
-                <label id="profile_label" class="control-label" for="profile"><strong>{% if locals.other_user %}{{ locals.username|escape }}{% else %}{{ session.username|escape }}{% endif %}</strong></label>
-                <div class="controls">
-                    {% if locals.other_user %}
-                        {% if locals.avatar_url|length > 1 %}
-                            <img id="profile" class="img-polaroid" src="{{ locals.avatar_url|escape }}">
-                        {% else %}
-                            <img id="profile" class="img-polaroid" data-src="holder.js/200x200">
-                        {% endif %}
-                    {% else %}
-                        {% if session.avatar_url|length > 1 %}
-                            <img id="profile" class="img-polaroid" src="{{ session.avatar_url|escape }}">
-                        {% else %}
-                            <img id="profile" class="img-polaroid" data-src="holder.js/200x200">
-                        {% endif %}
-                    {% endif %}
-                </div>
-            </div>
-            <div class="control-group">
+            {% if locals.other_user %}
+                {% if locals.avatar_url|length > 1 %}
+                    <img id="profile" class="img-polaroid" src="{{ locals.avatar_url }}">
+                {% else %}
+                    <img id="profile" class="img-polaroid .right" data-src="holder.js/200x200">
+                {% endif %}
+            {% else %}
+                {% if session.avatar_url|length > 1 %}
+                    <img id="profile" class="img-polaroid" src="{{ session.avatar_url }}">
+                {% else %}
+                    <img id="profile" class="img-polaroid right" data-src="holder.js/200x200">
+                {% endif %}
+            {% endif %}
+            <div class="control-group clear">
                 <label class="control-label" for="username">Username: </label>
                 <div class="controls">
-                    <input id="username" type="text" name="username" class="input-block-level" value="{% if locals.other_user %}{{ locals.username|escape }}{% else %}{{ session.username|escape }}{% endif %}"{% if locals.other_user %} readonly{% endif %}>
+                    <input id="username" type="text" name="username" class="input-block-level" value="{% if locals.other_user %}{{ locals.username }}{% else %}{{ session.username }}{% endif %}"{% if locals.other_user %} readonly{% endif %}>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="bio">About: </label>
                 <div class="controls">
-                    <textarea id="bio" name="bio" class="input-block-level"{% if locals.other_user %} readonly{% endif %}>{% if locals.other_user %}{{ locals.bio|escape }}{% else %}{{ session.bio|escape }}{% endif %}</textarea>
+                    <textarea id="bio" name="bio" class="input-block-level"{% if locals.other_user %} readonly{% endif %}>{% if locals.other_user %}{{ locals.bio }}{% else %}{{ session.bio }}{% endif %}</textarea>
                 </div>
             </div>
             {% if !locals.other_user %}
             <div class="control-group">
                 <label class="control-label" for="avatar_url">Avatar URL: </label>
                 <div class="controls">
-                    <input id="avatar_url" type="text" name="avatar" class="input-block-level" value="{{ session.avatar_url|escape }}">
+                    <input id="avatar_url" type="text" name="avatar" class="input-block-level" value="{{ session.avatar_url }}">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="email">Email Address: </label>
                 <div class="controls">
-                    <input id="email" type="text" name="email" class="input-block-level" value="{{ session.email|escape }}" placeholder="name@email.com">
+                    <input id="email" type="text" name="email" class="input-block-level" value="{{ session.email }}" placeholder="name@email.com">
                 </div>
             </div>
             <div id="error_email" class="alert alert-error none">
@@ -59,7 +54,7 @@
             <div class="control-group">
                 <label class="control-label" for="email_confirmation">Confirm Email Address: </label>
                 <div class="controls">
-                    <input id="email_confirmation" name="email_confirmation" type="text" class="input-block-level" value="{{ session.email|escape }}" placeholder="name@email.com">
+                    <input id="email_confirmation" name="email_confirmation" type="text" class="input-block-level" value="{{ session.email }}" placeholder="name@email.com">
                 </div>
             </div>
             <div class="control-group">
@@ -94,10 +89,48 @@
             {% endif %}
         </form>
     </div>
-    <div id="user_record" class="span4">
-        <h4>Record</h4>
-        <p>Wins: {% if locals.other_user %}{{ locals.record_games_won }}{% else %}{{ session.record_games_won }}{% endif %}</p>
-        <p>Losses: {% if locals.other_user %}{{ locals.record_games_lost }}{% else %}{{ session.record_games_lost }}{% endif %}</p>
+    <div class="span4">
+        <div id="right_container" class="container-fluid">
+            <div class="row-fluid">
+                <div id="user_record" class="span12">
+                    <h4>Record</h4>
+                    <p>Wins: {% if locals.other_user %}{{ locals.record_games_won }}{% else %}{{ session.record_games_won }}{% endif %}</p>
+                    <p>Losses: {% if locals.other_user %}{{ locals.record_games_lost }}{% else %}{{ session.record_games_lost }}{% endif %}</p>
+                </div>
+            </div>
+            <br>
+            <div class="row-fluid">
+                <div id="friends_list" class="span12">
+                    <h4>Friends</h4>
+                    <div id="friends_container" class="container-fluid">
+                        <div class="row-fluid">
+                            <div class="span2">
+                                <img id="profile" class="img-polaroid" data-src="holder.js/32x32">
+                            </div>
+                            <div class="span10">
+                                <p><a href="#">Friend 1</a></p>
+                            </div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span2">
+                                <img id="profile" class="img-polaroid" data-src="holder.js/32x32">
+                            </div>
+                            <div class="span10">
+                                <p><a href="#">Friend 2</a></p>
+                            </div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span2">
+                                <img id="profile" class="img-polaroid" data-src="holder.js/32x32">
+                            </div>
+                            <div class="span10">
+                                <p><a href="#">Friend 3</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -109,9 +142,8 @@
 
 $(document).ready(function(){
     $.getScript("js/lib/holder/holder.js", function on_load_holderjs(){
-        //If holder.js is used we have to wait until it is called before accessing image's height
-        $("#profile_label").css("line-height",$("#profile").css("height"));
-        $("#profile").css("max-width",$("#username").css("width"));
+        //If holder.js is used we have to wait until it is called before accessing image
+        $("#profile").css("max-width",$("#username_form").css("width")-24);
     });
 });
 
@@ -154,7 +186,6 @@ $("#user_form").submit(function(){
             $("#update_error p").text("There was an error updating your account.");
         },
         success: function on_update_profile_success(){
-            //window.location.replace("/user?success");
             window.location.replace("/user");
         }
     });

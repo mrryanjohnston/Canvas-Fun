@@ -1,4 +1,4 @@
-module.exports = function sockets_function(settings, io, app, models, string){ //, session_sockets) {
+module.exports = function sockets_function(settings, io, app, models, string){
     io.set('log level', 0); // See https://github.com/LearnBoost/Socket.IO/wiki/Configuring-Socket.IO
     io.set('transports', [ 'websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']);
 
@@ -22,21 +22,16 @@ module.exports = function sockets_function(settings, io, app, models, string){ /
     function connect(socket, data){
         console.log("A client connected with the session id "+socket.handshake.sessionID);
         var room = "lobby";
-        // Check session email v the db. If it's ok then return a 'ready'.
         io.sockets.emit('ready', { message: '<a href="/user?id='+socket.handshake.session._id+'" target="_blank">'+socket.handshake.session.username+'</a> has connected.'});
         io.sockets.emit('userlist', { users : user_list(room), room : room});
     }
 
     function message(socket, data){
-        //console.log(app);
-        //console.log(session_sockets);
-        console.log("===========");
         data.user = socket.handshake.session.username;
-        data.message = data.message;
+        data.data = string(data.data).escapeHTML().s;
         console.log("A client sent a message.");
         console.log("data: "+JSON.stringify(data));
-        //io.sockets.emit('message', { data : data });// {data: data});
-        io.sockets.emit('message', data );// {data: data});
+        io.sockets.emit('message', data );
     }
 
     function disconnect(socket, data){
