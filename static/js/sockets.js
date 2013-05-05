@@ -16,19 +16,19 @@ function bind_sockets(socket){
     socket.on('connect', function(data) {
         create_chat_element("connect");
         socket.emit('connect');
-        console.log("Connecting...");
+        //console.log("Connecting...");
     });
     socket.on('ready', function(data) {
         create_chat_element("ready", data);
-        console.log("User ready: "+data);
+        //console.log("User ready: "+data);
     });
     socket.on('message', function(data) {
         create_chat_element("message", data);
-        console.log("message: "+JSON.stringify(data));
+        //console.log("message: "+JSON.stringify(data));
     });
     socket.on('disconnect', function(data) {
         create_chat_element("disconnect", data);
-        console.log("disconnect: "+data);
+        //console.log("disconnect: "+data);
     });
 };
 
@@ -36,7 +36,7 @@ function bind_dom_listeners(socket){
     $("#chat_form").submit(function(event){
         event.preventDefault();
         if($("#chat_input").val().length > 0){
-            socket.emit("message", { data : $("#chat_input").val() });
+            socket.emit("message", { message : $("#chat_input").val() });
             $("#chat_input").val("");
         }
     });
@@ -60,7 +60,7 @@ function create_chat_element(element, data){
                             <p>['+now+'] '+data.user+':</p> \
                         </div> \
                         <div class="span10"> \
-                            <p>'+data.data+'</p> \
+                            <p>'+data.message+'</p> \
                         </div> \
                     </div>';
         chat_space.append(item);
@@ -97,6 +97,6 @@ function create_chat_element(element, data){
                         </div> \
                     </div>';
         chat_space.append(item);
-
     }
+    $('#chat_window').scrollTop($('#chat_window')[0].scrollHeight);
 }

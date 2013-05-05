@@ -22,13 +22,14 @@ module.exports = function sockets_function(settings, io, app, models, string){
     function connect(socket, data){
         console.log("A client connected with the session id "+socket.handshake.sessionID);
         var room = "lobby";
+        //user_list : get_clients_in_room() // get_clients_in_room(room)
         io.sockets.emit('ready', { message: '<a href="/user?id='+socket.handshake.session._id+'" target="_blank">'+socket.handshake.session.username+'</a> has connected.'});
         io.sockets.emit('userlist', { users : user_list(room), room : room});
     }
 
     function message(socket, data){
         data.user = socket.handshake.session.username;
-        data.data = string(data.data).escapeHTML().s;
+        data.message = string(data.message).escapeHTML().s;
         console.log("A client sent a message.");
         console.log("data: "+JSON.stringify(data));
         io.sockets.emit('message', data );
@@ -39,7 +40,8 @@ module.exports = function sockets_function(settings, io, app, models, string){
         //console.log("data: "+data);
         data = {
             username: socket.handshake.session.username,
-            user_id : socket.handshake.session._id
+            user_id : socket.handshake.session._id,
+            user_list : get_clients_in_room() // get_clients_in_room(room)
         };
         io.sockets.emit('disconnect', data);
     }
