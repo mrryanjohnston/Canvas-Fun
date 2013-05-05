@@ -20,21 +20,16 @@ var app = express()
     .use(express.logger('dev'))
     .use(express.static(settings.static_directory))
     .use(express.compress())
-//    .use(express.cookieParser(settings.cookie_secret))
-//    .use(express.cookieParser(settings.session_secret))
     .use(express.bodyParser())
     .use(express.methodOverride());
-//    .use(express.session({ store: session_store, key: settings.session_key }));
 
-//var cookie_parser = express.cookieParser(settings.session_secret);
 var cookie_parser = express.cookieParser(settings.session_secret);
 var cookie_signature = require('cookie-signature');
 var cookie = require('cookie');
-//var parseSignedCookie = require('cookie');
-app.use(cookie_parser)
+
+app.use(cookie_parser); // Must be declared before express.session
 app.use(express.session({ store: session_store, key: settings.session_key, secret: settings.session_secret }));
 
-console.log(color.bgmagenta+color.fgblack+"Express started."+color.reset);
 console.log(color.bgblue+"Redis connected."+color.reset);
 
 app.response.message = function(msg){
@@ -43,13 +38,15 @@ app.response.message = function(msg){
     session.messages.push(msg);
 };
 
-app.use(function(req, res, next){
+app.use(function(req, res, next){ // Request-deferred messages e.g. success after a redirect
     var msgs = req.session.messages || [];
     res.locals.messages = msgs;
     res.locals.hasMessages = !! msgs.length;
     req.session.messages = [];
     next();
 });
+
+console.log(color.bgmagenta+color.fgblack+"Express started."+color.reset);
 
 var server = require('http').createServer(app);
 console.log(color.fggreen+"HTTP Server started."+color.reset);
@@ -90,76 +87,41 @@ console.log(color.fgyellow+"Routes loaded."+color.reset);
 /**
 * Load websockets
 */
-//var SessionSockets = require('session.socket.io');
-//var session_sockets = new SessionSockets(io, session_store, cookie_parser, settings.session_secret);
-var io_config = require(settings.project_directory + '/sockets.js')(settings, io, app, models);//, session_sockets);
+var io_config = require(settings.project_directory + '/sockets.js')(settings, io, app, models);
 // Authenticate sockets with sessions stored in redis
 // https://github.com/alphapeter/socket.io-express
 var socket_authentication = require('socket.io-express').createAuthFunction(cookie_parser, redis_store);
 io.set('authorization', function(handshake, callback){
     console.log(handshake);
     console.log("##");
-    //try{
-        if (handshake.headers.cookie) {
-            var sessionCookie = cookie.parse(handshake.headers.cookie)[settings.session_key];
-            //var sessionID = cookie.parseCookie(sessionCookie, settings.session_secret);
-            //var sessionID = cookie.parseSignedCookies(sessionCookie, settings.session_secret);
-            //var sessionID = express.utils.parseSignedCookie(sessionCookie[settings.session_key], settings.session_secret);
-            //var sessionID = express.utils.parseCookie(cookie.parse(sessionCookie[settings.session_key]), settings.session_secret);
-            //console.log(sessionCookie);
-            //console.log("----");
-            var sessionID = sessionCookie.slice(2,26);
-            var sessionID1 = sessionCookie.slice(2, sessionCookie.lastIndexOf('.'));
-            var sessionID2 = sessionCookie.slice(2);
-            //var sessionID2 = sessionCookie.slice(2,111);
-//            var sessionID3 = sessionCookie;
-//            var sessionID4 = sessionCookie.slice(0,26);
-//            var sessionID5 = sessionCookie.slice(0,sessionCookie.lastIndexOf('.'));
-//            var sessionID6 = sessionCookie.slice(2,sessionCookie.lastIndexOf('.'));
-//            var sessionIb = cookie_signature.unsign(sessionID4, settings.session_secret);
-            //var sessionIc = cookie_signature.unsign(sessionID2, settings.session_secret);
-            //console.log(express.session.Store);
-            console.log(sessionCookie);
-            //console.log(sessionID);
-            //console.log("/////");
-            console.log("s:"+cookie_signature.sign(sessionID, settings.session_secret));
-            console.log("s:"+cookie_signature.sign(sessionID2, settings.session_secret));
-            var sessionIDU1 = cookie_signature.unsign(sessionID, settings.session_secret);
-            var sessionIDU2 = cookie_signature.unsign(sessionID1, settings.session_secret);
-            var sessionIDU3 = cookie_signature.unsign(sessionID2, settings.session_secret);
-            console.log("!!! >>> "+sessionIDU1);
-            console.log("!!! >>> "+sessionIDU2);
-            console.log("!!! >>> "+sessionIDU3);
-            console.log(cookie_signature.sign("_t92ptnewGjXKfShCUQY2S1e", settings.session_secret));
-            //console.log(sessionCookie);
-            //console.log("----");
-//            console.log(cookie_signature.sign(sessionID, settings.session_secret));
-            //console.log(cookie_signature.sign(sessionID2, settings.session_secret));
-//            console.log(cookie_signature.sign(sessionID3, settings.session_secret));
-//            console.log(cookie_signature.sign(sessionID4, settings.session_secret));
-//            console.log(cookie_signature.sign(sessionID5, settings.session_secret));
-//            console.log(cookie_signature.sign(sessionID6, settings.session_secret));
-            //console.log(sessionID);
-            //handshake.sessionID = sessionCookie;
-            
+    if (handshake.headers.cookie) {
+        var sessionCookie = cookie.parse(handshake.headers.cookie)[settings.session_key];
+        var sessionCookie = sessionCookie.slice(2);
+        var sessionID = sessionCookie.slice(0,24);
+        //console.log("sessionID: "+sessionID);
+        var sessionID_and_hash = sessionCookie;
+        var sessionID_and_hash_rehashed = cookie_signature.sign(sessionID_and_hash, settings.session_secret).slice(0,111);
+        //console.log(sessionCookie);
+        //console.log(cookie_signature.sign(sessionID_and_hash, settings.session_secret).slice(0,111)); // Why is this correct from 0,111, but not 100%? wtf is going on?
+        if(sessionCookie == sessionID_and_hash_rehashed){
+            console.log("match");
             session_store.get(sessionID, function(error, session) {
                 if (error || !session) {
-                    callback('Error'+error, false);
-                    console.log("Auth Error");
+                    callback('Error: '+error, false);
+                    console.log("Auth Error: "+error);
                 } else {
                     handshake.session = session;
                     handshake.sessionID = sessionID;
-                    console.log("Auth OK!");
+                    console.log("Auth passed through.");
                     callback(null, true);
                 }
             });
-            //callback(null, true);
-        } else {
-            callback('No cookie', false);
+        }else{
+        callback('Cookies didn\'t match', false);
         }
-    //}catch(error){
-    //    callback('No cookie. '+error, false);
-    //}
+    } else {
+        callback('No cookie', false);
+    }
 });
 
 /**

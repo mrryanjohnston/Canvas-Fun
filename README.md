@@ -17,6 +17,11 @@ Javascript, [node.js](http://www.nodejs.org),
     npm preinstall
     npm install
 
+## Running the application for the first time
+1. Install mongodb, configure connection parameters in settings.js, and start it.
+2. Install redis and start it with the provided redis.conf(change your password and anything else you'd like).
+3. npm start
+
 ## Controlling the application
 
 Start, stop, and restart the application as a long running process, respectively:
@@ -66,15 +71,16 @@ Then:
 ###Redis
 We're using v2.6.12(but this probably doesn't matter too much). For development purposes it isn't daemonized, while in production it should be. To run do as follows:
 
-    redis-server
+    redis-server redis.conf
 
 To access the store:
 
     redis-cli -a SHittYpAssWORd
 
-To [control](http://redis.io/commands) redis, once logged-in: 
+To [control](http://redis.io/commands) redis, once logged-in:
 
     keys *
+    get #{KEY}
     flushdb
     shutdown
     etc.
