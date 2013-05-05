@@ -56,19 +56,19 @@ Mongoose can be a butt. You may need to install it prior to running npm install.
     npm install
     
 ###MongoDB deployment
-You'll need to have a copy of mongodb running your database. We recommend using [mongoctl](http://github.com/mongolab/mongoctl) to provision servers. Install python, build tools, and pip. Pick one of the follow based on your OS/distro:
+You'll need to have a copy of mongodb running your database. We recommend using [mongoctl](http://github.com/mongolab/mongoctl) to provision servers. Install python2, pip, and build tools. Pick one of the follow based on your OS/distro:
 
     sudo apt-get install python build-essential python-pip
     sudo pacman -S base-devel python2 python2-pip
-    sudo yum install python python-pip build-essential ??? (need to test this)
-    brew install ?something?
+    sudo yum install python python-pip build-essential ??? (requires testing)
+    brew install ?something? (requires testing)
 
 Then:
 
     sudo pip install mongoctl
-    create mongoctl config, server config, cluster config
+    save the provided files in .mongoctl into ~/.mongoctl
     mongoctl install-mongodb 2.2.3
-    mongoctl start [servername]
+    mongoctl start cards
 
 ###Redis
 We're using v2.6.12(but the version probably doesn't matter). For development purposes it isn't daemonized, while in production it should be. To run do as follows:
