@@ -69,6 +69,8 @@ Then:
     save the provided files in .mongoctl into ~/.mongoctl
     mongoctl install-mongodb 2.2.3
     mongoctl start cards
+    mongoctl stop cards
+    etc.
 
 ###Redis
 We're using v2.6.12(but the version probably doesn't matter). For development purposes it isn't daemonized, while in production it should be. To run do as follows:
