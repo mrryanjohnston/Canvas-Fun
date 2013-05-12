@@ -51,13 +51,13 @@ module.exports = function sockets_function(settings, io, app, models, string){
     };
 
     function get_clients_in_room(room){
-        var socketIds = io.sockets.manager.rooms['/' + room];
+        var socket_connections = io.sockets.manager.rooms['/' + room];
         var clients = [];
-        if(socketIds && socketIds.length > 0){
-            socketsCount = socketIds.length;
-            for(var i = 0, len = socketIds.length; i < len; i++){
-                if(socketIds[i] != socketId){
-                    clients.push(chat_clients[socketIds[i]]);
+        if(socket_connections && socket_connections.length > 0){
+            sockets_count = socket_connections.length;
+            for(var i = 0, len = socket_connections.length; i < len; i++){
+                if(socket_connections[i] != socket_id){
+                    clients.push(chat_clients[socket_connections[i]]);
                 }
             }
         }
