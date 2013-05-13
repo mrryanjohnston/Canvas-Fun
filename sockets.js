@@ -7,6 +7,8 @@ module.exports = function sockets_function(settings, io, app, models, string){
 
         socket.on('connect', function(data){
             connect(socket, data);
+            //emit_clients_in_room('lobby');
+            //emit_public_chat_rooms();
         });
 
         socket.on('message', function(data){
@@ -23,7 +25,6 @@ module.exports = function sockets_function(settings, io, app, models, string){
         console.log("A client connected with the session id "+socket.handshake.sessionID);
         var room = "lobby";
         io.sockets.emit('ready', { message: '<a href="/user?id='+socket.handshake.session._id+'" target="_blank">'+socket.handshake.session.username+'</a> has connected.'});
-        //emit_clients_in_room(room);
     }
 
     function message(socket, data){
@@ -46,8 +47,11 @@ module.exports = function sockets_function(settings, io, app, models, string){
         //emit_clients_in_room(room);
     }
 
+    function emit_public_chat_rooms(){
+        //io.sockets.emit('roomlist', { rooms: get_list_of_public_rooms() });
+    };
     function emit_clients_in_room(room){
-        //io.sockets.emit('userlist', { users : user_list(room), room : room});
+        //io.sockets.emit('userlist', { users : get_clients_in_room(room), room : room});
     };
 
     function get_clients_in_room(room){
