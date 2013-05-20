@@ -17,31 +17,22 @@ function debug(req, res){
 };
 
 /***
-* / - About
+* / - About / Chat / Games
 */
 app.get('/', function(req, res) {
-        page_context.page_title = '';
+    page_context.page_title = '';
+    if (!req.session.email){
         res.render('about', {
             session: req.session,
             context: page_context,
             locals: res.locals
         });
-    debug(req, res);
-});
-
-/***
-* /chat - Global chat
-*/
-app.get('/chat', function(req, res) {
-    if (req.session.email){
-        page_context.page_title = ': Chat';
+    }else{
         res.render('chat', {
             session: req.session,
             context: page_context,
             locals: res.locals
         });
-    }else{
-        res.redirect('*');
     }
     debug(req, res);
 });

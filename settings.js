@@ -44,7 +44,7 @@ module.exports = function settings_function() {
             port: "6379",
             pass: "SHittYpAssWORd",
             db: "cards",
-            ttl: 60*60*24*365
+            ttl: 60*60*24*365 //Cookies last a year
         },
         context : {
             version : 1,
