@@ -10,6 +10,7 @@ module.exports = function settings_function() {
         views_directory: __dirname+"/views",
         static_directory: __dirname+"/static",
         favicon_path: __dirname+"/static/img/favicon-16.ico",
+        sockets_path: __dirname+"/sockets.js",
         routes_path: __dirname+"/routes.js",
         models_path: __dirname+"/models.js",
         colors_path: __dirname+"/colors.js",

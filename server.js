@@ -88,7 +88,7 @@ console.log(color.fgyellow+"Routes loaded."+color.reset);
 /**
 * Load websockets
 */
-var io_config = require(settings.project_directory + '/sockets.js')(settings, io, app, models, string);
+var io_config = require(settings.sockets_path)(settings, io, app, models, string);
 // Authenticate sockets with sessions stored in redis
 // https://github.com/alphapeter/socket.io-express
 var socket_authentication = require('socket.io-express').createAuthFunction(cookie_parser, redis_store);
