@@ -30,6 +30,12 @@ function bind_sockets(socket){
         create_chat_element("disconnect", data);
         //console.log("disconnect: "+data);
     });
+    socket.on('userlist', function(data) {
+        console.log("users: "+data);
+    });
+    socket.on('roomlist', function(data) {
+        console.log("rooms: "+data);
+    });
 };
 
 function bind_dom_listeners(socket){

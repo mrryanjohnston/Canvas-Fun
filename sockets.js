@@ -1,9 +1,11 @@
 module.exports = function sockets_function(settings, io, app, models, string){
     io.set('log level', 0); // See https://github.com/LearnBoost/Socket.IO/wiki/Configuring-Socket.IO
     io.set('transports', [ 'websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']);
+    chat_clients = new Object();
 
     io.sockets.on('connection', function(socket){
         socket.handshake.session.username = string(socket.handshake.session.username).escapeHTML().s;
+        socket._id = socket.handshake.session._id
 
         socket.on('connect', function(data){
             connect(socket, data);
@@ -24,6 +26,7 @@ module.exports = function sockets_function(settings, io, app, models, string){
     function connect(socket, data){
         console.log("A client connected with the session id "+socket.handshake.sessionID);
         var room = "lobby";
+        chat_clients[socket._id] = data;
         io.sockets.emit('ready', { message: '<a href="/user?id='+socket.handshake.session._id+'" target="_blank">'+socket.handshake.session.username+'</a> has connected.'});
     }
 
@@ -43,6 +46,7 @@ module.exports = function sockets_function(settings, io, app, models, string){
             username: socket.handshake.session.username,
             user_id : socket.handshake.session._id
         };
+        delete chat_clients[socket._id];
         io.sockets.emit('disconnect', data);
         //emit_clients_in_room(room);
     }
@@ -52,6 +56,14 @@ module.exports = function sockets_function(settings, io, app, models, string){
     };
     function emit_clients_in_room(room){
         //io.sockets.emit('userlist', { users : get_clients_in_room(room), room : room});
+    };
+
+    function subscribe_to_room(room){
+        //
+    };
+
+    function unsubscribe_to_room(room){
+        //
     };
 
     function get_clients_in_room(room){
