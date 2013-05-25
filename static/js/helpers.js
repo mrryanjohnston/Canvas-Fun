@@ -1,11 +1,9 @@
 $(document).ready(function(){
     $("a#login_dropdown_button").on("click", function(){
-        var login_focus = setInterval(function(){
-            if($("#email").is(":visible")){
-                $("#email").focus();
-                clearInterval(login_focus);
-            }
-        }, 100);
+        event.preventDefault;
+        $("#login_form").fadeIn("fast", function() {
+            $("#email").focus();
+        });
     });
 });
 

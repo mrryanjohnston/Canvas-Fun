@@ -117,4 +117,5 @@ function create_chat_element(element, data){
         }
     }
     $('#chat_window').scrollTop($('#chat_window')[0].scrollHeight);
+    $('#chat_input').focus();
 }
