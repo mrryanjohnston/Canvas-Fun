@@ -62,33 +62,24 @@ function create_chat_element(element, data){
 
     if( element === "message" ){
         var item = '<div class="row-fluid"> \
-                        <div class="span2"> \
-                            <p>['+now+'] '+data.user+':</p> \
-                        </div> \
-                        <div class="span10"> \
-                            <p>'+data.message+'</p> \
+                        <div class="span12"> \
+                            <p>['+now+'] '+data.user+': '+data.message+'</p> \
                         </div> \
                     </div>';
         chat_space.append(item);
 
     }else if( element === "connect"){
         var item = '<div class="row-fluid"> \
-                        <div class="span2"> \
-                            <p>['+now+']</p> \
-                        </div> \
-                        <div class="span10"> \
-                            <p>You are connecting.</p> \
+                        <div class="span12"> \
+                            <p>['+now+'] You are connecting.</p> \
                         </div> \
                     </div>';
         chat_space.append(item);
 
     }else if( element === "ready"){
         var item = '<div class="row-fluid"> \
-                        <div class="span2"> \
-                            <p>['+now+']</p> \
-                        </div> \
-                        <div class="span10"> \
-                            <p>'+data.message+'</p> \
+                        <div class="span12"> \
+                            <p>['+now+'] '+data.message+'</p> \
                         </div> \
                     </div>';
         chat_space.append(item);
@@ -96,21 +87,15 @@ function create_chat_element(element, data){
     }else if( element === "disconnect"){
         if(data.user_id && data.username){
             var item = '<div class="row-fluid"> \
-                            <div class="span2"> \
-                                <p>['+now+']</p> \
-                            </div> \
-                            <div class="span10"> \
-                                <p><a href="/user?id='+data.user_id+'" target="_blank">'+data.username+'</a> disconnected.</p> \
+                            <div class="span12"> \
+                                <p>['+now+'] <a href="/user?id='+data.user_id+'" target="_blank">'+data.username+'</a> disconnected.</p> \
                             </div> \
                         </div>';
             chat_space.append(item); 
         }else{
             var item = '<div class="row-fluid"> \
-                            <div class="span2"> \
-                                <p>['+now+']</p> \
-                            </div> \
-                            <div class="span10"> \
-                                <p>Your connection was terminated.</p> \
+                            <div class="span12"> \
+                                <p>['+now+'] Your connection was terminated.</p> \
                             </div> \
                         </div>';
             chat_space.append(item); 
