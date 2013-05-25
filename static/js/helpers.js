@@ -1,9 +1,13 @@
 $(document).ready(function(){
-    $("a#login_dropdown_button").on("click", function(){
-        event.preventDefault;
-        $("#login_form").fadeIn("fast", function() {
-            $("#email").focus();
-        });
+    $("a#login_dropdown_button").on("click", function(event){
+        event.preventDefault();
+        if($("#login_form").is(":visible")){
+            $("#login_form").fadeOut("fast");
+        }else{
+            $("#login_form").fadeIn("fast", function() {
+                $("#email").focus();
+            });
+        }
     });
 });
 
