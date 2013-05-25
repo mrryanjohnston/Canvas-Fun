@@ -28,8 +28,7 @@ module.exports = function sockets_function(settings, io, app, models, string){
         if(socket._id in chat_clients){
             console.log("This client is already connected and the attempted second connection will be terminated.");
             socket.emit('message', { user: "Server", message: "Your account is already signed on from another location. Please disconnect from the other location before attempting to reconnect." });
-            //disconnect(socket, data);
-            socket.disconnect("Unauthorized");
+            socket.disconnect();
         }else{
             var room = "lobby";
             chat_clients[socket._id] = data;
@@ -50,9 +49,6 @@ module.exports = function sockets_function(settings, io, app, models, string){
     }
 
     function disconnect(socket, data){
-        //console.log(socket);
-        //console.log('-------');
-        //console.log(io.sockets);
         console.log("A client disconnected.");
         data = {
             username: socket.handshake.session.username,
