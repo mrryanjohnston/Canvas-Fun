@@ -24,30 +24,44 @@ module.exports = function sockets_function(settings, io, app, models, string){
     });
 
     function connect(socket, data){
-        console.log("A client connected with the session id "+socket.handshake.sessionID);
-        var room = "lobby";
-        chat_clients[socket._id] = data;
-        io.sockets.emit('ready', { message: '<a href="/user?id='+socket.handshake.session._id+'" target="_blank">'+socket.handshake.session.username+'</a> has connected.'});
+        console.log("A client connected {session.id: "+socket.handshake.sessionID+", session._id: "+socket._id+"}");
+        if(socket._id in chat_clients){
+            console.log("This client is already connected and the attempted second connection will be terminated.");
+            socket.emit('message', { user: "Server", message: "Your account is already signed on from another location. Please disconnect from the other location before attempting to reconnect." });
+            //disconnect(socket, data);
+            socket.disconnect("Unauthorized");
+        }else{
+            var room = "lobby";
+            chat_clients[socket._id] = data;
+            //console.log("Chat clients j: "+JSON.stringify(chat_clients));
+            //console.log("Chat clients: "+chat_clients);
+            //subscribe_to_room(socket, { room: 'lobby' });
+            io.sockets.emit('ready', { message: '<a href="/user?id='+socket.handshake.session._id+'" target="_blank">'+socket.handshake.session.username+'</a> connected.'});
+        }
     }
 
     function message(socket, data){
         data.user = socket.handshake.session.username;
         data.message = string(data.message).escapeHTML().s;
-        console.log("A client sent a message.");
-        console.log("data: "+JSON.stringify(data));
         io.sockets.emit('message', data );
-        console.log(io.sockets.manager.rooms);
+        //console.log("A client sent a message.");
+        //console.log("data: "+JSON.stringify(data));
+        //console.log(io.sockets.manager.rooms);
     }
 
     function disconnect(socket, data){
+        //console.log(socket);
+        //console.log('-------');
+        //console.log(io.sockets);
         console.log("A client disconnected.");
-        //console.log("data: "+data);
         data = {
             username: socket.handshake.session.username,
             user_id : socket.handshake.session._id
         };
-        delete chat_clients[socket._id];
-        io.sockets.emit('disconnect', data);
+        if(!(socket._id in chat_clients)){
+            delete chat_clients[socket._id];
+            io.sockets.emit('disconnect', data);
+        }
         //emit_clients_in_room(room);
     }
 
@@ -58,7 +72,7 @@ module.exports = function sockets_function(settings, io, app, models, string){
         //io.sockets.emit('userlist', { users : get_clients_in_room(room), room : room});
     };
 
-    function subscribe_to_room(room){
+    function subscribe_to_room(socket, room){
         //
     };
 

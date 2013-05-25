@@ -94,15 +94,27 @@ function create_chat_element(element, data){
         chat_space.append(item);
 
     }else if( element === "disconnect"){
-        var item = '<div class="row-fluid"> \
-                        <div class="span2"> \
-                            <p>['+now+']</p> \
-                        </div> \
-                        <div class="span10"> \
-                            <p><a href="/user?id='+data.user_id+'" target="_blank">'+data.username+'</a> has disconnected.</p> \
-                        </div> \
-                    </div>';
-        chat_space.append(item);
+        if(data.user_id && data.username){
+            var item = '<div class="row-fluid"> \
+                            <div class="span2"> \
+                                <p>['+now+']</p> \
+                            </div> \
+                            <div class="span10"> \
+                                <p><a href="/user?id='+data.user_id+'" target="_blank">'+data.username+'</a> disconnected.</p> \
+                            </div> \
+                        </div>';
+            chat_space.append(item); 
+        }else{
+            var item = '<div class="row-fluid"> \
+                            <div class="span2"> \
+                                <p>['+now+']</p> \
+                            </div> \
+                            <div class="span10"> \
+                                <p>Your connection was terminated.</p> \
+                            </div> \
+                        </div>';
+            chat_space.append(item); 
+        }
     }
     $('#chat_window').scrollTop($('#chat_window')[0].scrollHeight);
 }
