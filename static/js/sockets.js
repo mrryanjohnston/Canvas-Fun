@@ -31,7 +31,7 @@ function bind_sockets(socket){
         //console.log("disconnect: "+data);
     });
     socket.on('userlist', function(data) {
-        console.log("users: "+data);
+        update_user_list(data);
     });
     socket.on('roomlist', function(data) {
         console.log("rooms: "+data);
@@ -47,11 +47,16 @@ function bind_dom_listeners(socket){
             $('#chat_input').focus();
         }
     });
-};
+}
 
+function update_user_list(data){
+    $("#user_window").empty();
+    for (var mid in data.users){
+        $("#user_window").append('<p><a target="_blank" href="/user?id='+mid+'">'+data.users[mid].username+'</a></p>');
+    }
+}
 
 function create_chat_element(element, data){
-    //console.log("create_chat_element called");
     var chat_space = $("#chat_window .container-fluid")
     ,   time = new Date
     ,   hour = time.getHours()
