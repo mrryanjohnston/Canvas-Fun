@@ -4,7 +4,7 @@ module.exports = function sockets_function(settings, io, app, models, string){
     chat_clients = new Object();
 
     io.sockets.on('connection', function(socket){
-        socket.handshake.session.username = string(socket.handshake.session.username).escapeHTML().s;
+        socket.handshake.session.username = string(socket.handshake.session.username).escapeHTML().s; //Escape HTML in username
         socket._id = socket.handshake.session._id
 
         socket.on('connect', function(data){
@@ -21,15 +21,20 @@ module.exports = function sockets_function(settings, io, app, models, string){
             disconnect(socket);
         });
 
+        socket.on('invite', function(data){
+            invite_to_room(socket, room, data);
+        });
+
     });
 
     function connect(socket, data){
         console.log("A client connected {session.id: "+socket.handshake.sessionID+", session._id: "+socket._id+"}");
         if(socket._id in chat_clients){
-            console.log("This client is already connected and the attempted second connection will be terminated.");
+            //console.log("This client is already connected and the attempted second connection will be terminated.");
             socket.emit('message', { user: "Server", message: "Your account is already signed on from another location. Please disconnect from the other location before attempting to reconnect." });
             socket.disconnect();
         }else{
+            //Subscribe user to room lobby
             var room = "lobby";
             chat_clients[socket._id] = data;
             //console.log("Chat clients j: "+JSON.stringify(chat_clients));
@@ -41,14 +46,14 @@ module.exports = function sockets_function(settings, io, app, models, string){
 
     function message(socket, data){
         data.user = socket.handshake.session.username;
-        data.message = string(data.message).escapeHTML().s;
+        data.message = string(data.message).escapeHTML().s; //Escape html in message
         io.sockets.emit('message', data );
         //console.log("A client sent a message.");
         //console.log("data: "+JSON.stringify(data));
         //console.log(io.sockets.manager.rooms);
     }
 
-    function disconnect(socket, data){
+    function disconnect(socket){
         console.log("A client disconnected.");
         data = {
             username: socket.handshake.session.username,
@@ -64,6 +69,7 @@ module.exports = function sockets_function(settings, io, app, models, string){
     function emit_public_chat_rooms(){
         //io.sockets.emit('roomlist', { rooms: get_list_of_public_rooms() });
     };
+
     function emit_clients_in_room(room){
         //io.sockets.emit('userlist', { users : get_clients_in_room(room), room : room});
     };
@@ -72,7 +78,11 @@ module.exports = function sockets_function(settings, io, app, models, string){
         //
     };
 
-    function unsubscribe_to_room(room){
+    function unsubscribe_from_room(socket, room){
+        //
+    };
+
+    function invite_to_room(socket, room, data){
         //
     };
 
@@ -92,7 +102,7 @@ module.exports = function sockets_function(settings, io, app, models, string){
 
     /*
     // Tutorial by http://udidu.blogspot.com/2012/11/chat-evolution-nodejs-and-socketio.html
-    // Ripped off of https://github.com/uditalias/chat-nodejs
+    // https://github.com/uditalias/chat-nodejs
     io.sockets.on('connection', function(socket){
         socket.on('connect', function(data){
             connect(socket, data);
