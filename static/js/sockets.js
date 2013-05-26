@@ -85,7 +85,11 @@ function create_chat_element(element, data){
         chat_space.append(item);
 
     }else if( element === "disconnect"){
-        if(data.user_id && data.username){
+        // vvv This tidbit prevents errors trying to access a nonexistent property
+        var o1 = (o1=data) && (o1=data.user_id);
+        var o2 = (o2=data) && (o2=data.username);
+        var original = (o1 && o2);
+        if(original){
             var item = '<div class="row-fluid"> \
                             <div class="span12"> \
                                 <p>['+now+'] <a href="/user?id='+data.user_id+'" target="_blank">'+data.username+'</a> disconnected.</p> \

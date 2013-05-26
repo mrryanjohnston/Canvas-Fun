@@ -2,6 +2,7 @@ module.exports = function sockets_function(settings, io, app, models, string){
     io.set('log level', 0); // See https://github.com/LearnBoost/Socket.IO/wiki/Configuring-Socket.IO
     io.set('transports', [ 'websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']);
     chat_clients = new Object();
+    chat_clients.duplicates = [];
 
     io.sockets.on('connection', function(socket){
         socket.handshake.session.username = string(socket.handshake.session.username).escapeHTML().s; //Escape HTML in username
@@ -30,7 +31,7 @@ module.exports = function sockets_function(settings, io, app, models, string){
     function connect(socket, data){
         console.log("A client connected {session.id: "+socket.handshake.sessionID+", session._id: "+socket._id+"}");
         if(socket._id in chat_clients){
-            //console.log("This client is already connected and the attempted second connection will be terminated.");
+            chat_clients.duplicates = chat_clients.duplicates.concat(socket._id);
             socket.emit('message', { user: "Server", message: "Your account is already signed on from another location. Please disconnect from the other location before attempting to reconnect." });
             socket.disconnect();
         }else{
@@ -59,9 +60,12 @@ module.exports = function sockets_function(settings, io, app, models, string){
             username: socket.handshake.session.username,
             user_id : socket.handshake.session._id
         };
-        if(!(socket._id in chat_clients)){
-            delete chat_clients[socket._id];
+        var duplicate_id = chat_clients.duplicates.indexOf(socket._id);
+        if(duplicate_id !== -1){
+            chat_clients.duplicates = chat_clients.duplicates.slice(0,duplicate_id).concat(chat_clients.duplicates.slice(duplicate_id+1));
+        }else{
             io.sockets.emit('disconnect', data);
+            delete chat_clients[socket._id];
         }
         //emit_clients_in_room(room);
     }
