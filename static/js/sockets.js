@@ -44,6 +44,7 @@ function bind_dom_listeners(socket){
         if($("#chat_input").val().length > 0){
             socket.emit("message", { message : $("#chat_input").val() });
             $("#chat_input").val("");
+            $('#chat_input').focus();
         }
     });
 };
@@ -106,5 +107,4 @@ function create_chat_element(element, data){
         }
     }
     $('#chat_window').scrollTop($('#chat_window')[0].scrollHeight);
-    $('#chat_input').focus();
 }
