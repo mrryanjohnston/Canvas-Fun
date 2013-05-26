@@ -6,7 +6,7 @@ module.exports = function sockets_function(settings, io, app, models, string){
 
     io.sockets.on('connection', function(socket){
         socket.handshake.session.username = string(socket.handshake.session.username).escapeHTML().s; //Escape HTML in username
-        socket._id = socket.handshake.session._id
+        socket.mid = socket.handshake.session._id
 
         socket.on('connect', function(data){
             connect(socket, data);
@@ -23,25 +23,28 @@ module.exports = function sockets_function(settings, io, app, models, string){
         });
 
         socket.on('invite', function(data){
-            invite_to_room(socket, room, data);
+            /*
+            //example data
+            data = { room: data.room,
+                     socket.id: data.user_id };
+            */
+            invite_to_room(socket, data);
         });
 
     });
 
     function connect(socket, data){
-        console.log("A client connected {session.id: "+socket.handshake.sessionID+", session._id: "+socket._id+"}");
-        if(socket._id in chat_clients){
-            chat_clients.duplicates = chat_clients.duplicates.concat(socket._id);
+        console.log("A client connected {session.id: "+socket.handshake.sessionID+", session.mid: "+socket.mid+"}");
+        if(socket.mid in chat_clients){
+            chat_clients.duplicates = chat_clients.duplicates.concat(socket.mid);
             socket.emit('message', { user: "Server", message: "Your account is already signed on from another location. Please disconnect from the other location before attempting to reconnect." });
             socket.disconnect();
         }else{
-            //Subscribe user to room lobby
-            var room = "lobby";
-            chat_clients[socket._id] = data;
+            //subscribe_to_room(socket, { room: 'lobby' }); // By default all users are in the room ""
+            chat_clients[socket.mid] = data;
             //console.log("Chat clients j: "+JSON.stringify(chat_clients));
             //console.log("Chat clients: "+chat_clients);
-            //subscribe_to_room(socket, { room: 'lobby' });
-            io.sockets.emit('ready', { message: '<a href="/user?id='+socket.handshake.session._id+'" target="_blank">'+socket.handshake.session.username+'</a> connected.'});
+            io.sockets.emit('ready', { message: '<a href="/user?id='+socket.handshake.session.mid+'" target="_blank">'+socket.handshake.session.username+'</a> connected.'});
         }
     }
 
@@ -52,20 +55,21 @@ module.exports = function sockets_function(settings, io, app, models, string){
         //console.log("A client sent a message.");
         //console.log("data: "+JSON.stringify(data));
         //console.log(io.sockets.manager.rooms);
+        console.log(io.sockets.manager.rooms[""]);
     }
 
     function disconnect(socket){
         console.log("A client disconnected.");
         data = {
             username: socket.handshake.session.username,
-            user_id : socket.handshake.session._id
+            user_id : socket.handshake.session.mid
         };
-        var duplicate_id = chat_clients.duplicates.indexOf(socket._id);
+        var duplicate_id = chat_clients.duplicates.indexOf(socket.mid);
         if(duplicate_id !== -1){
             chat_clients.duplicates = chat_clients.duplicates.slice(0,duplicate_id).concat(chat_clients.duplicates.slice(duplicate_id+1));
         }else{
             io.sockets.emit('disconnect', data);
-            delete chat_clients[socket._id];
+            delete chat_clients[socket.mid];
         }
         //emit_clients_in_room(room);
     }
@@ -76,18 +80,20 @@ module.exports = function sockets_function(settings, io, app, models, string){
 
     function emit_clients_in_room(room){
         //io.sockets.emit('userlist', { users : get_clients_in_room(room), room : room});
+        //io.sockets.emit('userlist', { users : get_clients_in_room("lobby") });
     };
 
-    function subscribe_to_room(socket, room){
-        //
+    function subscribe_to_room(socket, data){
+        socket.join(data.room);
     };
 
-    function unsubscribe_from_room(socket, room){
-        //
+    function unsubscribe_from_room(socket, data){
+        socket.leave(data.room)
     };
 
-    function invite_to_room(socket, room, data){
-        //
+    function invite_to_room(socket, data){
+        // Target the invited user
+        //socket.emit('invite', { room: data.room });
     };
 
     function get_clients_in_room(room){
