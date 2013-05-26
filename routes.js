@@ -17,7 +17,7 @@ function debug(req, res){
 };
 
 /***
-* / - About / Chat / Games
+* / - About / Chat / Game playing page
 */
 app.get('/', function(req, res) {
     page_context.page_title = '';
@@ -38,24 +38,7 @@ app.get('/', function(req, res) {
 });
 
 /***
-* /game - Playing games
-*/
-app.get('/game', function(req, res) {
-    if (req.session.email){
-        page_context.page_title = ': Game in progress';
-        res.render('game', {
-            session: req.session,
-            context: page_context,
-            locals: res.locals
-        });
-    }else{
-        res.redirect('*');
-    }
-    debug(req, res);
-});
-
-/***
-* /login - Login
+* /login - Login page
 */
 
 app.post('/login', function(req, res) {
@@ -96,7 +79,7 @@ app.post('/login', function(req, res) {
 });
 
 /***
-* /logout - Logout
+* /logout - Logout url
 */
 app.get('/logout', function(req, res) {
     if (req.session.email){
@@ -111,7 +94,7 @@ app.get('/logout', function(req, res) {
 });
 
 /***
-* /signup - Registration
+* /signup - Registration page
 */
 app.get('/signup', function(req, res) {
     if (!req.session.email){
@@ -161,7 +144,7 @@ app.post('/signup', function(req, res) {
 });
 
 /***
-* /user - User Dashboard
+* /user - User dashboard page
 */
 app.get('/user', function(req, res, next) {
     console.log(req.session);
@@ -275,7 +258,7 @@ app.post('/user', function(req, res) {
 });
 
 /***
-* /404 and /* - 404 error
+* /404 and /* - 404 error page
 */
 app.get('/404', function(req, res, next) {
     page_context.page_title = ': Error';
