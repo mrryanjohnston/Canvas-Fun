@@ -1,4 +1,13 @@
-div.userdrop {
+ul.user_drop_down {
+    margin-top: -18px;
+    margin-left: -3px;
+}
+
+p.user_heading {
+    padding: 3px 20px;
+}
+
+div.user {
     margin-bottom: 12px;
 }
 
@@ -29,7 +38,7 @@ img#profile {
     min-height: 300px;
 }
 #chat_window {
-    padding: 12px 0 0 2px;
+    padding: 10px 0 0 6px;
     overflow: auto;
 }
 
@@ -102,8 +111,12 @@ form#user_form {
 }
 
 
-ul#notifications_list, div#login_dropdown {
+div#login_dropdown {
     width: 250px;
+}
+
+ul#notifications_list {
+    width: 400px;
 }
 
 li.notification {

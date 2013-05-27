@@ -30,6 +30,8 @@ function bind_sockets(socket){
         update_user_list(data, socket);
     });
     socket.on('invite', function(data) {
+        helpers.notify();
+        helpers.add_notification(data.user+" invited you to a game.");
         console.log("You were just invited to a game by "+data.user);
     });
 };
@@ -49,8 +51,15 @@ function update_user_list(data, socket){
     $("#user_window").empty();
     for (var mid in data.users){
         var user = ' \
-            <div class="dropdown userdrop"><a id="dropdownMenu_'+mid+'" class="dropdown-toggle" data-toggle="dropdown" href="/user?id='+mid+'">'+data.users[mid].username+'</a>\
-                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu_'+mid+'"> \
+            <div class="dropdown user"> \
+            <a id="dropdownMenu_'+mid+'" class="dropdown-toggle" data-toggle="dropdown" href="/user?id='+mid+'"> \
+            <div class="user_block"> \
+            '+data.users[mid].username+'\
+            </div> \
+            </a>\
+                <ul class="dropdown-menu user_drop_down" role="menu" aria-labelledby="dropdownMenu_'+mid+'"> \
+                    <li><p class="muted user_heading">'+data.users[mid].username+'</p> \
+                    <li class="divider"> \
                     <li><a target="_blank" href="/user?id='+mid+'">View profile</a></li> \
                     <li class="divider"></li> \
                     <li><a href="/add_friend">Add to friend list</a></li> \
@@ -67,18 +76,11 @@ function update_user_list(data, socket){
 
 function create_chat_element(element, data){
     var chat_space = $("#chat_window .container-fluid")
-    ,   time = new Date
-    ,   hour = time.getHours()
-    ,   mins = time.getMinutes();
-    if( mins < 10 ){
-        mins = "0"+mins;
-    }
-    var now = hour+":"+mins;
 
     if( element === "message" ){
         var item = '<div class="row-fluid"> \
                         <div class="span12"> \
-                            <p>['+now+'] '+data.user+': '+data.message+'</p> \
+                            <p>['+helpers.now()+'] '+data.user+': '+data.message+'</p> \
                         </div> \
                     </div>';
         chat_space.append(item);
@@ -86,7 +88,7 @@ function create_chat_element(element, data){
     }else if( element === "connect"){
         var item = '<div class="row-fluid"> \
                         <div class="span12"> \
-                            <p>['+now+'] You are connecting.</p> \
+                            <p>['+helpers.now()+'] You are connecting.</p> \
                         </div> \
                     </div>';
         chat_space.append(item);
@@ -94,7 +96,7 @@ function create_chat_element(element, data){
     }else if( element === "ready"){
         var item = '<div class="row-fluid"> \
                         <div class="span12"> \
-                            <p>['+now+'] '+data.message+'</p> \
+                            <p>['+helpers.now()+'] '+data.message+'</p> \
                         </div> \
                     </div>';
         chat_space.append(item);
@@ -107,14 +109,14 @@ function create_chat_element(element, data){
         if(original){
             var item = '<div class="row-fluid"> \
                             <div class="span12"> \
-                                <p>['+now+'] <a href="/user?id='+data.user_id+'" target="_blank">'+data.username+'</a> disconnected.</p> \
+                                <p>['+helpers.now()+'] <a href="/user?id='+data.user_id+'" target="_blank">'+data.username+'</a> disconnected.</p> \
                             </div> \
                         </div>';
             chat_space.append(item); 
         }else{
             var item = '<div class="row-fluid"> \
                             <div class="span12"> \
-                                <p>['+now+'] Your connection was terminated.</p> \
+                                <p>['+helpers.now()+'] Your connection was terminated.</p> \
                             </div> \
                         </div>';
             chat_space.append(item); 
