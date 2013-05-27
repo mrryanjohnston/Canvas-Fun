@@ -46,7 +46,7 @@ var helpers = {
         if(($("#notifications_list").children().length === 1) && ($("#notifications_list").children(0).text() === "You have no notifications." )){
             $("#notifications_list").empty();
         }
-        $("#notifications_list").prepend('<li class="notification">['+helpers.now()+']'+message+'</li>');
+        $("#notifications_list").prepend('<li class="notification">['+helpers.now()+'] '+message+'</li>');
         if($("#notifications_list").children().length > 10){
             $("#notifications_list").children().last().remove();
         }
@@ -59,8 +59,5 @@ var helpers = {
             mins = "0"+mins;
         }
         return hour+":"+mins;
-    },
-    confirm_exit: function confirm_leave_page(){
-        return "Are you sure you want to leave?";
     }
 }
