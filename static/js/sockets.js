@@ -8,7 +8,7 @@ function connect(){
     var socket
     ,   server_address = "/";
     socket = io.connect(server_address);
-    bind_dom_listeners(socket);
+    bind_chat_listeners(socket);
     bind_sockets(socket);
 }
 
@@ -16,29 +16,25 @@ function bind_sockets(socket){
     socket.on('connect', function(data) {
         create_chat_element("connect");
         socket.emit('connect');
-        //console.log("Connecting...");
     });
     socket.on('ready', function(data) {
         create_chat_element("ready", data);
-        //console.log("User ready: "+data);
     });
     socket.on('message', function(data) {
         create_chat_element("message", data);
-        //console.log("message: "+JSON.stringify(data));
     });
     socket.on('disconnect', function(data) {
         create_chat_element("disconnect", data);
-        //console.log("disconnect: "+data);
     });
     socket.on('userlist', function(data) {
-        update_user_list(data);
+        update_user_list(data, socket);
     });
-    socket.on('roomlist', function(data) {
-        console.log("rooms: "+data);
+    socket.on('invite', function(data) {
+        console.log("You were just invited to a game by "+data.user);
     });
 };
 
-function bind_dom_listeners(socket){
+function bind_chat_listeners(socket){
     $("#chat_form").submit(function(event){
         event.preventDefault();
         if($("#chat_input").val().length > 0){
@@ -49,17 +45,23 @@ function bind_dom_listeners(socket){
     });
 }
 
-function update_user_list(data){
+function update_user_list(data, socket){
     $("#user_window").empty();
     for (var mid in data.users){
-        var user = '<div class="dropdown"><a id="dropdownMenu_'+mid+'" class="dropdown-toggle" data-toggle="dropdown" href="#">'+data.users[mid].username+'</a>\
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu_'+mid+'"> \
-                        <li><a target="_blank" href="/user?id='+mid+'">View profile</a></li> \
-                        <li class="divider"></li> \
-                        <li><a href="#">Add to friend list</a></li> \
-                        <li><a href="#">Invite to game</a></li> \
-                    </ul></div>';
-        $("#user_window").append(user); //'<p><a target="_blank" href="/user?id='+mid+'">'+data.users[mid].username+'</a></p>');
+        var user = ' \
+            <div class="dropdown userdrop"><a id="dropdownMenu_'+mid+'" class="dropdown-toggle" data-toggle="dropdown" href="/user?id='+mid+'">'+data.users[mid].username+'</a>\
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu_'+mid+'"> \
+                    <li><a target="_blank" href="/user?id='+mid+'">View profile</a></li> \
+                    <li class="divider"></li> \
+                    <li><a href="/add_friend">Add to friend list</a></li> \
+                    <li><a id="invite_'+data.users[mid].key+'" href="/invite/'+mid+'">Invite to game</a></li> \
+                </ul> \
+            </div>';
+        $("#user_window").append(user);
+        $("a#invite_"+data.users[mid].key).click(function(event){
+            event.preventDefault();
+            socket.emit("invite", { user: $(this).context.id.slice(7) });
+        });
     }
 }
 

@@ -22,12 +22,7 @@ module.exports = function sockets_function(settings, io, app, models, string){
         });
 
         socket.on('invite', function(data){
-            /*
-            //example data
-            data = { room: data.room,
-                     socket.id: data.user_id };
-            */
-            invite_to_room(socket, data);
+            invite_to_game(socket, data.user);
         });
 
     });
@@ -98,9 +93,10 @@ module.exports = function sockets_function(settings, io, app, models, string){
         socket.leave(data.room)
     };
 
-    function invite_to_room(socket, data){
-        // Target the invited user
-        //socket.emit('invite', { room: data.room });
+    function invite_to_game(socket, invitee){
+        data = { user: "Server", message: "You have been invited to a game by "+string(socket.handshake.session.username).escapeHTML().s };
+        io.sockets.socket(invitee).emit('message', data);
+        io.sockets.socket(invitee).emit('invite', {user: string(socket.handshake.session.username).escapeHTML().s});
     };
 
     /*

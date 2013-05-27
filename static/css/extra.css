@@ -1,3 +1,7 @@
+div.userdrop {
+    margin-bottom: 12px;
+}
+
 form textarea {
     resize: none;
 }
