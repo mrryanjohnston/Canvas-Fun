@@ -59,5 +59,8 @@ var helpers = {
             mins = "0"+mins;
         }
         return hour+":"+mins;
+    },
+    confirm_exit: function confirm_leave_page(){
+        return "Are you sure you want to leave?";
     }
 }
