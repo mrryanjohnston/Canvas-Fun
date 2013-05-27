@@ -1,7 +1,5 @@
 $(document).ready(function(){
-
     connect();
-
 });
 
 function connect(){
@@ -32,7 +30,6 @@ function bind_sockets(socket){
     socket.on('invite', function(data) {
         helpers.notify();
         helpers.add_notification(data.user+" invited you to a game.");
-        console.log("You were just invited to a game by "+data.user);
     });
 };
 
