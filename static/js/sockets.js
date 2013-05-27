@@ -52,7 +52,14 @@ function bind_dom_listeners(socket){
 function update_user_list(data){
     $("#user_window").empty();
     for (var mid in data.users){
-        $("#user_window").append('<p><a target="_blank" href="/user?id='+mid+'">'+data.users[mid].username+'</a></p>');
+        var user = '<div class="dropdown"><a id="dropdownMenu_'+mid+'" class="dropdown-toggle" data-toggle="dropdown" href="#">'+data.users[mid].username+'</a>\
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu_'+mid+'"> \
+                        <li><a target="_blank" href="/user?id='+mid+'">View profile</a></li> \
+                        <li class="divider"></li> \
+                        <li><a href="#">Add to friend list</a></li> \
+                        <li><a href="#">Invite to game</a></li> \
+                    </ul></div>';
+        $("#user_window").append(user); //'<p><a target="_blank" href="/user?id='+mid+'">'+data.users[mid].username+'</a></p>');
     }
 }
 

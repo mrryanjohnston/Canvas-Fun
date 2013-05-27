@@ -22,10 +22,11 @@ img#profile {
 #chat_window, #user_window {
     margin-bottom: 8px;
     background-color: #fff;
-    overflow: auto;
+    min-height: 300px;
 }
 #chat_window {
     padding: 12px 0 0 2px;
+    overflow: auto;
 }
 
 #chat_input {
