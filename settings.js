@@ -1,5 +1,5 @@
 module.exports = function settings_function() {
-    var settings = {
+    return {
 
         debug: true,
 
@@ -53,6 +53,5 @@ module.exports = function settings_function() {
             errors : [],
             messages : []
         }
-    }
-    return settings;
+    };
 }
