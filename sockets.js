@@ -1,12 +1,12 @@
 module.exports = function sockets_function(settings, io, app, models, string){
-    io.set('log level', 0); // See https://github.com/LearnBoost/Socket.IO/wiki/Configuring-Socket.IO
+    io.set('log level', 0);
     io.set('transports', [ 'websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']);
     chat_clients = new Object();
     chat_clients.duplicates = [];
 
     io.sockets.on('connection', function(socket){
         socket.handshake.session.username = string(socket.handshake.session.username).escapeHTML().s;
-        socket.mid = socket.handshake.session._id //user's mongoID
+        socket.mid = socket.handshake.session._id // mongo ID
 
         socket.on('connect', function(data){
             connect(socket, data);
