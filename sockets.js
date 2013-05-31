@@ -65,13 +65,17 @@ module.exports = function sockets_function(settings, io, app, models, string){
     function emit_clients_in_room(){
         var user_keys = io.sockets.manager.rooms[""];
         var users = {};
-        for(var i=0; i<user_keys.length; i++){
-            var key = user_keys[i];
-            var mid = io.sockets.sockets[user_keys[i]].mid;
-            var username = string(io.sockets.sockets[user_keys[i]].handshake.session.username).escapeHTML().s;
-            users[mid] = {username: username, key: key }
+        if (user_keys === undefined){
+            return null;
+        }else{
+            for(var i=0; i<user_keys.length; i++){
+                var key = user_keys[i];
+                var mid = io.sockets.sockets[user_keys[i]].mid;
+                var username = string(io.sockets.sockets[user_keys[i]].handshake.session.username).escapeHTML().s;
+                users[mid] = {username: username, key: key }
+            }
+            io.sockets.emit('userlist', { users : users });
         }
-        io.sockets.emit('userlist', { users : users });
     };
 
     function subscribe_to_room(socket, data){
