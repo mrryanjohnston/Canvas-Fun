@@ -37,8 +37,9 @@ function bind_sockets(socket){
         console.log(data);
         helpers.notify();
         helpers.add_notification(data.user+' invited you to a game. \
-            <div class="invite_buttons"> \
-                <button id="accept_'+data.key+'" class="btn btn-mini btn-success">Accept</button> <button id="decline_'+data.key+'" class="btn btn-mini btn-danger">Decline</button> \
+            <div class="right invite_buttons"> \
+                <button id="accept_'+data.key+'" class="btn btn-mini btn-success">Accept</button> \
+                <button id="decline_'+data.key+'" class="btn btn-mini btn-danger">Decline</button> \
             </div>');
         // Add listeners to '#accept'+data.key and '#decline'+data.key, send a 'respond' message back to inviter based on decision, then remove buttons
     });
