@@ -105,7 +105,7 @@ io.set('authorization', function(handshake, callback){
                 } else {
                     handshake.session = session;
                     handshake.sessionID = sessionID;
-                    console.log("Socket.io auth from session successful.");
+                    //console.log("Socket.io auth from session successful.");
                     callback(null, true);
                 }
             });

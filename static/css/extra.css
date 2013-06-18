@@ -1,3 +1,11 @@
+div.invite_buttons {
+    display: inline-block;
+}
+
+.invite_buttons button {
+    margin-top: 0px !important;
+}
+
 ul.user_drop_down {
     margin-top: -18px;
     margin-left: -3px;

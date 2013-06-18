@@ -24,6 +24,10 @@ module.exports = function sockets_function(settings, io, app, models, string){
             invite_to_game(socket, data.user);
         });
 
+        socket.on('respond', function(data){
+            respond_to_invitation(socket, data);
+        });
+
     });
 
     function connect(socket, data){
@@ -62,8 +66,20 @@ module.exports = function sockets_function(settings, io, app, models, string){
         setTimeout(emit_clients_in_room, 1000); // Without a delay this call says that the user that just left is still in the room. Probably should work around this another way, because with many users this could spawn too many processes(or however node handles timeouts) and tank the app.
     }
 
-    function join(socket){
-        console.log("join called");
+    function respond_to_invitation(socket, inviter){
+        data_invitee = { user: "Server" }
+        data_inviter = { user: "Server" }
+        if(data.response == "accept"){
+            //subscribe invitee to room
+            //launch game
+            //unsubscribe from lobby?
+        }else{
+            //unsubscribe inviter from room
+            data_invitee.message = "You declined a game offer from "+string(socket.handshake.session.username).escapeHTML().s;
+            data_inviter.message = string(io.sockets.socket(inviter).handshake.session.username).escapeHTML().s+" declined your invitation.";
+            io.sockets.socket(inviter).emit('message', data_inviter)
+            socket.emit('message', data_invitee );
+        }
     }
 
     function emit_clients_in_room(){
@@ -81,8 +97,8 @@ module.exports = function sockets_function(settings, io, app, models, string){
     };
 
     function subscribe_to_room(socket, data){
+        console.log(socket.id+" subscribed to room "+data.room);
         socket.join(data.room);
-        console.log("subscribe_to_room called");
     };
 
     function unsubscribe_from_room(socket, data){
@@ -95,14 +111,15 @@ module.exports = function sockets_function(settings, io, app, models, string){
                      message: "You cannot invite yourself to a game." };
             socket.emit('message', data);
         }else{
+            // Add a limiter so only one active invitation can go to a player
             data_invitee = { user: "Server",
                              message: string(socket.handshake.session.username).escapeHTML().s+" invited you to a game." };
             data_inviter = { user: "Server",
                              message: "You invited "+string(io.sockets.socket(invitee).handshake.session.username).escapeHTML().s+" to a game." };
-            subscribe_to_room(socket, { room: socket.id });
+            subscribe_to_room(socket, { room: invitee+"__v__"+socket.id });
             io.sockets.socket(invitee).emit('message', data_invitee);
             socket.emit('message', data_inviter );
-            io.sockets.socket(invitee).emit('invite', {user: string(socket.handshake.session.username).escapeHTML().s});
+            io.sockets.socket(invitee).emit('invite', {user: string(socket.handshake.session.username).escapeHTML().s, key: socket.id });
         }
     };
 }

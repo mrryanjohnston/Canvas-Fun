@@ -20,6 +20,12 @@ function bind_sockets(socket){
     });
     socket.on('message', function(data) {
         create_chat_element("message", data);
+        /*
+        if(data && data.notify){
+            helpers.notify();
+            helpers.add_notification(data.notification);
+        }
+        */
     });
     socket.on('disconnect', function(data) {
         create_chat_element("disconnect", data);
@@ -28,8 +34,13 @@ function bind_sockets(socket){
         update_user_list(data, socket);
     });
     socket.on('invite', function(data) {
+        console.log(data);
         helpers.notify();
-        helpers.add_notification(data.user+" invited you to a game.");
+        helpers.add_notification(data.user+' invited you to a game. \
+            <div class="invite_buttons"> \
+                <button id="accept_'+data.key+'" class="btn btn-mini btn-success">Accept</button> <button id="decline_'+data.key+'" class="btn btn-mini btn-danger">Decline</button> \
+            </div>');
+        // Add listeners to '#accept'+data.key and '#decline'+data.key, send a 'respond' message back to inviter based on decision, then remove buttons
     });
 };
 
