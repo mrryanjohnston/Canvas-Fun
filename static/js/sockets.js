@@ -42,6 +42,16 @@ function bind_sockets(socket){
                 <button id="decline_'+data.key+'" class="btn btn-mini btn-danger">Decline</button> \
             </div>');
         // Add listeners to '#accept'+data.key and '#decline'+data.key, send a 'respond' message back to inviter based on decision, then remove buttons
+        $("#accept_"+data.key).on('click', function(){
+            socket.emit("respond", {"response": "accept", "key":data.key})
+            $(this).parent().remove();
+            // Append the notification to say you accepted
+        });
+        $("#decline_"+data.key).on('click', function(){
+            socket.emit("respond", {"response": "decline", "key":data.key})
+            $(this).parent.remove();
+            // Append the notification to say you declined
+        });
     });
 };
 

@@ -66,20 +66,22 @@ module.exports = function sockets_function(settings, io, app, models, string){
         emit_clients_in_room(socket.mid);
     }
 
-    function respond_to_invitation(socket, inviter){
+    function respond_to_invitation(socket, data){
         data_invitee = { user: "Server" }
         data_inviter = { user: "Server" }
         if(data.response == "accept"){
             //subscribe invitee to room
             //launch game
             //unsubscribe from lobby?
+            data_invitee.message = "You accepted a game offer from "+socket.username;
+            data_inviter.message = io.sockets.socket(data.key).username+" accepted your invitation.";
         }else{
             //unsubscribe inviter from room
             data_invitee.message = "You declined a game offer from "+socket.username;
-            data_inviter.message = string(io.sockets.socket(inviter).handshake.session.username).escapeHTML().s+" declined your invitation.";
-            io.sockets.socket(inviter).emit('message', data_inviter)
-            socket.emit('message', data_invitee );
+            data_inviter.message = io.sockets.socket(data.key).username+" declined your invitation.";
         }
+        io.sockets.socket(data.key).emit('message', data_inviter)
+        socket.emit('message', data_invitee );
     }
 
     function emit_clients_in_room(exclude_user_mid){
@@ -118,7 +120,7 @@ module.exports = function sockets_function(settings, io, app, models, string){
             data_invitee = { user: "Server",
                              message: socket.username+" invited you to a game." };
             data_inviter = { user: "Server",
-                             message: "You invited "+string(io.sockets.socket(invitee).handshake.session.username).escapeHTML().s+" to a game." };
+                             message: "You invited "+io.sockets.socket(invitee).username+" to a game." };
             subscribe_to_room(socket, { room: invitee+"__v__"+socket.id });
             io.sockets.socket(invitee).emit('message', data_invitee);
             socket.emit('message', data_inviter );
