@@ -5,7 +5,7 @@ module.exports = function sockets_function(settings, io, app, models, string){
     chat_clients.duplicates = [];
 
     io.sockets.on('connection', function(socket){
-        socket.handshake.session.username = string(socket.handshake.session.username).escapeHTML().s;
+        socket.username = string(socket.handshake.session.username).escapeHTML().s;
         socket.mid = socket.handshake.session._id // mongo ID
 
         socket.on('connect', function(data){
@@ -38,13 +38,13 @@ module.exports = function sockets_function(settings, io, app, models, string){
             socket.disconnect();
         }else{
             chat_clients[socket.mid] = data;
-            io.sockets.emit('ready', { message: '<a href="/user?id='+socket.mid+'" target="_blank">'+socket.handshake.session.username+'</a> connected.'});
+            io.sockets.emit('ready', { message: '<a href="/user?id='+socket.mid+'" target="_blank">'+socket.username+'</a> connected.'});
             emit_clients_in_room();
         }
     }
 
     function message(socket, data){
-        data.user = socket.handshake.session.username;
+        data.user = socket.username;
         data.message = string(data.message).escapeHTML().s;
         io.sockets.emit('message', data );
     }
@@ -52,7 +52,7 @@ module.exports = function sockets_function(settings, io, app, models, string){
     function disconnect(socket){
         console.log("A client disconnected.");
         data = {
-            username: socket.handshake.session.username,
+            username: socket.username,
             user_id : socket.mid
         };
         var duplicate_id = chat_clients.duplicates.indexOf(socket.mid);
@@ -75,7 +75,7 @@ module.exports = function sockets_function(settings, io, app, models, string){
             //unsubscribe from lobby?
         }else{
             //unsubscribe inviter from room
-            data_invitee.message = "You declined a game offer from "+string(socket.handshake.session.username).escapeHTML().s;
+            data_invitee.message = "You declined a game offer from "+socket.username;
             data_inviter.message = string(io.sockets.socket(inviter).handshake.session.username).escapeHTML().s+" declined your invitation.";
             io.sockets.socket(inviter).emit('message', data_inviter)
             socket.emit('message', data_invitee );
@@ -116,13 +116,13 @@ module.exports = function sockets_function(settings, io, app, models, string){
         }else{
             // Add a limiter so only one active invitation can go to a player
             data_invitee = { user: "Server",
-                             message: string(socket.handshake.session.username).escapeHTML().s+" invited you to a game." };
+                             message: socket.username+" invited you to a game." };
             data_inviter = { user: "Server",
                              message: "You invited "+string(io.sockets.socket(invitee).handshake.session.username).escapeHTML().s+" to a game." };
             subscribe_to_room(socket, { room: invitee+"__v__"+socket.id });
             io.sockets.socket(invitee).emit('message', data_invitee);
             socket.emit('message', data_inviter );
-            io.sockets.socket(invitee).emit('invite', {user: string(socket.handshake.session.username).escapeHTML().s, key: socket.id });
+            io.sockets.socket(invitee).emit('invite', {user: socket.username, key: socket.id });
         }
     };
 }
