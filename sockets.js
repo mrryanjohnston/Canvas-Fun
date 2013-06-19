@@ -63,7 +63,7 @@ module.exports = function sockets_function(settings, io, app, models, string){
             io.sockets.emit('disconnect', data);
             delete chat_clients[socket.mid];
         }
-        setTimeout(emit_clients_in_room, 1000); // Without a delay this call says that the user that just left is still in the room. Probably should work around this another way, because with many users this could spawn too many processes(or however node handles timeouts) and tank the app.
+        emit_clients_in_room(socket.mid);
     }
 
     function respond_to_invitation(socket, inviter){
@@ -82,7 +82,7 @@ module.exports = function sockets_function(settings, io, app, models, string){
         }
     }
 
-    function emit_clients_in_room(){
+    function emit_clients_in_room(exclude_user_mid){
         var user_keys = io.sockets.manager.rooms[""];
         var users = {};
         if (user_keys !== undefined){
@@ -91,6 +91,9 @@ module.exports = function sockets_function(settings, io, app, models, string){
                 var mid = io.sockets.sockets[user_keys[i]].mid;
                 var username = string(io.sockets.sockets[user_keys[i]].handshake.session.username).escapeHTML().s;
                 users[mid] = {username: username, key: key }
+            }
+            if(typeof excluse_user_mid !== undefined){
+                delete users[exclude_user_mid];
             }
             io.sockets.emit('userlist', { users : users });
         }
