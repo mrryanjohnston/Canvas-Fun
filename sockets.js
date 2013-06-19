@@ -31,7 +31,7 @@ module.exports = function sockets_function(settings, io, app, models, string){
     });
 
     function connect(socket, data){
-        console.log("A client connected {session.id: "+socket.handshake.sessionID+", session.mid: "+socket.mid+"}");
+        //console.log("A client connected {session.id: "+socket.handshake.sessionID+", session.mid: "+socket.mid+"}");
         if(socket.mid in chat_clients){
             chat_clients.duplicates = chat_clients.duplicates.concat(socket.mid);
             socket.emit('message', { user: "Server", message: "Your account is already signed on from another location. Please disconnect from the other location before attempting to reconnect." });
@@ -50,7 +50,7 @@ module.exports = function sockets_function(settings, io, app, models, string){
     }
 
     function disconnect(socket){
-        console.log("A client disconnected.");
+        //console.log("A client disconnected.");
         data = {
             username: socket.username,
             user_id : socket.mid
