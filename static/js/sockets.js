@@ -43,15 +43,15 @@ function bind_sockets(socket){
             </div>');
         $("#accept_"+data.key).on('click', function(){
             socket.emit("respond", {"response": "accept", "key":data.key})
-            $(this).parent().parent().append(" <i>You accepted at "+helpers.now()+"</i>");
-            $(this).parent().remove();
-            // Append the notification to say you accepted
+            $(this).siblings().remove();
+            $(this).parent().append("<p class='text-success'>Accepted</p> ["+helpers.now()+"]");
+            $(this).remove();
         });
         $("#decline_"+data.key).on('click', function(){
             socket.emit("respond", {"response": "decline", "key":data.key})
-            $(this).parent().parent().append(" <i>You declined at "+helpers.now()+"</i>");
-            $(this).parent().remove();
-            // Append the notification to say you declined
+            $(this).siblings().remove();
+            $(this).parent().append("<p class='text-error'>Declined</p> ["+helpers.now()+"]");
+            $(this).remove();
         });
     });
 };
