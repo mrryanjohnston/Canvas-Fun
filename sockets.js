@@ -70,13 +70,14 @@ module.exports = function sockets_function(settings, io, app, models, string){
         data_invitee = { user: "Server" }
         data_inviter = { user: "Server" }
         if(data.response == "accept"){
-            //subscribe invitee to room
+            subscribe_to_room(socket, { room: socket.id+"__v__"+io.sockets.socket(data.key).id});
             //launch game
             //unsubscribe from lobby?
             data_invitee.message = "You accepted a game offer from "+socket.username;
             data_inviter.message = io.sockets.socket(data.key).username+" accepted your invitation.";
         }else{
             //unsubscribe inviter from room
+            unsubscribe_from_room(io.sockets.socket(data.key), { room: socket.id+"__v__"+io.sockets.socket(data.key).id });
             data_invitee.message = "You declined a game offer from "+socket.username;
             data_inviter.message = io.sockets.socket(data.key).username+" declined your invitation.";
         }
@@ -104,10 +105,13 @@ module.exports = function sockets_function(settings, io, app, models, string){
     function subscribe_to_room(socket, data){
         console.log(socket.id+" subscribed to room "+data.room);
         socket.join(data.room);
+        console.log(io.sockets.manager.rooms);
     };
 
     function unsubscribe_from_room(socket, data){
+        console.log(socket.id+" unsubscribed from room "+data.room);
         socket.leave(data.room)
+        console.log(io.sockets.manager.rooms);
     };
 
     function invite_to_game(socket, invitee){
