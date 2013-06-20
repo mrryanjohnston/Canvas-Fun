@@ -44,13 +44,13 @@ function bind_sockets(socket){
         $("#accept_"+data.key).on('click', function(){
             socket.emit("respond", {"response": "accept", "key":data.key})
             $(this).siblings().remove();
-            $(this).parent().append("<p class='text-success'>Accepted</p> ["+helpers.now()+"]");
+            $(this).parent().append("<span class='text-success'>Accepted</span> <span>["+helpers.now()+"]</span>");
             $(this).remove();
         });
         $("#decline_"+data.key).on('click', function(){
             socket.emit("respond", {"response": "decline", "key":data.key})
             $(this).siblings().remove();
-            $(this).parent().append("<p class='text-error'>Declined</p> ["+helpers.now()+"]");
+            $(this).parent().append("<span class='text-error'>Declined</span> <span>["+helpers.now()+"]</span>");
             $(this).remove();
         });
     });
