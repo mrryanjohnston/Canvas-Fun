@@ -3,6 +3,7 @@ module.exports = function sockets_function(settings, io, app, models, string){
     io.set('transports', [ 'websocket', 'flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']);
     chat_clients = new Object();
     chat_clients.duplicates = [];
+    invitations = new Object();
 
     io.sockets.on('connection', function(socket){
         socket.username = string(socket.handshake.session.username).escapeHTML().s;
@@ -67,6 +68,11 @@ module.exports = function sockets_function(settings, io, app, models, string){
     }
 
     function respond_to_invitation(socket, data){
+        var inviter = io.sockets.socket(data.key);
+        if(invitations.inviter.id in invitations){
+            delete invitations.inviter.id;
+            console.log("deleted an invitation");
+        }
         data_invitee = { user: "Server" }
         data_inviter = { user: "Server" }
         if(data.response == "accept"){
@@ -120,7 +126,12 @@ module.exports = function sockets_function(settings, io, app, models, string){
                      message: "You cannot invite yourself to a game." };
             socket.emit('message', data);
         }else{
-            // Add a limiter so only one active invitation can go to a player
+            if(socket.id in invitations){
+                socket.emit('message', { user: "Server",
+                    message: "You cannot send another invitation until "+io.sockets.socket(invitations[socket.id]).username+" responds to your pending invitation." });
+                return;
+            }
+            invitations[socket.id] = io.sockets.socket(invitee).id;
             data_invitee = { user: "Server",
                              message: socket.username+" invited you to a game." };
             data_inviter = { user: "Server",
