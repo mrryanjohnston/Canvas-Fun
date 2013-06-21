@@ -82,7 +82,6 @@ module.exports = function sockets_function(settings, io, app, models, string){
             data_invitee.message = "You accepted a game offer from "+socket.username;
             data_inviter.message = io.sockets.socket(data.key).username+" accepted your invitation.";
         }else{
-            //unsubscribe inviter from room
             unsubscribe_from_room(io.sockets.socket(data.key), { room: socket.id+"__v__"+io.sockets.socket(data.key).id });
             data_invitee.message = "You declined a game offer from "+socket.username;
             data_inviter.message = io.sockets.socket(data.key).username+" declined your invitation.";
