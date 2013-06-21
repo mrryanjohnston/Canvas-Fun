@@ -4,6 +4,7 @@ module.exports = function sockets_function(settings, io, app, models, string){
     chat_clients = new Object();
     chat_clients.duplicates = [];
     invitations = new Object();
+    invitees = new Object();
 
     io.sockets.on('connection', function(socket){
         socket.username = string(socket.handshake.session.username).escapeHTML().s;
@@ -73,6 +74,7 @@ module.exports = function sockets_function(settings, io, app, models, string){
 
     function respond_to_invitation(socket, data){
         var inviter = io.sockets.socket(data.key);
+        // delete invitee.socket.id
         if(invitations.inviter.id in invitations){
             delete invitations.inviter.id;
             console.log("deleted an invitation");
@@ -143,6 +145,7 @@ module.exports = function sockets_function(settings, io, app, models, string){
                     message: "You cannot send another invitation until "+io.sockets.socket(invitations[socket.id]).username+" responds to your pending invitation." });
                 return;
             }
+            // Add check to make sure the invitee is not already an invitee.
             invitations[socket.id] = io.sockets.socket(invitee).id;
             data_invitee = { user: "Server",
                              message: socket.username+" invited you to a game." };
