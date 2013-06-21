@@ -29,6 +29,10 @@ module.exports = function sockets_function(settings, io, app, models, string){
             respond_to_invitation(socket, data);
         });
 
+        socket.on('cancel', function(data){
+            cancel_invitation(socket, data.user);
+        });
+
     });
 
     function connect(socket, data){
@@ -119,6 +123,15 @@ module.exports = function sockets_function(settings, io, app, models, string){
         console.log(io.sockets.manager.rooms);
     };
 
+    function cancel_invitation(socket, invitee){
+        console.log("cancel_invitation() called");
+        if(socket.id in invitations){
+            delete invitations.socket.id;
+            console.log("deleted an invitation");
+        }
+        // Send a remove-invitation-from-invitee message
+    };
+
     function invite_to_game(socket, invitee){
         if(socket.id === invitee){
             data = { user: "Server",
@@ -139,6 +152,7 @@ module.exports = function sockets_function(settings, io, app, models, string){
             io.sockets.socket(invitee).emit('message', data_invitee);
             socket.emit('message', data_inviter );
             io.sockets.socket(invitee).emit('invite', {user: socket.username, key: socket.id });
+            // Send a prepare-cancel-button message to the inviter
         }
     };
 }
