@@ -48,6 +48,8 @@ var helpers = {
         }
         $("#notifications_list").prepend('<li class="notification">['+helpers.now()+'] '+message+'</li>');
         if($("#notifications_list").children().length > 10){
+            // Make a function to check if element is allowed to be removed. e.g. it cannot be a pending invitation.
+            // Wrap the above function in an if statement to remove the last element if it matches the specified conditions. If it does not, try the previous element, and so on. 
             $("#notifications_list").children().last().remove();
         }
     },
