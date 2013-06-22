@@ -57,6 +57,7 @@ module.exports = function sockets_function(settings, io, app, models, string){
 
     function disconnect(socket){
         //console.log("A client disconnected.");
+        //delete invitations to the disconnecting user and delete the user from invitees, if he/she is in it
         data = {
             username: socket.username,
             user_id : socket.mid
@@ -75,12 +76,12 @@ module.exports = function sockets_function(settings, io, app, models, string){
     function respond_to_invitation(socket, data){
         var inviter = io.sockets.socket(data.key);
         if(socket.id in invitees){
-            delete invitees.socket.id;
+            delete invitees[socket.id];
             console.log("deleted an invitee");
         }
         data_invitee = { user: "Server" }
         if(inviter.id in invitations){
-            delete invitations.inviter.id;
+            delete invitations[inviter.id];
             console.log("deleted an invitation");
         }
         data_invitee = { user: "Server" }
@@ -143,32 +144,35 @@ module.exports = function sockets_function(settings, io, app, models, string){
     };
 
     function invite_to_game(socket, invitee){
+        console.log(invitees);
         if(socket.id === invitee){
             data = { user: "Server",
                      message: "You cannot invite yourself to a game." };
             socket.emit('message', data);
         }else{
-            if(socket.id in invitations){
-                socket.emit('message', { user: "Server",
-                    message: "You cannot send another invitation until "+io.sockets.socket(invitations[socket.id]).username+" responds to your pending invitation." });
-                return;
-            }
             var invitee = io.sockets.socket(invitee);
             if(invitee.id in invitees){
+                console.log("That user has a pending invitation already.");
                 socket.emit('message', { user: "Server",
                     message: invitee.username+" has a pending invitation and cannot be invited to a game until responding to it."});
                 return;
             }
-            // Add check to make sure the invitee is not already an invitee.
+            if(socket.id in invitations){
+                console.log("You have a pending invitation already.");
+                socket.emit('message', { user: "Server",
+                    message: "You cannot send another invitation until "+io.sockets.socket(invitations[socket.id]).username+" responds to your pending invitation." });
+                return;
+            }
             invitations[socket.id] = invitee.id;
+            invitees[invitee.id] = socket.id;
             data_invitee = { user: "Server",
                              message: socket.username+" invited you to a game." };
             data_inviter = { user: "Server",
                              message: "You invited "+invitee.username+" to a game." };
             subscribe_to_room(socket, { room: invitee.id+"__v__"+socket.id });
-            io.sockets.socket(invitee).emit('message', data_invitee);
+            io.sockets.socket(invitee.id).emit('message', data_invitee);
             socket.emit('message', data_inviter );
-            io.sockets.socket(invitee).emit('invite', {user: socket.username, key: socket.id });
+            io.sockets.socket(invitee.id).emit('invite', {user: socket.username, key: socket.id });
             // Send a prepare-cancel-button message to the inviter
         }
     };
