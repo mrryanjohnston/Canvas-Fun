@@ -74,8 +74,12 @@ module.exports = function sockets_function(settings, io, app, models, string){
 
     function respond_to_invitation(socket, data){
         var inviter = io.sockets.socket(data.key);
-        // delete invitee.socket.id
-        if(invitations.inviter.id in invitations){
+        if(socket.id in invitees){
+            delete invitees.socket.id;
+            console.log("deleted an invitee");
+        }
+        data_invitee = { user: "Server" }
+        if(inviter.id in invitations){
             delete invitations.inviter.id;
             console.log("deleted an invitation");
         }
@@ -127,6 +131,10 @@ module.exports = function sockets_function(settings, io, app, models, string){
 
     function cancel_invitation(socket, invitee){
         console.log("cancel_invitation() called");
+        if(invitee.id in invitees){
+            delete invitees.invitee.id;
+            console.log("deleted an invitee");
+        }
         if(socket.id in invitations){
             delete invitations.socket.id;
             console.log("deleted an invitation");
@@ -145,13 +153,19 @@ module.exports = function sockets_function(settings, io, app, models, string){
                     message: "You cannot send another invitation until "+io.sockets.socket(invitations[socket.id]).username+" responds to your pending invitation." });
                 return;
             }
+            var invitee = io.sockets.socket(invitee);
+            if(invitee.id in invitees){
+                socket.emit('message', { user: "Server",
+                    message: invitee.username+" has a pending invitation and cannot be invited to a game until responding to it."});
+                return;
+            }
             // Add check to make sure the invitee is not already an invitee.
-            invitations[socket.id] = io.sockets.socket(invitee).id;
+            invitations[socket.id] = invitee.id;
             data_invitee = { user: "Server",
                              message: socket.username+" invited you to a game." };
             data_inviter = { user: "Server",
-                             message: "You invited "+io.sockets.socket(invitee).username+" to a game." };
-            subscribe_to_room(socket, { room: invitee+"__v__"+socket.id });
+                             message: "You invited "+invitee.username+" to a game." };
+            subscribe_to_room(socket, { room: invitee.id+"__v__"+socket.id });
             io.sockets.socket(invitee).emit('message', data_invitee);
             socket.emit('message', data_inviter );
             io.sockets.socket(invitee).emit('invite', {user: socket.username, key: socket.id });
