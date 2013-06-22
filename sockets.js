@@ -58,6 +58,8 @@ module.exports = function sockets_function(settings, io, app, models, string){
     function disconnect(socket){
         //console.log("A client disconnected.");
         //delete invitations to the disconnecting user and delete the user from invitees, if he/she is in it
+        delete_invitee(socket);
+        delete_invitation(socket);
         data = {
             username: socket.username,
             user_id : socket.mid
@@ -75,15 +77,8 @@ module.exports = function sockets_function(settings, io, app, models, string){
 
     function respond_to_invitation(socket, data){
         var inviter = io.sockets.socket(data.key);
-        if(socket.id in invitees){
-            delete invitees[socket.id];
-            console.log("deleted an invitee");
-        }
-        data_invitee = { user: "Server" }
-        if(inviter.id in invitations){
-            delete invitations[inviter.id];
-            console.log("deleted an invitation");
-        }
+        delete_invitee(socket);
+        delete_invitation(inviter);
         data_invitee = { user: "Server" }
         data_inviter = { user: "Server" }
         if(data.response == "accept"){
@@ -121,30 +116,35 @@ module.exports = function sockets_function(settings, io, app, models, string){
     function subscribe_to_room(socket, data){
         console.log(socket.id+" subscribed to room "+data.room);
         socket.join(data.room);
-        console.log(io.sockets.manager.rooms);
+        //console.log(io.sockets.manager.rooms);
     };
 
     function unsubscribe_from_room(socket, data){
         console.log(socket.id+" unsubscribed from room "+data.room);
         socket.leave(data.room)
-        console.log(io.sockets.manager.rooms);
+        //console.log(io.sockets.manager.rooms);
     };
 
     function cancel_invitation(socket, invitee){
         console.log("cancel_invitation() called");
-        if(invitee.id in invitees){
-            delete invitees.invitee.id;
-            console.log("deleted an invitee");
-        }
-        if(socket.id in invitations){
-            delete invitations.socket.id;
-            console.log("deleted an invitation");
-        }
+        delete_invitee(invitee);
+        delete_invitation(socket);
         // Send a remove-invitation-from-invitee message
     };
 
+    function delete_invitee(invitee){
+        if(invitee.id in invitees){
+            delete invitees[invitee.id];
+        }
+    }
+
+    function delete_invitation(invitation){
+        if(invitation.id in invitations){
+            delete invitations[invitation.id];
+        }
+    }
+
     function invite_to_game(socket, invitee){
-        console.log(invitees);
         if(socket.id === invitee){
             data = { user: "Server",
                      message: "You cannot invite yourself to a game." };
