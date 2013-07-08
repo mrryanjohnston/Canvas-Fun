@@ -4,7 +4,7 @@
     "version": "0.2.0",
     "description":"A collaborative, web-based card-game playing application.",
     "contributors": [
-        "L. Gabriel Miller <gmiller2007@gmail.com> (http://www.cheddarcode.com/g)"
+        "L. Gabriel Miller <gmiller2007@gmail.com> (http://www.gabrielmiller.org)"
     ],
     "scripts": {
         "preinstall":"npm install forever -g",

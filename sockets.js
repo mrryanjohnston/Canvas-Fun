@@ -58,8 +58,21 @@ module.exports = function sockets_function(settings, io, app, models, string){
     function disconnect(socket){
         //console.log("A client disconnected.");
         //delete invitations to the disconnecting user and delete the user from invitees, if he/she is in it
-        delete_invitee(socket);
+        //delete_invitation(socket); // this is the wrong call. should be delete invitation on invitees[socket]
+        //console.log(socket.id);
+        //console.log(invitees);
+        //console.log(invitations);
+        console.log("invitees>>");
+        console.log(invitees);
+        console.log("invitations>>");
+        console.log(invitations);
+        delete_invitee(invitations[socket.id]);
         delete_invitation(socket);
+        console.log("invitees>>");
+        console.log(invitees);
+        console.log("invitations>>");
+        console.log(invitations);
+        //delete_invitee(invitations[socket.id]);
         data = {
             username: socket.username,
             user_id : socket.mid
@@ -134,12 +147,14 @@ module.exports = function sockets_function(settings, io, app, models, string){
 
     function delete_invitee(invitee){
         if(invitee.id in invitees){
+            console.log("Deleting invitees["+invitee+"] : "+invitees[invitee]);
             delete invitees[invitee.id];
         }
     }
 
     function delete_invitation(invitation){
         if(invitation.id in invitations){
+            console.log("Deleting invitations["+invitation+"] : "+invitations[invitation]);
             delete invitations[invitation.id];
         }
     }
