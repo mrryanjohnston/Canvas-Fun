@@ -1,0 +1,181 @@
+body{
+    padding-top:70px;
+}
+
+div.invite_buttons {
+    display:inline-block;
+}
+
+.invite_buttons button {
+    margin-top:0px !important;
+}
+
+ul.user_drop_down {
+    margin-top:-18px;
+    margin-left:-3px;
+}
+
+p.user_heading {
+    padding:3px 20px;
+}
+
+div.user {
+    margin-bottom:12px;
+}
+
+form textarea {
+    resize:none;
+}
+
+img#profile {
+    padding:0;
+}
+
+#right_container, #friends_container {
+    padding:0;
+}
+#friends_list p {
+    padding-left:12px;
+    margin-top:6px;
+}
+#chat_form {
+    margin:0;
+}
+#chat_container {
+    padding:0 4px;
+}
+#chat_window, #user_window {
+    margin-bottom:8px;
+    background-color:#fff;
+    min-height:300px;
+}
+#chat_window {
+    padding:10px 0 0 6px;
+    overflow:auto;
+}
+
+#chat_input {
+    -webkit-border-radius:0;
+    -moz-border-radius:0;
+    border-radius:0;
+    margin:0;
+}
+
+#user_window {
+    line-height:10px;
+    padding:17px 0 0 12px;
+}
+
+#flashed_messages p {
+    text-align:center;
+    margin-top:12px;
+}
+.clear {
+    clear:both;
+}
+
+.right {
+    float:right;
+}
+
+.left {
+    float:left;
+}
+
+#content {
+    margin-top:28px;
+}
+
+img {
+    margin:0 0 12px 0;
+}
+
+.none {
+    display:none;
+}
+
+body {
+    background-color:#f0f0f0;
+}
+
+form#login_form, form#signup_form, form#user_form, ul#account_list, ul#notifications_list, div#user_record, div#friends_list, div#about, div#chat_window, div#user_window, div#chat_input_wrapper {
+    -webkit-border-radius:0;
+    -moz-border-radius:0;
+    border-radius:0;
+    box-shadow:3px 3px #ccc;
+    border:1px solid #bbb;
+}
+
+form#login_form, form#signup_form {
+    max-width:250px;
+    padding:25px;
+    background-color:#fff;
+}
+
+form#user_form, div#user_record, div#friends_list, div#about {
+    /*max-width:500px;*/
+    padding:0 12px;
+    background-color:#fff;
+}
+
+form#user_form {
+    padding-top:12px;
+}
+
+
+form#login_form input[type='text'] {
+    margin-bottom:6px;
+}
+
+ul#notifications_list {
+    width:600px;
+}
+
+li.notification {
+    margin:6px 20px 6px 20px;
+    clear:both;
+}
+
+div#footer p {
+    margin:4px 0;
+}
+
+ul {
+    list-style-type:none;
+}
+
+/* Sticky footer */
+/* http://twitter.github.io/bootstrap/examples/sticky-footer-navbar.html */
+/* The html and body elements cannot have any padding or margin. */
+html, body {
+    height:100%;
+}
+
+/* Wrapper for page content to push down footer */
+#page_wrapper {
+    min-height:100%;
+    height:auto !important;
+    height:100%;
+    /* Negative indent footer by it's height */
+    margin:0 auto -64px;
+}
+
+/* Set the fixed height of the footer here */
+#footer_spacer, #footer {
+    height:64px;
+}
+
+#footer {
+    border-top:1px solid #ccc;
+    background-color:#f5f5f5;
+}
+
+/* Lastly, apply responsive CSS fixes as necessary */
+@media (max-width:767px) {
+    #footer {
+        margin-left:-20px;
+        margin-right:-20px;
+        padding-left:20px;
+        padding-right:20px;
+    }
+}

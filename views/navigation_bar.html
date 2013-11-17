@@ -1,9 +1,17 @@
-<div id="navigation_bar" class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container">
-            <a class="brand" id="title" href="/">The Cardening</a>
-        {% if session.email %}
-            <ul class="nav pull-left">
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Card Stuff</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            {% if session.email %}
+            <ul class="nav navbar-nav">
                 <li class="dropdown">
                     <a id="notification_button" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown" data-target="#">
                         <i id="notification_icon" class="icon-comment icon-black"></i> Notifications
@@ -13,9 +21,9 @@
                     </ul>
                 </li>
             </ul>
-            <ul class="nav pull-right">
+            <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a id="account_button" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown" data-target="#">
+                    <a id="account_button" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="icon-chevron-down icon-white"></i> User
                     </a>
                     <ul id="account_list" class="dropdown-menu" role="menu" aria-labelledby="account_button">
@@ -23,30 +31,29 @@
                         <li role="presentation"><a href="/logout"><i class="icon-remove"></i> Logout</a></li>
                     </ul>
                 </li>
-        {% else %}
-            <ul class="nav pull-right">
+            {% else %}
+            <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a id="login_dropdown_button" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown" data-target="#">
+                    <a role="button" href="#" class="dropdown-toggle" data-toggle="dropdown" ng-click="focusInput=false;focusInput=true">
                         <i class="icon-chevron-down icon-white"></i> Login
                     </a>
-                    <form id="login_form" class="form-signin dropdown-menu" role="menu" method="post">
-                        <h2 class="form-signin-heading">Log In</h2>
+                    <form id="login_form" class="form-signin dropdown-menu" role="menu" method="post" ng-submit="focusInput=false" action="/login">
                         <div id="login_error" class="none">
                             <p class="alert alert-error">
                             </p>
                         </div>
-                        <input id="email" type="text" class="input-block-level" placeholder="Email Address" name="email">
+                        <input id="email" type="text" class="input-block-level" placeholder="Email Address" name="email" focus-me="focusInput">
                         <input id="password" type="password" class="input-block-level" placeholder="Password" name="password">
                         <label class="checkbox">
                             <input type="checkbox" name="remember_me" id="remember_me"> Remember me
                         </label>
-                        <button id="login_button" class="btn btn-large btn-primary" type="submit">Go!</button>
+                        <button id="login_button" class="btn btn-large btn-primary" type="submit">Login</button>
                     </form>
                 </li>
                 <li>
                     <a href="/signup">Register</a>
                 </li>
-        {% endif %}
+            {% endif %}
             </ul>
         </div>
     </div>

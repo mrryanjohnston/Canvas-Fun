@@ -2,16 +2,19 @@
 ## Why
 Why not?
 ## What
-Javascript, [node.js](http://www.nodejs.org),
+Javascript,
+[node.js](http://www.nodejs.org),
 [socket.io](http://www.socket.io),
 [express](http://www.expressjs.com),
 [Redis](http://www.redis.io/),
 [MongoDB](http://www.mongodb.org),
-[jQuery](http://jquery.com/), 
+[Angular](http://angularjs.org/),
 [Kinetic.js](http://www.kineticjs.com/),
 [Twitter Bootstrap](http://twitter.github.io/bootstrap).
 
 ## Installation
+
+Application
 
     git clone https://github.com/mrryanjohnston/Canvas-Fun
     cd Canvas-Fun
@@ -29,7 +32,6 @@ Start, stop, and restart the application as a long running process, respectively
 
     npm start
     npm stop
-    npm restart #this is actually broken
 
 Start the server as a short running process
 
@@ -89,10 +91,9 @@ To [control](http://redis.io/commands) redis, once logged-in:
     shutdown
     etc.
 
-## Misc.
+## Misc Credits
 Card sprite provided by [Brandon Ardiente](http://ardisoft.net/svg-z-cards/) under the LGPL.  
 Followed the tutorials by [Eric Rowell](http://www.html5canvastutorials.com/kineticjs/html5-canvas-events-tutorials-introduction-with-kineticjs/).  
-Twitter Bootstrap theme [United](http://bootswatch.com/united).  
 [Sticky footer](http://twitter.github.io/bootstrap/examples/sticky-footer.html) by Marty Bean and Ryan Fait.
 
 ## License
