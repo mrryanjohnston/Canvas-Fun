@@ -7,16 +7,17 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Card Stuff</a>
+            <a class="navbar-brand" href="/">Cards and Stuff</a>
         </div>
         <div class="navbar-collapse collapse">
             {% if session.email %}
-            <ul class="nav navbar-nav">
+            <ul id="notifications" class="nav navbar-nav">
                 <li class="dropdown">
-                    <a id="notification_button" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown" data-target="#">
-                        <i id="notification_icon" class="icon-comment icon-black"></i> Notifications
+                    <a role="button" href="#" class="dropdown-toggle" data-toggle="dropdown" data-target="#">
+                        <i class="fa fa-comment-o" ng-show="newNotifications===true"></i> Notifications
+                        <i class="fa fa-comment" ng-show="newNotifications===false"></i> Notifications
                     </a>
-                    <ul id="notifications_list" class="dropdown-menu" role="menu" aria-labelledby="notification_button">
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="notification_button">
                         <li class="notification" role="presentation">You have no notifications.</li>
                     </ul>
                 </li>
@@ -24,25 +25,25 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                     <a id="account_button" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="icon-chevron-down icon-white"></i> User
+                        <i class="fa fa-angle-down"></i> User
                     </a>
                     <ul id="account_list" class="dropdown-menu" role="menu" aria-labelledby="account_button">
-                        <li role="presentation"><a href="/user"><i class="icon-user"></i> User Dashboard</a></li>
-                        <li role="presentation"><a href="/logout"><i class="icon-remove"></i> Logout</a></li>
+                        <li role="presentation"><a href="/user"><i class="fa fa-user"></i> User Dashboard</a></li>
+                        <li role="presentation"><a href="/logout"><i class="fa fa-sign-out"></i> Logout</a></li>
                     </ul>
                 </li>
             {% else %}
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a role="button" href="#" class="dropdown-toggle" data-toggle="dropdown" ng-click="focusInput=false;focusInput=true">
-                        <i class="icon-chevron-down icon-white"></i> Login
+                    <a role="button" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-sign-in"></i> Login
                     </a>
-                    <form id="login_form" class="form-signin dropdown-menu" role="menu" method="post" ng-submit="focusInput=false" action="/login">
+                    <form id="login_form" class="form-signin dropdown-menu" role="menu" method="post" action="/#/login">
                         <div id="login_error" class="none">
                             <p class="alert alert-error">
                             </p>
                         </div>
-                        <input id="email" type="text" class="input-block-level" placeholder="Email Address" name="email" focus-me="focusInput">
+                        <input id="email" type="text" class="input-block-level" placeholder="Email Address" name="email">
                         <input id="password" type="password" class="input-block-level" placeholder="Password" name="password">
                         <label class="checkbox">
                             <input type="checkbox" name="remember_me" id="remember_me"> Remember me
@@ -51,7 +52,7 @@
                     </form>
                 </li>
                 <li>
-                    <a href="/signup">Register</a>
+                    <a href="/#/signup">Register</a>
                 </li>
             {% endif %}
             </ul>

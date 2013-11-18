@@ -1,19 +1,22 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <link rel="stylesheet" href="css/cardstuff.css?v={{context.version}}" type="text/css"></style>
     <link rel="stylesheet" href="css/lib/bootstrap/bootstrap.min.css" type="text/css"></style>
     <link rel="stylesheet" href="css/lib/fontawesome/font-awesome.min.css" type="text/css"></style>
     <script type="text/javascript" src="js/lib/jquery/jquery.min.js?v={{context.version}}"></script>
-    <script type="text/javascript" src="js/lib/angular/angular.min.js?v={{context.version}}"></script>
-    <script type="text/javascript" src="js/angular.js?v={{context.version}}"></script>
+    <script type="text/javascript" src="js/lib/angular/angular.js?v={{context.version}}"></script>
+    <script type="text/javascript" src="js/lib/angular/angular-route.js?v={{context.version}}"></script>
+    <script type="text/javascript" src="js/angular/app.js?v={{context.version}}"></script>
+    <script type="text/javascript" src="js/angular/controllers.js?v={{context.version}}"></script>
     <title>Cards{{context.page_title}}</title>
 </head>
 
-<body ng-app="cards" ng-controller="ui">
+<body ng-app="cardsApp" ng-controller="user">
     <div id="page_wrapper">
     {% include 'navigation_bar.html' %}
 
+    <div ng-view></div>
     <!-- display errors -->
 
     {% block content %}
