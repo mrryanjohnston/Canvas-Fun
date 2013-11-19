@@ -38,17 +38,20 @@
                     <a role="button" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-sign-in"></i> Login
                     </a>
-                    <form id="login_form" class="form-signin dropdown-menu" role="menu" method="post" action="/#/login">
-                        <div id="login_error" class="none">
-                            <p class="alert alert-error">
-                            </p>
+                    <form id="login" class="form-signin dropdown-menu" role="menu" method="post" action="/#/login">
+                        <div class="form-group">
+                            <label for="signinEmail">Email</label>
+                            <input id="signinEmail" type="text" class="form-control" placeholder="Email Address" name="signinEmail">
                         </div>
-                        <input id="email" type="text" class="input-block-level" placeholder="Email Address" name="email">
-                        <input id="password" type="password" class="input-block-level" placeholder="Password" name="password">
-                        <label class="checkbox">
-                            <input type="checkbox" name="remember_me" id="remember_me"> Remember me
-                        </label>
-                        <button id="login_button" class="btn btn-large btn-primary" type="submit">Login</button>
+                        <div class="form-group">
+                            <label for="signinPassword">Password</label>
+                            <input id="signinPassword" type="password" class="form-control" placeholder="Password" name="signinPassword">
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" name="remember_me" id="remember_me">
+                            <label for="signinRemember">Remember me</label>
+                        </div>
+                        <button id="login_button" class="btn btn-primary" type="submit">Login</button>
                     </form>
                 </li>
                 <li>

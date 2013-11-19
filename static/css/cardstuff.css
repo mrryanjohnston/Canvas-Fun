@@ -98,7 +98,7 @@ body{
     background-color:#f0f0f0;
 }
 
-form#login_form, form#signup_form, form#user_form, ul#account_list, ul#notifications_list, div#user_record, div#friends_list, div#about, div#chat_window, div#user_window, div#chat_input_wrapper{
+form#login, form#user_form, ul#account_list, ul#notifications_list, div#user_record, div#friends_list, div#about, div#chat_window, div#user_window, div#chat_input_wrapper{
     -webkit-border-radius:0;
     -moz-border-radius:0;
     border-radius:0;
@@ -106,14 +106,17 @@ form#login_form, form#signup_form, form#user_form, ul#account_list, ul#notificat
     border:1px solid #bbb;
 }
 
-form#login_form{
-    max-width:250px;
+form#signup{
+    margin-bottom:30px;
+}
+
+form#login{
+    width:300px;
     padding:25px;
     background-color:#fff;
 }
 
 form#user_form, div#user_record, div#friends_list, div#about{
-    /*max-width:500px;*/
     padding:0 12px;
     background-color:#fff;
 }
@@ -122,10 +125,6 @@ form#user_form{
     padding-top:12px;
 }
 
-
-form#login_form input[type='text']{
-    margin-bottom:6px;
-}
 
 ul#notifications_list{
     width:600px;
