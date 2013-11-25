@@ -1,8 +1,11 @@
 var cardsControllers = angular.module('cardsControllers', []);
 
 /* User controller */
-cardsControllers.controller('user', ['$scope', '$routeParams', '$location', function user($scope,$routeParams,$location,$cookies){ 
+cardsControllers.controller('user', ['$scope', '$routeParams', '$location','$http', function user($scope,$routeParams,$location,$http){
 
+    $scope.signupUserName = '';
+    $scope.signupUserPassword = '';
+    $scope.signupUserEmail = '';
     $scope.loggedIn = false;
 
     $scope.login = function(){
@@ -14,9 +17,28 @@ cardsControllers.controller('user', ['$scope', '$routeParams', '$location', func
     }
 
     $scope.signup = function(){
+        $http.post("/signup",{
+            email:$scope.signupUserEmail,
+            password:$scope.signupUserPassword,
+            username:$scope.signupUserName
+        }).success(function(){
+            //$location.path('/');
+            $scope.message.push({
+                datetime:new Date(),
+                type:'success',
+                message:'You\'re signed up!'
+            });
+        }).error(function(){
+            console.log("failure");
+            $scope.message.push({
+                datetime:new Date(),
+                type:'failure',
+                message:'There was an error signing up! Please try again '
+        });
         // Send ajax request to /signup
         // if 200 then save the cookie
         // $cookies[responseKey] = response;
+        });
     }
 
     /* Redirect unauthenticated users to a login form */

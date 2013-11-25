@@ -2,20 +2,20 @@
     <div class="row">
         <div class="col-md-4"></div>
         <div class="col-md-4">
-            <form role="form" id="signup">
+            <form role="form" id="signup" ng-submit="signup()">
                 <h3>Sign Up</h3>
                 <hr>
                 <div class="form-group">
                     <label for="userName">User Name</label>
-                    <input type="text" class="form-control" id="userName" placeholder="User Name">
+                    <input type="text" class="form-control" id="userName" ng-model="signupUserName" placeholder="User Name">
                 </div>
                 <div class="form-group">
                     <label for="signupEmail">Email address</label>
-                    <input type="text" class="form-control" id="signupEmail" placeholder="Email Address">
+                    <input type="text" class="form-control" id="signupEmail" ng-model="signupUserEmail" placeholder="Email Address">
                 </div>
                 <div class="form-group">
                     <label for="signupPassword">Password</label>
-                    <input type="password" class="form-control" id="signupPassword" placeholder="Password">
+                    <input type="password" class="form-control" id="signupPassword" ng-model="signupUserPassword" placeholder="Password">
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>

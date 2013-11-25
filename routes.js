@@ -112,14 +112,11 @@ app.get('/signup', function(req, res) {
 
 app.post('/signup', function(req, res) {
     if (req.session.email){
-        res.redirect('*');
+        res.send(404);
     }else{
-        var failure1 = req.body.email !== req.body.email_confirmation;
-        var failure2 = req.body.password !== req.body.password_confirmation;
-        var failure3 = req.body.email.length === 0;
-        var failure4 = req.body.password.length === 0;
-        var failure5 = req.body.password.length === 0;
-        if(failure1 || failure2 || failure3 || failure4 || failure5){
+        var failure1 = req.body.email.length === 0;
+        var failure2 = req.body.password.length === 0;
+        if(failure1 || failure2){
             res.send(409);
         }else{
             var salt = settings.mongodb_salt_keyword+String(Date.now());

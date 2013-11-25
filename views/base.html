@@ -16,8 +16,15 @@
 <body ng-app="cardsApp" ng-controller="user">
     <div id="page_wrapper">
     {% include 'navigation_bar.html' %}
+        <div id="messages">
+            <ul>
+                <li ng-repeat="(messageId,message) in messages" class="{{message.type === 'success' && 'success}} {{message.type === 'failure' && 'failure'">
+                    <p>[{{message.datetime}}] {{message.message}}</p>
+                </li>
+            </ul>
+        </div>
 
-    <div ng-view></div>
+        <div ng-view></div>
 
     {% block content %}
     {% endblock %}

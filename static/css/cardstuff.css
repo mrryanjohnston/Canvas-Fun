@@ -178,3 +178,11 @@ html, body{
         padding-right:20px;
     }
 }
+
+li.success{
+    color:#0f0;
+}
+
+li.failure{
+    color:#f00;
+}
