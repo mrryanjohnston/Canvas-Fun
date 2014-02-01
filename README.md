@@ -3,7 +3,6 @@
 Why not?
 ## What
 Lots of Javascript stuff.
-
  * [node.js](http://www.nodejs.org)
  * [socket.io](http://www.socket.io)
  * [express](http://www.expressjs.com)
@@ -11,7 +10,6 @@ Lots of Javascript stuff.
  * [Kinetic.js](http://www.kineticjs.com/)
 
 And some other convenient stuff too:
-
  * [Compass](http://www.compass-style.org/)
  * [Twitter Bootstrap](http://twitter.github.io/bootstrap)
  * [Redis](http://www.redis.io/)
@@ -26,7 +24,6 @@ And some other convenient stuff too:
 5. npm start or npm test
 
 ### Controlling the application
-
 Start, stop, and restart the application as a long running process, respectively:
 
     npm start
@@ -38,8 +35,8 @@ Start the server as a short running process
 
 ## Preinstallation
 ### Dependency versions
-
 I am using rvm and nvm for local development to manage ruby and node versions. Get them with these commands:
+
     \curl -sSL https://get.rvm.io | bash -s stable
     rvm install 2.10
     curl https://raw.github.com/creationix/nvm/master/install.sh | sh
