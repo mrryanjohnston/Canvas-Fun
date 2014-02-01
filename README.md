@@ -2,31 +2,30 @@
 ## Why
 Why not?
 ## What
-Javascript,
-[node.js](http://www.nodejs.org),
-[socket.io](http://www.socket.io),
-[express](http://www.expressjs.com),
-[Redis](http://www.redis.io/),
-[MongoDB](http://www.mongodb.org),
-[Angular](http://angularjs.org/),
-[Kinetic.js](http://www.kineticjs.com/),
-[Twitter Bootstrap](http://twitter.github.io/bootstrap).
+Lots of Javascript stuff.
 
-## Installation
+ * [node.js](http://www.nodejs.org)
+ * [socket.io](http://www.socket.io)
+ * [express](http://www.expressjs.com)
+ * [Angular.js](http://angularjs.org)
+ * [Kinetic.js](http://www.kineticjs.com/)
 
-Application
+And some other convenient stuff too:
 
-    git clone https://github.com/mrryanjohnston/Canvas-Fun
-    cd Canvas-Fun
-    npm preinstall
-    npm install
+ * [Compass](http://www.compass-style.org/)
+ * [Twitter Bootstrap](http://twitter.github.io/bootstrap)
+ * [Redis](http://www.redis.io/)
+ * [MongoDB](http://www.mongodb.org)
 
-## Running the application for the first time
-1. Install mongodb, configure connection parameters in settings.js, and start it.
-2. Install redis and start it with the provided redis.conf(change your password and anything else you'd like).
-3. npm start
+## Directions
+### Running the application for the first time
+1. [Install mongodb](#mongodb), configure connection parameters in settings.js, and start it.
+2. [Install redis](#redis) and start it with the provided redis.conf(change your password and anything else you'd like).
+3. npm preinstall
+4. npm install
+5. npm start or npm test
 
-## Controlling the application
+### Controlling the application
 
 Start, stop, and restart the application as a long running process, respectively:
 
@@ -37,28 +36,27 @@ Start the server as a short running process
 
     npm test
 
-## Problems
-###Node Version
-Your version of nodejs might be incompatible with mongoose or another package. This project uses v0.8.19. You can get that by installing node and setting node versions via nvm:
+## Preinstallation
+### Dependency versions
 
+I am using rvm and nvm for local development to manage ruby and node versions. Get them with these commands:
+    \curl -sSL https://get.rvm.io | bash -s stable
+    rvm install 2.10
     curl https://raw.github.com/creationix/nvm/master/install.sh | sh
-    restart terminal
-    nvm install v0.8.19
-    nvm use v0.8.19
+    nvm install 0.10.24
 
-###NPM Version
-Your version of npm might be incompatible with mongoose or another package. We're using v1.2.10.
+Get sass and compass:
+    gem install sass --version 3.2.13
+    gem install compass --version 0.12.2
 
-    npm install npm@1.2.10 -g
-    
 ###Mongoose package
-Mongoose can be a butt. You may need to install it prior to running npm install.
+You may need to install the nodejs mongoose package prior to running npm install.
 
     npm install mongoose
     npm install
     
-###MongoDB deployment
-You'll need to have a copy of mongodb running your database. We recommend using [mongoctl](http://github.com/mongolab/mongoctl) to provision servers. Install python2, pip, and build tools. Pick one of the follow based on your OS/distro:
+###MongoDB
+You'll need to have a copy of mongodb running your database. For local development I use [mongoctl](http://github.com/mongolab/mongoctl) to provision mongo servers. You'll need to install python2, pip, and build tools to use this workflow. Pick one of the follow based on your OS/distro:
 
     sudo apt-get install python build-essential python-pip
     sudo pacman -S base-devel python2 python2-pip

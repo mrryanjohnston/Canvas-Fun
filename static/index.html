@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="css/cardstuff.css" type="text/css"></style>
+    <link rel="stylesheet" href="css/lib/bootstrap/bootstrap.min.css" type="text/css"></style>
+    <link rel="stylesheet" href="css/lib/fontawesome/font-awesome.min.css" type="text/css"></style>
+    <title>Cards</title>
+</head>
+
+<body ng-app="cardsApp" ng-controller="user">
+    <div id="page_wrapper">
+
+        <div ng-view></div>
+
+
+        <div id="footer_spacer"></div>
+    </div>
+    <div id="footer">
+        <div class="container">
+            <p>
+                &copy;{{year}} <a target="_blank" href="http://goatse.cx">Ryan Johnston</a> &amp; <a target="_blank" href="http://www.cheddarcode.com/g">L. Gabriel Miller</a>
+            </p>
+            <p>Card Stuff is an open source project. View/Contribute to/Fork our repository <a href="http://www.github.com/mrryanjohnston/Canvas-Fun">here</a>.</p>
+        </div>
+    </div>
+
+
+    <script type="text/javascript" src="js/lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="js/lib/angular/angular.js"></script>
+    <script type="text/javascript" src="js/lib/angular/angular-route.js"></script>
+    <script type="text/javascript" src="js/lib/angular/angular-cookies.js"></script>
+    <script type="text/javascript" src="js/angular/app.js"></script>
+    <script type="text/javascript" src="js/angular/controllers.js"></script>
+
+    <!--
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+    <script src="http://www.html5canvastutorials.com/libraries/kinetic-v3.10.1.js"></script>
+    -->
+    <!--
+    <script type="text/javascript" src="js/lib/kinetic/kinetic-v4.4.0.js"></script>
+    <script type="text/javascript" src="js/layout.js"></script>
+    <script type="text/javascript" src="js/sockets.js"></script>
+    -->
+    <script type="text/javascript" src="js/lib/socket.io/socket.io.min.js"></script>
+    <script type="text/javascript" src="js/lib/bootstrap/bootstrap.js"></script>
+    <!--
+    <script type="text/javascript" src="js/helpers.js"></script>
+    <script type="text/javascript" src="js/cards.js"></script>
+    <script type="text/javascript" src="js/site.js"></script>
+    -->
+
+</body>
+
+</html>

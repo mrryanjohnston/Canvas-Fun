@@ -52,8 +52,8 @@ var server = require('http').createServer(app);
 console.log(color.fggreen+"HTTP Server started."+color.reset);
 var cons = require('consolidate');
 console.log(color.fgyellow+"Consolidate loaded."+color.reset);
-var swig = require('swig');
-console.log(color.fgred+"Swig loaded."+color.reset);
+//var swig = require('swig');
+//console.log(color.fgred+"Swig loaded."+color.reset);
 var io = require('socket.io').listen(server);
 console.log(color.fgcyan+"Socket.io loaded."+color.reset);
 var crypto = require('crypto');
@@ -73,10 +73,10 @@ console.log(color.fgblue+"Models loaded."+color.reset);
 /**
 * View settings
 */
-app.engine('html', cons.swig);
-app.set('view engine', 'html');
-app.set('views', settings.views_directory );//Tells swig where to look for templates
-swig.init({ root: settings.views_directory, autoescape: true });//Tells swig where to look for extended templates
+//app.engine('html', cons.swig);
+//app.set('view engine', 'html');
+//app.set('views', settings.views_directory );//Tells swig where to look for templates
+//swig.init({ root: settings.views_directory, autoescape: true });//Tells swig where to look for extended templates
 
 
 /**

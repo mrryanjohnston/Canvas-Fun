@@ -4,14 +4,14 @@ var page_context = settings.context;
 
 function debug(req, res){
     if (settings.debug == true){
-        console.log(req);
-        console.log(color.fgred+"SESSION >>>>>>>>>>>"+color.reset);
-        console.log(req.session);
-        console.log(color.fgred+"<<<<<<<<<<<<<<<<<<"+color.reset);
+        //console.log(req);
+        //console.log(color.fgred+"SESSION >>>>>>>>>>>"+color.reset);
+        //console.log(req.session);
+        //console.log(color.fgred+"<<<<<<<<<<<<<<<<<<"+color.reset);
         if(res.locals){
-            console.log(color.fggreen+"LOCALS >>>>>>>>>>>"+color.reset);
-            console.log(res.locals);
-            console.log(color.fggreen+"<<<<<<<<<<<<<<<<<<"+color.reset);
+            //console.log(color.fggreen+"LOCALS >>>>>>>>>>>"+color.reset);
+            //console.log(res.locals);
+            //console.log(color.fggreen+"<<<<<<<<<<<<<<<<<<"+color.reset);
         }
     }
 };
@@ -20,21 +20,12 @@ function debug(req, res){
 * / - About / Chat / Game playing page
 */
 app.get('/', function(req, res) {
-    page_context.page_title = '';
+    console.log(req.session);
     if (!req.session.email){
-        res.render('about', {
-            session: req.session,
-            context: page_context,
-            locals: res.locals
-        });
     }else{
-        res.render('chat', {
-            session: req.session,
-            context: page_context,
-            locals: res.locals
-        });
     }
     debug(req, res);
+    res.status(200).sendfile(settings.static_directory+'/index.html');
 });
 
 /***
@@ -83,7 +74,6 @@ app.post('/login', function(req, res) {
 */
 app.get('/logout', function(req, res) {
     if (req.session.email){
-        page_context.page_title = ': Logout';
         //req.session.messages.push({'success': 'You were successfully signed out.'}); //This will never be seen.
         res.redirect('/');
         req.session.destroy();
@@ -96,20 +86,6 @@ app.get('/logout', function(req, res) {
 /***
 * /signup - Registration page
 */
-app.get('/signup', function(req, res) {
-    if (!req.session.email){
-        page_context.page_title = ': Sign Up';
-        res.render('signup', {
-            session: req.session,
-            context: page_context,
-            locals: res.locals
-        });
-    }else{
-        res.redirect('*');
-    }
-    debug(req, res);
-});
-
 app.post('/signup', function(req, res) {
     if (req.session.email){
         res.send(404);
@@ -146,13 +122,7 @@ app.post('/signup', function(req, res) {
 app.get('/user', function(req, res, next) {
     console.log(req.session);
     if (req.session.email){
-        page_context.page_title = ': User Dashboard';
         if(!req.query.id){ // load self page
-            res.render('user', {
-                session: req.session,
-                context: page_context,
-                locals: res.locals
-            });
         }else if(req.query.id.match(/^[0-9a-fA-F]{24}$/) && req.query.id.length === 24){
             console.log("hit on req.query.id: "+req.query.id);
             models.user.findById(req.query.id,
@@ -165,29 +135,14 @@ app.get('/user', function(req, res, next) {
                         res.locals.record_games_won = account.record_games_won;
                         res.locals.record_games_lost = account.record_games_lost;
                         res.locals.other_user = true;
-                        res.render('user', {
-                            session: req.session,
-                            context: page_context,
-                            locals: res.locals
-                        });
                     }else{ // no account found at specified id
                         console.log(error);
                         res.locals.messages.push({"error":"The specified user id could not be found."});
-                        res.render('user', {
-                            session: req.session,
-                            context: page_context,
-                            locals: res.locals
-                        });
                     }
                 }
             );
         }else{ // invalid id, failed regex and/or length
             res.locals.messages.push({"error":"The specified user id is invalid."});
-            res.render('user', {
-                session: req.session,
-                context: page_context,
-                locals: res.locals
-            });
         }
     }else{ // not signed in
         res.redirect('*');
@@ -258,17 +213,10 @@ app.post('/user', function(req, res) {
 * /404 and /* - 404 error page
 */
 app.get('/404', function(req, res, next) {
-    page_context.page_title = ': Error';
-    res.render('404', {
-        session: req.session,
-        context: page_context,
-        locals: res.locals
-    });
     debug(req, res);
 });
 
 app.get('*', function(req, res, next) {
-    page_context.page_title = ': Error';
     res.redirect('/404');
     debug(req, res);
 });
