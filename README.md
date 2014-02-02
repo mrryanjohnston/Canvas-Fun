@@ -1,6 +1,6 @@
 # Card Gamer
 ## Why
-Why not?
+Ever wanted to play cards interactively over the internet? Now you can. Synergy.
 ## What
 Lots of Javascript stuff.
  * [node.js](http://www.nodejs.org)
@@ -42,9 +42,11 @@ I am using rvm and nvm for local development to manage ruby and node versions. G
     curl https://raw.github.com/creationix/nvm/master/install.sh | sh
     nvm install 0.10.24
 
-Get sass and compass:
+Get sass, compass, and bootstrap:
     gem install sass --version 3.2.13
     gem install compass --version 0.12.2
+    gem install bootstrap-sass --version 3.1.0.0
+
 
 ###Mongoose package
 You may need to install the nodejs mongoose package prior to running npm install.
@@ -85,6 +87,12 @@ To [control](http://redis.io/commands) redis, once logged-in:
     flushdb
     shutdown
     etc.
+
+##Configuration
+###Compass
+From the project root directory run the following listener command to set a watcher to compile sass to css:
+
+    compass watch -c scss/config.rb
 
 ## Misc Credits
 Card sprite provided by [Brandon Ardiente](http://ardisoft.net/svg-z-cards/) under the LGPL.  
