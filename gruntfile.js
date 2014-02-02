@@ -12,7 +12,7 @@ module.exports = function(grunt) {
                         filter: 'isFile'
                     },
                     {
-                        src:["bower_components/angular/angular.js","bower_components/angular/angular.min.js","bower_components/angular/angular.min.js.map"],
+                        src:["bower_components/angular/angular.js","bower_components/angular/angular.min.js","bower_components/angular/angular.min.js.map","bower_components/angular-route/angular-route.js","bower_components/angular-route/angular-route.min.js","bower_components/angular-route/angular-route.min.js.map"],
                         dest: "static/js/lib/angular",
                         expand: true,
                         flatten: true,
