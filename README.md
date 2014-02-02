@@ -8,6 +8,8 @@ Lots of Javascript stuff.
  * [express](http://www.expressjs.com)
  * [Angular.js](http://angularjs.org)
  * [Kinetic.js](http://www.kineticjs.com/)
+ * [Grunt](http://www.gruntjs.com)
+ * [Bower](http://www.bower.io)
 
 And some other convenient stuff too:
  * [Compass](http://www.compass-style.org/)
@@ -43,10 +45,16 @@ I am using rvm and nvm for local development to manage ruby and node versions. G
     nvm install 0.10.24
 
 Get sass, compass, and bootstrap:
+
     gem install sass --version 3.2.13
     gem install compass --version 0.12.2
     gem install bootstrap-sass --version 3.1.0.0
 
+Get grunt and bower, and download and configure static files through them:
+
+    npm install -g grunt-cli@0.1.13
+    npm install -g bower@1.2.8
+    grunt copy
 
 ###Mongoose package
 You may need to install the nodejs mongoose package prior to running npm install.

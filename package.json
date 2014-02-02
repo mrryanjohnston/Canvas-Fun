@@ -1,7 +1,7 @@
 {
     "author": "Ryan Johnston <mrryanjohnston@gmail.com>",
     "name": "cards",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description":"A collaborative, web-based card-game playing application.",
     "contributors": [
         "L. Gabriel Miller <gmiller2007@gmail.com> (http://www.gabrielmiller.org)"
@@ -29,6 +29,10 @@
         "cookie":"0.1.x",
         "cookie-signature":"1.0.x",
         "string":"1.8.x"
+    },
+    "devDependencies": {
+        "grunt":"0.4.x",
+        "grunt-contrib-copy": "0.5.x"
     },
     "engines": {
         "node": "0.10.24",

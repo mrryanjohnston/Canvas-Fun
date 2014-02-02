@@ -1,0 +1,9 @@
+{
+    "name": "cards",
+    "version": "0.3.0",
+    "dependencies": {
+        "angular": "1.2.10",
+        "jquery": "2.1.0",
+        "font-awesome": "4.0.3"
+    }
+}

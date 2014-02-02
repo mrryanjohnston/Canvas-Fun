@@ -1,5 +1,9 @@
+.sass-cache
 *.swp
 node_modules
 npm-debug.log
 dump.rdb
-scss/.sass-cache
+bower_components
+static/css/sass
+static/fonts
+static/js/lib
